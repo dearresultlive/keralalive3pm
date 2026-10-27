@@ -1,0 +1,45 @@
+name: Kerala Lottery Live 3:00 PM Auto-Poller
+
+on:
+  schedule:
+    # Runs every 5 minutes between 09:00 UTC and 11:55 UTC (2:30 PM to 5:25 PM IST daily)
+    - cron: '*/5 9-11 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab anytime
+
+concurrency:
+  group: kerala-poller
+  cancel-in-progress: false
+
+jobs:
+  poll-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Kerala Lottery Poller
+        run: node scripts/kerala_autopoller.cjs
+
+      - name: Commit and Push if Results Changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain src/data/kerala_draws.json)" ]; then
+            git add src/data/kerala_draws.json
+            git commit -m "chore(data): auto-update Kerala 3:00 PM lottery results [skip ci]"
+            git push origin main
+            echo "Successfully updated and pushed new lottery results."
+          else
+            echo "No new lottery results declared yet."
+          fi
