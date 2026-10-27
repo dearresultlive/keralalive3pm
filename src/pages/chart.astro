@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import KeralaGuessingChart from '../components/KeralaGuessingChart';
+
+const pageTitle = "Kerala Lottery Guessing Number Today 3 PM (A, B, C Board & 3D Chart) | keralalive3pm.in";
+const pageDescription = "Daily Kerala State Lottery 3-digit guessing numbers, A B C board prediction combinations, repeating hot/cold frequency analysis, and statistical 3D lucky number generator.";
+
+const faqItems = [
+  {
+    question: "What is A, B, C Board in Kerala Lottery?",
+    answer: "In Kerala 3-digit number analysis, 'A Board' represents the hundreds digit, 'B Board' represents the tens digit, and 'C Board' represents the units/ones digit of the last 3 winning numbers."
+  },
+  {
+    question: "Are Kerala lottery guessing numbers guaranteed to win?",
+    answer: "No. Kerala State Lottery draws are completely random mechanical physical draws conducted by government officials. Guessing numbers and board charts are calculated based on mathematical probability and historical frequency patterns for informational and entertainment purposes only."
+  },
+  {
+    question: "What are repeating number combinations?",
+    answer: "Repeating combinations are 3-digit pairs and triplets that have historically appeared in 3rd through 8th prize tiers multiple times across previous weekly draws."
+  }
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://keralalive3pm.in/chart"
+  faqSchema={faqItems}
+  breadcrumbs={[
+    { name: "Home", url: "https://keralalive3pm.in" },
+    { name: "3D Guessing & Chart", url: "https://keralalive3pm.in/chart" }
+  ]}
+>
+  <div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header Card -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-2">
+      <nav class="flex items-center justify-center gap-2 text-xs text-slate-400 font-mono mb-1">
+        <a href="/" class="hover:text-emerald-400 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-emerald-400">3D Guessing & Chart</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        Kerala Lottery 3-Digit Guessing Chart
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
+        A/B/C single board analysis, high-frequency pairs, and historical statistical probability trends for today's 3:00 PM draw.
+      </p>
+    </div>
+
+    <!-- Interactive Guessing Island -->
+    <KeralaGuessingChart client:load />
+
+    <!-- Educational & Disclaimer Section -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4 text-xs sm:text-sm text-slate-300">
+      <h2 class="text-base font-bold text-white flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        Understanding Kerala 3D Board Analysis
+      </h2>
+      <p>
+        Kerala lottery players study historical draw results by isolating the trailing 3 digits into three boards:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+          <div class="font-bold text-emerald-400 text-base mb-1">Board A</div>
+          <p class="text-slate-400 text-xs">Hundreds Place (X - -)<br />Calculated from 1st digit of 3-digit sequence.</p>
+        </div>
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+          <div class="font-bold text-amber-400 text-base mb-1">Board B</div>
+          <p class="text-slate-400 text-xs">Tens Place (- X -)<br />Calculated from 2nd digit of 3-digit sequence.</p>
+        </div>
+        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+          <div class="font-bold text-sky-400 text-base mb-1">Board C</div>
+          <p class="text-slate-400 text-xs">Units Place (- - X)<br />Calculated from 3rd digit of 3-digit sequence.</p>
+        </div>
+      </div>
+      <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-800/80">
+        *Disclaimer: keralalive3pm.in does not promote gambling or guarantee winning numbers. All guessing statistics are computer-generated based on past lottery results for research and entertainment purposes.
+      </p>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
+      <h3 class="text-base font-bold text-white mb-2">Frequently Asked Questions</h3>
+      {faqItems.map((faq) => (
+        <details class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <summary class="font-semibold text-white text-sm cursor-pointer">{faq.question}</summary>
+          <p class="mt-2 text-xs sm:text-sm text-slate-400">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</Layout>

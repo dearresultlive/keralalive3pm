@@ -1,0 +1,16 @@
+{
+  "name": "Kerala Lottery Result Live 3:00 PM • കേരള ലോട്ടറി ഫലം",
+  "short_name": "Kerala Live 3PM",
+  "description": "Kerala State Lottery Result Today Live 3:00 PM • Official Winning Numbers, Gazette PDF & Ticket Checker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#064e3b",
+  "theme_color": "#047857",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

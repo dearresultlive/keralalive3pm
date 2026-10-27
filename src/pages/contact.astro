@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pageTitle = "Contact Us | keralalive3pm.in";
+const pageDescription = "Get in touch with the editorial team at keralalive3pm.in.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://keralalive3pm.in/contact"
+>
+  <div class="max-w-2xl mx-auto space-y-6">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-4">
+      <h1 class="text-2xl sm:text-3xl font-black text-white">Contact Us</h1>
+      <p class="text-sm text-slate-300">
+        Have questions, corrections regarding 3:00 PM draw numbers, or advertising inquiries? Feel free to reach out to our team.
+      </p>
+
+      <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+            ✉️
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Editorial & Corrections Email</div>
+            <a href="mailto:admin@keralalive3pm.in" class="text-white hover:text-emerald-400 font-mono text-sm">
+              admin@keralalive3pm.in
+            </a>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-3 border-t border-slate-800">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+            💬
+          </div>
+          <div>
+            <div class="text-xs text-slate-400 font-medium">Community Channel</div>
+            <a href="https://whatsapp.com/channel/keralalottery3pm" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 text-sm font-semibold">
+              Join WhatsApp Alert Channel &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 text-xs text-amber-200">
+        <strong>Notice regarding Prize Claims:</strong> We are a digital publishing portal and cannot process or verify physical lottery ticket claims. For official claims, please visit the Directorate of State Lotteries, Vikas Bhavan, Thiruvananthapuram, Kerala.
+      </div>
+    </div>
+  </div>
+</Layout>

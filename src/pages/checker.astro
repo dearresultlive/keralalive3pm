@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import KeralaTicketChecker from '../components/KeralaTicketChecker';
+import { KERALA_WEEKLY_SCHEMES } from '../data/schemes';
+
+const pageTitle = "Kerala Lottery Ticket Number Checker Online (1st to 8th Prize) | keralalive3pm.in";
+const pageDescription = "Instant Kerala State Lottery Ticket Checker. Enter your 6-digit ticket number with series code (e.g. WN 234567) to instantly check against all 8 prize tiers and consolation prize.";
+
+const faqItems = [
+  {
+    question: "How does the Kerala Lottery Ticket Checker work?",
+    answer: "Enter your 2-letter series (e.g., WA, WB) and your 6-digit ticket number. The tool checks your full number against 1st and 2nd prizes, your 6-digit number against consolation prizes across all series, and the last 4 digits against 3rd through 8th prizes."
+  },
+  {
+    question: "Do I win a consolation prize if my series is different?",
+    answer: "Yes! If your 6-digit ticket number matches the 1st prize winning number but has a different series code, you win a ₹8,000 consolation prize."
+  },
+  {
+    question: "What prizes are determined by the last 4 digits?",
+    answer: "In Kerala State Lotteries, the 3rd, 4th, 5th, 6th, 7th, and 8th prizes are all determined by the matching last 4 digits of your ticket number, regardless of series."
+  }
+];
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://keralalive3pm.in/checker"
+  faqSchema={faqItems}
+  breadcrumbs={[
+    { name: "Home", url: "https://keralalive3pm.in" },
+    { name: "Ticket Checker", url: "https://keralalive3pm.in/checker" }
+  ]}
+>
+  <div class="max-w-3xl mx-auto space-y-6">
+    <!-- Header Card -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-2">
+      <nav class="flex items-center justify-center gap-2 text-xs text-slate-400 font-mono mb-1">
+        <a href="/" class="hover:text-emerald-400 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-emerald-400">Ticket Checker</span>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+        Kerala Lottery Ticket Checker Online
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
+        Verify your 6-digit ticket instantly against all 8 official prize tiers and ₹8,000 consolation prizes.
+      </p>
+    </div>
+
+    <!-- Checker Interactive Island -->
+    <KeralaTicketChecker client:load />
+
+    <!-- How Prizes Are Calculated Guide -->
+    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4 text-xs sm:text-sm text-slate-300">
+      <h2 class="text-base font-bold text-white flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        How Prize Matching Works in Kerala Lottery
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+          <div class="font-bold text-amber-300 mb-1">1st & 2nd Prize</div>
+          <p class="text-slate-400 text-xs">Requires an exact match of both the 2-letter series code AND the 6-digit number.</p>
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+          <div class="font-bold text-emerald-300 mb-1">Consolation Prize (₹8,000)</div>
+          <p class="text-slate-400 text-xs">Awarded to tickets with the matching 6-digit 1st prize number in all remaining 11 series.</p>
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+          <div class="font-bold text-sky-300 mb-1">3rd & 4th Prize</div>
+          <p class="text-slate-400 text-xs">Matching the last 4 digits of drawn numbers (₹5,000 & ₹2,000 respectively).</p>
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
+          <div class="font-bold text-purple-300 mb-1">5th to 8th Prize</div>
+          <p class="text-slate-400 text-xs">Matching the last 4 digits of drawn numbers across multiple draw sets (₹1,000 down to ₹100).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
+      <h3 class="text-base font-bold text-white mb-2">Frequently Asked Questions</h3>
+      {faqItems.map((faq) => (
+        <details class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <summary class="font-semibold text-white text-sm cursor-pointer">{faq.question}</summary>
+          <p class="mt-2 text-xs sm:text-sm text-slate-400">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</Layout>
