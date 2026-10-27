@@ -36,36 +36,9 @@ function fetchUrl(url) {
 
 // Ping IndexNow search engines (Bing, Seznam, Yandex)
 async function pingIndexNow(urls) {
-  const payload = JSON.stringify({
-    host: 'keralalive3pm.in',
-    key: 'kerala3pmliveindexnowkey',
-    keyLocation: 'https://keralalive3pm.in/kerala3pmliveindexnowkey.txt',
-    urlList: urls,
-  });
-
-  console.log('[IndexNow] Submitting URLs for instant crawling...');
-  return new Promise((resolve) => {
-    const req = https.request(
-      'https://api.indexnow.org/indexnow',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Content-Length': Buffer.byteLength(payload),
-        },
-      },
-      (res) => {
-        console.log(`[IndexNow] Status: ${res.statusCode}`);
-        resolve(res.statusCode);
-      }
-    );
-    req.on('error', (err) => {
-      console.warn('[IndexNow] Request failed:', err.message);
-      resolve(null);
-    });
-    req.write(payload);
-    req.end();
-  });
+  // Disabled while site is in noindex mode
+  console.log('[IndexNow] Skipping submission - site is currently in noindex mode.');
+  return null;
 }
 
 // Clean and format a ticket string
