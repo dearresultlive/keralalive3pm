@@ -95,4 +95,4 @@ if (require.main === module) {
   main().catch(console.error);
 }
 
-module.exports = { main, pingIndexNow };
+module.exports = { main, pingIndexNow, cleanTicket, fetchUrl };

@@ -1,108 +1,135 @@
 ---
-interface Props {
+export interface Props {
   title?: string;
   description?: string;
+  canonical?: string;
+  ogImage?: string;
   drawDate?: string;
   firstPrize?: string;
+  faqSchema?: Array<{ question: string; answer: string }>;
   faqItems?: Array<{ question: string; answer: string }>;
+  articleSchema?: {
+    headline: string;
+    datePublished: string;
+    dateModified: string;
+    description: string;
+  };
+  breadcrumbs?: Array<{ name: string; url: string }>;
   preloadImage?: { url: string; type?: string };
 }
 
 const {
   title = "Kerala Lottery Result Today 3:00 PM Live • കേരള ലോട്ടറി ഫലം | KeralaLive3PM",
   description = "Official Kerala State Lottery Result Today Live at 3:00 PM. 1st Prize ₹75 Lakh to ₹1 Crore winning ticket numbers, official signed Gazette PDF, and instant ticket checker.",
+  canonical,
+  ogImage = "https://keralalive3pm.in/og-image.jpg",
   drawDate = new Date().toISOString().split('T')[0],
-  firstPrize = '',
+  faqSchema,
   faqItems = [],
+  articleSchema,
+  breadcrumbs,
   preloadImage
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, 'https://keralalive3pm.in').href;
+const canonicalUrl = canonical || new URL(Astro.url.pathname, 'https://keralalive3pm.in').href;
+const activeFaq = faqSchema || faqItems;
 ---
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="format-detection" content="telephone=no" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="format-detection" content="telephone=no" />
 
-  {preloadImage && (
-    <link rel="preload" as="image" type={preloadImage.type || 'image/avif'} href={preloadImage.url} fetchpriority="high" />
-  )}
+{preloadImage && (
+  <link rel="preload" as="image" type={preloadImage.type || 'image/avif'} href={preloadImage.url} fetchpriority="high" />
+)}
 
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#047857" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#047857" />
 
-  <title>{title}</title>
-  <meta name="description" content={description} />
-  <meta name="keywords" content="kerala lottery result, kerala lottery result today, kerala lottery result 3pm, kerala lottery live, sthree sakthi lottery result, fifty fifty lottery result, karunya lottery result, nirmal lottery result, win win lottery result, akshaya lottery result, കേരള ലോട്ടറി ഫലം, keralalive3pm" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content="kerala lottery result, kerala lottery result today, kerala lottery result 3pm, kerala lottery live, sthree sakthi lottery result, fifty fifty lottery result, karunya lottery result, nirmal lottery result, win win lottery result, akshaya lottery result, കേരള ലോട്ടറി ഫലം, keralalive3pm" />
 
-  {/* Canonical URL */}
-  <link rel="canonical" href={canonicalUrl} />
+{/* Canonical URL */}
+<link rel="canonical" href={canonicalUrl} />
 
-  {/* OpenGraph & Twitter Cards */}
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalUrl} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content="https://keralalive3pm.in/og-image.jpg" />
-  <meta property="og:site_name" content="KeralaLive3PM" />
-  <meta property="og:locale" content="en_IN" />
+{/* OpenGraph & Twitter Cards */}
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content="KeralaLive3PM" />
+<meta property="og:locale" content="en_IN" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content="https://keralalive3pm.in/og-image.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
 
-  {/* Search Engine Directives */}
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+{/* Search Engine Directives */}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-  {/* Asynchronous Google Web Fonts (Zero Render Blocking) */}
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" />
-  </noscript>
+{/* Asynchronous Google Web Fonts (Zero Render Blocking) */}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Manjari:wght@400;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" />
+</noscript>
 
-  {/* FAQ Schema for Google Search Snippets */}
-  {faqItems && faqItems.length > 0 && (
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer
-        }
-      }))
-    })} />
-  )}
-
-  {/* Lottery / Live Results Schema */}
+{/* FAQ Schema for Google Search Snippets */}
+{activeFaq && activeFaq.length > 0 && (
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    "headline": title,
-    "description": description,
-    "datePublished": `${drawDate}T15:00:00+05:30`,
-    "dateModified": new Date().toISOString(),
-    "author": {
-      "@type": "Organization",
-      "name": "KeralaLive3PM Newsroom",
-      "url": "https://keralalive3pm.in"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "KeralaLive3PM",
-      "url": "https://keralalive3pm.in",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://keralalive3pm.in/favicon.svg"
+    "@type": "FAQPage",
+    "mainEntity": activeFaq.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
       }
-    }
+    }))
   })} />
-</head>
+)}
+
+{/* BreadcrumbList Schema */}
+{breadcrumbs && breadcrumbs.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((bc, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": bc.name,
+      "item": bc.url
+    }))
+  })} />
+)}
+
+{/* Lottery / Live Results NewsArticle Schema */}
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": articleSchema?.headline || title,
+  "description": articleSchema?.description || description,
+  "datePublished": articleSchema?.datePublished || `${drawDate}T15:00:00+05:30`,
+  "dateModified": articleSchema?.dateModified || new Date().toISOString(),
+  "author": {
+    "@type": "Organization",
+    "name": "KeralaLive3PM Newsroom",
+    "url": "https://keralalive3pm.in"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "KeralaLive3PM",
+    "url": "https://keralalive3pm.in",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://keralalive3pm.in/favicon.svg"
+    }
+  }
+})} />

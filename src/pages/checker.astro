@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import KeralaTicketChecker from '../components/KeralaTicketChecker';
-import { KERALA_WEEKLY_SCHEMES } from '../data/schemes';
+import keralaDraws from '../data/kerala_draws.json';
 
 const pageTitle = "Kerala Lottery Ticket Number Checker Online (1st to 8th Prize) | keralalive3pm.in";
 const pageDescription = "Instant Kerala State Lottery Ticket Checker. Enter your 6-digit ticket number with series code (e.g. WN 234567) to instantly check against all 8 prize tiers and consolation prize.";
@@ -49,7 +49,7 @@ const faqItems = [
     </div>
 
     <!-- Checker Interactive Island -->
-    <KeralaTicketChecker client:load />
+    <KeralaTicketChecker client:load draws={keralaDraws} />
 
     <!-- How Prizes Are Calculated Guide -->
     <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4 text-xs sm:text-sm text-slate-300">

@@ -1,15 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import { cleanTicketNumber, formatINR } from '../lib/kerala-utils';
 import type { KeralaPrizeData } from './LiveKeralaResults';
+import defaultDrawsData from '../data/kerala_draws.json';
+
+const fallbackDraws = defaultDrawsData as unknown as Record<string, KeralaPrizeData>;
 
 interface Props {
-  draws: Record<string, KeralaPrizeData>;
+  draws?: Record<string, KeralaPrizeData>;
 }
 
-export default function KeralaTicketChecker({ draws }: Props) {
+export default function KeralaTicketChecker({ draws = fallbackDraws }: Props) {
+  const effectiveDraws = draws || fallbackDraws;
+  const datesList = useMemo(() => Object.keys(effectiveDraws), [effectiveDraws]);
   const [ticketInput, setTicketInput] = useState('');
-  const [selectedDate, setSelectedDate] = useState<string>(Object.keys(draws)[0] || '');
+  const [selectedDate, setSelectedDate] = useState<string>(datesList[0] || '');
   const [checkResult, setCheckResult] = useState<{
     checked: boolean;
     won: boolean;
@@ -19,8 +24,7 @@ export default function KeralaTicketChecker({ draws }: Props) {
     message?: string;
   } | null>(null);
 
-  const datesList = useMemo(() => Object.keys(draws), [draws]);
-  const activeDraw = draws[selectedDate];
+  const activeDraw = effectiveDraws[selectedDate];
 
   const handleCheck = (e: React.FormEvent) => {
     e.preventDefault();

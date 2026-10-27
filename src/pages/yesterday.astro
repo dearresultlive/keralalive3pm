@@ -9,13 +9,17 @@ const yesterdayScheme = getYesterdayKeralaScheme();
 const allDraws = Object.values(keralaDraws);
 const yesterdayDraw = allDraws.length > 1 ? allDraws[1] : allDraws[0];
 
-const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${yesterdayScheme.name} (${yesterdayDraw?.drawNumber || yesterdayScheme.code}) | keralalive3pm.in`;
+const firstPrizeTicket = yesterdayDraw?.first_prize
+  ? `${yesterdayDraw.first_prize.series} ${yesterdayDraw.first_prize.number}`
+  : 'Check table';
+
+const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}) | keralalive3pm.in`;
 const pageDescription = `Check yesterday's Kerala State Lottery 3:00 PM result for ${yesterdayScheme.name}. Complete 1st prize ${yesterdayScheme.firstPrizeFormatted}, consolation, and 2nd to 8th prize winning numbers.`;
 
 const faqItems = [
   {
     question: `What was yesterday's Kerala Lottery result?`,
-    answer: `Yesterday's Kerala Lottery draw was ${yesterdayScheme.name} (${yesterdayDraw?.drawNumber || yesterdayScheme.code}). The 1st prize was won by ticket ${yesterdayDraw?.prizes.first.ticket || 'Check table'} with a prize amount of ${yesterdayScheme.firstPrizeFormatted}.`
+    answer: `Yesterday's Kerala Lottery draw was ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}). The 1st prize was won by ticket ${firstPrizeTicket} with a prize amount of ${yesterdayScheme.firstPrizeFormatted}.`
   },
   {
     question: "Can I claim yesterday's winning Kerala lottery ticket today?",
@@ -49,7 +53,7 @@ const faqItems = [
             Kerala Lottery Result Yesterday (3:00 PM)
           </h1>
           <p class="text-xs sm:text-sm text-slate-400 mt-1">
-            Draw Scheme: <strong class="text-emerald-400">{yesterdayScheme.name}</strong> • Date: <span class="font-mono text-slate-200">{yesterdayDraw?.date || 'Yesterday'}</span>
+            Draw Scheme: <strong class="text-emerald-400">{yesterdayScheme.name}</strong> • Date: <span class="font-mono text-slate-200">{yesterdayDraw?.draw_date || 'Yesterday'}</span>
           </p>
         </div>
         <a
@@ -63,23 +67,38 @@ const faqItems = [
     </div>
 
     <!-- 1st Prize Highlight Card -->
-    {yesterdayDraw && (
+    {yesterdayDraw?.first_prize && (
       <div class="bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-500/40 rounded-2xl p-5 sm:p-8 text-center shadow-2xl relative overflow-hidden">
         <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-xs font-black uppercase px-4 py-1 rounded-bl-xl tracking-wider">
           Official 1st Prize Winner
         </div>
 
         <div class="inline-block bg-amber-500/10 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full text-xs font-semibold mb-3">
-          1st Prize: {formatIndianRupees(yesterdayDraw.prizes.first.amount)}
+          1st Prize: {formatIndianRupees(yesterdayDraw.first_prize.amount || yesterdayScheme.firstPrize)}
         </div>
 
         <div class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest text-amber-400 font-mono my-3 selection:bg-amber-300 selection:text-slate-950 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-          {yesterdayDraw.prizes.first.ticket}
+          <span class="text-amber-500 mr-2">{yesterdayDraw.first_prize.series}</span>
+          <span>{yesterdayDraw.first_prize.number}</span>
         </div>
 
         <p class="text-xs sm:text-sm text-slate-400">
           Drawn at Gorky Bhavan, Thiruvananthapuram • Complete 6-digit ticket with series
         </p>
+
+        {yesterdayDraw.official_pdf_url && (
+          <div class="mt-4">
+            <a
+              href={yesterdayDraw.official_pdf_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-4 py-2 rounded-xl border border-slate-700 transition-colors"
+            >
+              <span>📄</span>
+              <span>Download Official Signed Gazette PDF</span>
+            </a>
+          </div>
+        )}
       </div>
     )}
 
@@ -92,38 +111,43 @@ const faqItems = [
             Full Prize Breakdown (1st to 8th Prize)
           </h2>
           <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full font-mono">
-            {yesterdayDraw.drawNumber}
+            {yesterdayDraw.draw_number}
           </span>
         </div>
 
         <!-- Consolation Prize -->
-        {yesterdayDraw.prizes.consolation.length > 0 && (
+        {yesterdayDraw.consolation_prize && (
           <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Consolation Prize</span>
-              <span class="text-xs font-semibold text-slate-300">₹8,000 Each</span>
+              <span class="text-xs font-semibold text-slate-300">
+                {formatIndianRupees(yesterdayDraw.consolation_prize.amount || 8000)} Each
+              </span>
             </div>
-            <div class="flex flex-wrap gap-2">
-              {yesterdayDraw.prizes.consolation.map((ticket: string) => (
-                <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-slate-200 border border-slate-800 font-medium">
-                  {ticket}
-                </span>
-              ))}
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-amber-300 border border-slate-800 font-bold">
+                {yesterdayDraw.consolation_prize.number}
+              </span>
+              <span class="text-xs text-slate-400 font-sans">
+                (Awarded to all other series matching this 6-digit number)
+              </span>
             </div>
           </div>
         )}
 
         <!-- 2nd Prize -->
-        {yesterdayDraw.prizes.second.length > 0 && (
+        {yesterdayDraw.second_prize && yesterdayDraw.second_prize.length > 0 && (
           <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
             <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">2nd Prize</span>
-              <span class="text-xs font-semibold text-slate-300">₹5,00,000 Each</span>
+              <span class="text-xs font-semibold text-slate-300">
+                {formatIndianRupees(yesterdayDraw.second_prize[0]?.amount || 500000)} Each
+              </span>
             </div>
             <div class="flex flex-wrap gap-2">
-              {yesterdayDraw.prizes.second.map((ticket: string) => (
+              {yesterdayDraw.second_prize.map((prize) => (
                 <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-slate-200 border border-slate-800 font-medium">
-                  {ticket}
+                  {prize.series ? `${prize.series} ` : ''}{prize.number}
                 </span>
               ))}
             </div>
@@ -132,84 +156,84 @@ const faqItems = [
 
         <!-- 3rd to 8th Prize Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {yesterdayDraw.prizes.third.length > 0 && (
+          {yesterdayDraw.third_prize && yesterdayDraw.third_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">3rd Prize (₹5,000)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.third.map((num: string) => (
+                {yesterdayDraw.third_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {yesterdayDraw.prizes.fourth.length > 0 && (
+          {yesterdayDraw.fourth_prize && yesterdayDraw.fourth_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">4th Prize (₹2,000)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.fourth.map((num: string) => (
+                {yesterdayDraw.fourth_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {yesterdayDraw.prizes.fifth.length > 0 && (
+          {yesterdayDraw.fifth_prize && yesterdayDraw.fifth_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">5th Prize (₹1,000)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.fifth.map((num: string) => (
+                {yesterdayDraw.fifth_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {yesterdayDraw.prizes.sixth.length > 0 && (
+          {yesterdayDraw.sixth_prize && yesterdayDraw.sixth_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">6th Prize (₹500)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.sixth.map((num: string) => (
+                {yesterdayDraw.sixth_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {yesterdayDraw.prizes.seventh.length > 0 && (
+          {yesterdayDraw.seventh_prize && yesterdayDraw.seventh_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">7th Prize (₹100)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.seventh.map((num: string) => (
+                {yesterdayDraw.seventh_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
-          {yesterdayDraw.prizes.eighth.length > 0 && (
+          {yesterdayDraw.eighth_prize && yesterdayDraw.eighth_prize.length > 0 && (
             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-bold text-slate-300 uppercase">8th Prize (₹100)</span>
                 <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
-                {yesterdayDraw.prizes.eighth.map((num: string) => (
+                {yesterdayDraw.eighth_prize.map((num: string) => (
                   <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
                 ))}
               </div>

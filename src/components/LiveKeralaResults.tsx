@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   getISTNow,
   getISTDateString,
@@ -6,8 +6,9 @@ import {
   getKeralaDrawCountdown,
   formatINR
 } from '../lib/kerala-utils';
-import { useLanguage, translations } from '../lib/i18n';
+import { useLanguage } from '../lib/i18n';
 import LanguageToggle from './LanguageToggle';
+import defaultDrawsData from '../data/kerala_draws.json';
 
 export interface KeralaPrizeData {
   scheme_id?: string;
@@ -29,15 +30,20 @@ export interface KeralaPrizeData {
   official_pdf_url?: string;
 }
 
+const fallbackDraws = defaultDrawsData as unknown as Record<string, KeralaPrizeData>;
+
 interface Props {
-  initialDraws: Record<string, KeralaPrizeData>;
-  todayDateStr: string;
+  initialDraws?: Record<string, KeralaPrizeData>;
+  todayDateStr?: string;
 }
 
-export default function LiveKeralaResults({ initialDraws, todayDateStr }: Props) {
-  const { lang, t, toggleLanguage } = useLanguage();
-  const [activeDateStr, setActiveDateStr] = useState<string>(todayDateStr);
-  const [drawsDb, setDrawsDb] = useState<Record<string, KeralaPrizeData>>(initialDraws);
+export default function LiveKeralaResults({
+  initialDraws = fallbackDraws,
+  todayDateStr = getISTDateString()
+}: Props) {
+  const { lang, toggleLanguage } = useLanguage();
+  const [activeDateStr, setActiveDateStr] = useState<string>(todayDateStr || Object.keys(initialDraws)[0] || getISTDateString());
+  const [drawsDb] = useState<Record<string, KeralaPrizeData>>(initialDraws || fallbackDraws);
   const [copiedLink, setCopiedLink] = useState(false);
 
   const istNow = useMemo(() => getISTNow(), []);
@@ -54,7 +60,6 @@ export default function LiveKeralaResults({ initialDraws, todayDateStr }: Props)
 
   const activeDraw = drawsDb[activeDateStr] || null;
   const isDeclared = Boolean(activeDraw?.first_prize?.number);
-  const isToday = activeDateStr === todayDateStr;
 
   // Past 7 days list for date dropdown
   const pastDates = useMemo(() => {
