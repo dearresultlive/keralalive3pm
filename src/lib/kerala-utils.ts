@@ -46,9 +46,14 @@ export function getKeralaDrawCountdown(istDate: Date = getISTNow()): {
     return { hours: 0, minutes: 0, seconds: 0, isLive: true, isPast: false, totalSecondsRemaining: 0 };
   }
 
-  // If past 3:30 PM
+  // If past 3:30 PM, next draw is tomorrow at 3:00 PM IST
   if (totalSecNow > 15 * 3600 + 30 * 60) {
-    return { hours: 0, minutes: 0, seconds: 0, isLive: false, isPast: true, totalSecondsRemaining: 0 };
+    const remainingToMidnight = 24 * 3600 - totalSecNow;
+    const remaining = remainingToMidnight + drawTargetSec;
+    const hours = Math.floor(remaining / 3600);
+    const minutes = Math.floor((remaining % 3600) / 60);
+    const seconds = remaining % 60;
+    return { hours, minutes, seconds, isLive: false, isPast: true, totalSecondsRemaining: remaining };
   }
 
   const remaining = Math.max(0, drawTargetSec - totalSecNow);

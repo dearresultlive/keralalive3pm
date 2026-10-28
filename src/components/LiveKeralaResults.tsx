@@ -42,8 +42,11 @@ export default function LiveKeralaResults({
   todayDateStr = getISTDateString()
 }: Props) {
   const { lang, toggleLanguage } = useLanguage();
-  const [activeDateStr, setActiveDateStr] = useState<string>(todayDateStr || Object.keys(initialDraws)[0] || getISTDateString());
-  const [drawsDb] = useState<Record<string, KeralaPrizeData>>(initialDraws || fallbackDraws);
+  const effectiveDraws = initialDraws || fallbackDraws;
+  const latestDeclaredDate = Object.keys(effectiveDraws).find(d => Boolean(effectiveDraws[d]?.first_prize?.number)) || todayDateStr;
+  const defaultDate = effectiveDraws[todayDateStr]?.first_prize?.number ? todayDateStr : latestDeclaredDate;
+  const [activeDateStr, setActiveDateStr] = useState<string>(defaultDate);
+  const [drawsDb] = useState<Record<string, KeralaPrizeData>>(effectiveDraws);
   const [copiedLink, setCopiedLink] = useState(false);
 
   const istNow = useMemo(() => getISTNow(), []);
@@ -225,11 +228,15 @@ export default function LiveKeralaResults({
               </div>
             </div>
           ) : (
-            /* 3. UPCOMING COUNTDOWN (Before 2:55 PM) */
+            /* 3. UPCOMING COUNTDOWN (Before 2:55 PM or Next Day) */
             <div className="space-y-3 py-4">
               <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full">
                 <span>⏰</span>
-                <span>{lang === 'ml' ? 'അടുത്ത നറുക്കെടുപ്പ് 3:00 PM' : 'UPCOMING TODAY 3:00 PM DRAW'}</span>
+                <span>
+                  {countdown.isPast
+                    ? (lang === 'ml' ? 'അടുത്ത നറുക്കെടുപ്പ് നാളെ 3:00 PM' : 'NEXT DRAW TOMORROW 3:00 PM')
+                    : (lang === 'ml' ? 'അടുത്ത നറുക്കെടുപ്പ് ഇന്ന് 3:00 PM' : 'UPCOMING TODAY 3:00 PM DRAW')}
+                </span>
               </div>
 
               {/* Countdown Digits */}
@@ -243,8 +250,12 @@ export default function LiveKeralaResults({
 
               <p className="text-xs text-slate-600 max-w-sm mx-auto">
                 {lang === 'ml'
-                  ? 'ഇന്നത്തെ ഭാഗ്യക്കുറി നറുക്കെടുപ്പ് ഉച്ചയ്ക്ക് 3:00 മണിക്ക് ആരംഭിക്കും. തത്സമയ ഫലങ്ങൾക്കായി പേജ് കാത്തിരിക്കുക.'
-                  : 'Official Kerala State Lottery draw starts at 3:00 PM IST. Live winning numbers will be declared here instantly.'}
+                  ? (countdown.isPast
+                      ? 'ഇന്നത്തെ നറുക്കെടുപ്പ് പൂർത്തിയായി. അടുത്ത ലൈവ് നറുക്കെടുപ്പ് നാളെ ഉച്ചയ്ക്ക് 3:00 മണിക്ക്.'
+                      : 'ഇന്നത്തെ ഭാഗ്യക്കുറി നറുക്കെടുപ്പ് ഉച്ചയ്ക്ക് 3:00 മണിക്ക് ആരംഭിക്കും. തത്സമയ ഫലങ്ങൾക്കായി പേജ് കാത്തിരിക്കുക.')
+                  : (countdown.isPast
+                      ? "Today's draw has concluded. Next live draw begins tomorrow at 3:00 PM IST."
+                      : 'Official Kerala State Lottery draw starts at 3:00 PM IST. Live winning numbers will be declared here instantly.')}
               </p>
             </div>
           )}
