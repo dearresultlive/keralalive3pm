@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://keralalive3pm.in',
+  site: 'https://keralalive3pm.com',
   output: 'server',
   adapter: cloudflare({
     imageService: 'cloudflare'

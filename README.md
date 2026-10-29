@@ -1,6 +1,6 @@
-# 🌴 keralalive3pm.in - Kerala State Lottery Result Live 3:00 PM
+# 🌴 keralalive3pm.com - Kerala State Lottery Result Live 3:00 PM
 
-Official repository for **https://keralalive3pm.in**, the ultra-fast real-time portal for Kerala State Lottery draws conducted daily at 3:00 PM IST at Gorky Bhavan, Thiruvananthapuram.
+Official repository for **https://keralalive3pm.com**, the ultra-fast real-time portal for Kerala State Lottery draws conducted daily at 3:00 PM IST at Gorky Bhavan, Thiruvananthapuram.
 
 ---
 
@@ -55,7 +55,7 @@ npm run build
    ```bash
    git init
    git add .
-   git commit -m "feat: initial commit for keralalive3pm.in"
+   git commit -m "feat: initial commit for keralalive3pm.com"
    git remote add origin https://github.com/<your-username>/keralalive3pm.git
    git branch -M main
    git push -u origin main
@@ -72,5 +72,5 @@ npm run build
    - Click **Save and Deploy**.
 
 3. **Custom Domain**:
-   - In Cloudflare Pages project settings > **Custom domains** > Add `keralalive3pm.in` and `www.keralalive3pm.in`.
+   - In Cloudflare Pages project settings > **Custom domains** > Add `keralalive3pm.com` and `www.keralalive3pm.com`.
    - Cloudflare will automatically provision SSL certificates.

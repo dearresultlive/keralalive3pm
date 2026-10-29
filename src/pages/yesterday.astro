@@ -13,7 +13,7 @@ const firstPrizeTicket = yesterdayDraw?.first_prize
   ? `${yesterdayDraw.first_prize.series} ${yesterdayDraw.first_prize.number}`
   : 'Check table';
 
-const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}) | keralalive3pm.in`;
+const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}) | keralalive3pm.com`;
 const pageDescription = `Check yesterday's Kerala State Lottery 3:00 PM result for ${yesterdayScheme.name}. Complete 1st prize ${yesterdayScheme.firstPrizeFormatted}, consolation, and 2nd to 8th prize winning numbers.`;
 
 const faqItems = [
@@ -31,11 +31,11 @@ const faqItems = [
 <Layout
   title={pageTitle}
   description={pageDescription}
-  canonical="https://keralalive3pm.in/yesterday"
+  canonical="https://keralalive3pm.com/yesterday"
   faqSchema={faqItems}
   breadcrumbs={[
-    { name: "Home", url: "https://keralalive3pm.in" },
-    { name: "Yesterday Result", url: "https://keralalive3pm.in/yesterday" }
+    { name: "Home", url: "https://keralalive3pm.com" },
+    { name: "Yesterday Result", url: "https://keralalive3pm.com/yesterday" }
   ]}
 >
   <div class="space-y-6">

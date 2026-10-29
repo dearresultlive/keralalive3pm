@@ -22,7 +22,7 @@ const {
   title = "Kerala Lottery Result Today 3:00 PM Live • കേരള ലോട്ടറി ഫലം | KeralaLive3PM",
   description = "Official Kerala State Lottery Result Today Live at 3:00 PM. 1st Prize ₹75 Lakh to ₹1 Crore winning ticket numbers, official signed Gazette PDF, and instant ticket checker.",
   canonical,
-  ogImage = "https://keralalive3pm.in/og-image.jpg",
+  ogImage = "https://keralalive3pm.com/og-image.jpg",
   drawDate = new Date().toISOString().split('T')[0],
   faqSchema,
   faqItems = [],
@@ -31,7 +31,7 @@ const {
   preloadImage
 } = Astro.props;
 
-const canonicalUrl = canonical || new URL(Astro.url.pathname, 'https://keralalive3pm.in').href;
+const canonicalUrl = canonical || new URL(Astro.url.pathname, 'https://keralalive3pm.com').href;
 const activeFaq = faqSchema || faqItems;
 ---
 
@@ -122,15 +122,15 @@ const activeFaq = faqSchema || faqItems;
   "author": {
     "@type": "Organization",
     "name": "KeralaLive3PM Newsroom",
-    "url": "https://keralalive3pm.in"
+    "url": "https://keralalive3pm.com"
   },
   "publisher": {
     "@type": "Organization",
     "name": "KeralaLive3PM",
-    "url": "https://keralalive3pm.in",
+    "url": "https://keralalive3pm.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://keralalive3pm.in/favicon.svg"
+      "url": "https://keralalive3pm.com/favicon.svg"
     }
   }
 })} />
