@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// Edge cache for 24h, browser cache 1h
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=3600');
+
 const pageTitle = "Disclaimer & Official Notice | keralalive3pm.com";
 const pageDescription = "Official disclaimer for keralalive3pm.com. Non-governmental informational website reporting Kerala State Lottery results published by the Government of Kerala.";
 ---

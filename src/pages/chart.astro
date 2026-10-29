@@ -2,6 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import KeralaGuessingChart from '../components/KeralaGuessingChart';
 
+// Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
+Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
+
 const pageTitle = "Kerala Lottery Guessing Number Today 3 PM (A, B, C Board & 3D Chart) | keralalive3pm.com";
 const pageDescription = "Daily Kerala State Lottery 3-digit guessing numbers, A B C board prediction combinations, repeating hot/cold frequency analysis, and statistical 3D lucky number generator.";
 

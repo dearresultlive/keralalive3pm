@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// Edge cache for 24h, browser cache 1h
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=3600');
+
 const pageTitle = "Privacy Policy | keralalive3pm.com";
 const pageDescription = "Privacy Policy for keralalive3pm.com. Learn how we handle cookies, analytics, and user privacy.";
 ---

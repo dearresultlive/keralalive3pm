@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+// Edge cache for 24h, browser cache 1h
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=3600');
+
 const pageTitle = "Terms of Service | keralalive3pm.com";
 const pageDescription = "Terms and conditions of using keralalive3pm.com.";
 ---

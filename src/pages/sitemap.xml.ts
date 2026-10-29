@@ -31,7 +31,8 @@ ${pages
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
+      'Cache-Control': 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=7200',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
     },
   });
 };

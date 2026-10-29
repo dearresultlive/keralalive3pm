@@ -9,6 +9,9 @@ import { getISTDateString } from '../lib/kerala-utils';
 
 const todayDateStr = getISTDateString();
 
+// Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
+Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
+
 const pageTitle = "Kerala Lottery Result Today 3 PM Live (കേരള ലോട്ടറി ഫലം) | keralalive3pm.com";
 const pageDescription = "Live Kerala State Lottery Result 3:00 PM today. Check Win-Win, Sthree Sakthi, Fifty Fifty, Karunya Plus, Nirmal, Karunya & Akshaya 1st to 8th prize winning numbers and 3D guessing chart.";
 

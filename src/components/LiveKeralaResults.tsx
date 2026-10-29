@@ -46,8 +46,44 @@ export default function LiveKeralaResults({
   const latestDeclaredDate = Object.keys(effectiveDraws).find(d => Boolean(effectiveDraws[d]?.first_prize?.number)) || todayDateStr;
   const defaultDate = effectiveDraws[todayDateStr]?.first_prize?.number ? todayDateStr : latestDeclaredDate;
   const [activeDateStr, setActiveDateStr] = useState<string>(defaultDate);
-  const [drawsDb] = useState<Record<string, KeralaPrizeData>>(effectiveDraws);
+  const [drawsDb, setDrawsDb] = useState<Record<string, KeralaPrizeData>>(effectiveDraws);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastRefreshedAt, setLastRefreshedAt] = useState<string>('');
+
+  const triggerConfetti = () => {
+    if (typeof window !== 'undefined') {
+      import('canvas-confetti').then((m) => {
+        const c = m.default || m;
+        c({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+      }).catch(() => {});
+    }
+  };
+
+  const fetchLatestDraws = async (silent = false) => {
+    if (!silent) setIsRefreshing(true);
+    try {
+      const res = await fetch(`/api/latest.json?t=${Date.now()}`);
+      if (res.ok) {
+        const data = (await res.json()) as Record<string, KeralaPrizeData>;
+        if (data && typeof data === 'object') {
+          const previouslyDeclared = Boolean(drawsDb[todayDateStr]?.first_prize?.number);
+          const newlyDeclared = Boolean(data[todayDateStr]?.first_prize?.number);
+          if (!previouslyDeclared && newlyDeclared) {
+            triggerConfetti();
+          }
+          setDrawsDb(data);
+          setLastRefreshedAt(
+            new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true, minute: '2-digit', second: '2-digit' })
+          );
+        }
+      }
+    } catch {
+      // Fail silently on network drop
+    } finally {
+      if (!silent) setIsRefreshing(false);
+    }
+  };
 
   const istNow = useMemo(() => getISTNow(), []);
   const todayScheme = useMemo(() => getTodayKeralaScheme(istNow), [istNow]);
@@ -63,6 +99,24 @@ export default function LiveKeralaResults({
 
   const activeDraw = drawsDb[activeDateStr] || null;
   const isDeclared = Boolean(activeDraw?.first_prize?.number);
+
+  // Auto-poll every 25 seconds when in live draw window (2:55 PM to 4:30 PM IST) and today's draw is not declared
+  useEffect(() => {
+    if (isDeclared && activeDateStr === todayDateStr) {
+      return;
+    }
+
+    const pollInterval = setInterval(() => {
+      const ist = getISTNow();
+      const currentMinutes = ist.getHours() * 60 + ist.getMinutes();
+      // 2:55 PM (895m) to 4:30 PM (990m)
+      if (currentMinutes >= 895 && currentMinutes <= 990) {
+        fetchLatestDraws(true);
+      }
+    }, 25000);
+
+    return () => clearInterval(pollInterval);
+  }, [isDeclared, activeDateStr, todayDateStr, drawsDb]);
 
   // Past 7 days list for date dropdown
   const pastDates = useMemo(() => {
@@ -92,15 +146,32 @@ export default function LiveKeralaResults({
   return (
     <div className="space-y-3.5">
       
-      {/* Language Switcher & Live Status Top Bar */}
+      {/* Language Switcher, Refresh & Live Status Top Bar */}
       <div className="flex items-center justify-between gap-2 bg-emerald-900/60 p-2 rounded-2xl border border-emerald-700/50">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
           <span className="text-xs font-black text-emerald-100 uppercase tracking-wide">
             {lang === 'ml' ? '3:00 PM ലൈവ് നറുക്കെടുപ്പ്' : '3:00 PM Live Draw'}
           </span>
+          {lastRefreshedAt && (
+            <span className="hidden md:inline text-[10px] text-emerald-300/80 font-mono">
+              (Checked {lastRefreshedAt})
+            </span>
+          )}
         </div>
-        <LanguageToggle currentLang={lang} onToggle={toggleLanguage} />
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => fetchLatestDraws(false)}
+            disabled={isRefreshing}
+            className="inline-flex items-center gap-1.5 bg-emerald-800/90 hover:bg-emerald-700 active:scale-95 disabled:opacity-50 text-emerald-100 font-bold text-xs px-2.5 py-1 rounded-xl transition-all border border-emerald-600/40 cursor-pointer"
+            title="Check for newest lottery numbers"
+          >
+            <span className={isRefreshing ? "inline-block animate-spin" : ""}>🔄</span>
+            <span className="hidden sm:inline">{isRefreshing ? 'Checking...' : 'Refresh'}</span>
+          </button>
+          <LanguageToggle currentLang={lang} onToggle={toggleLanguage} />
+        </div>
       </div>
 
       {/* Main Draw Result Card */}
@@ -223,8 +294,17 @@ export default function LiveKeralaResults({
                   ? 'ഇന്നത്തെ 3:00 PM ഭാഗ്യക്കുറി നറുക്കെടുപ്പ് ലൈവ് ആയി നടക്കുന്നു. ഒന്നാം സമ്മാന നമ്പർ ഏതാനും നിമിഷങ്ങൾക്കകം ഇവിടെ അപ്ഡേറ്റ് ആകും.'
                   : "Today's 3:00 PM draw is taking place. 1st Prize ₹75 Lakh ticket number will appear here within moments."}
               </p>
-              <div className="font-mono text-xs text-slate-500 animate-pulse">
-                Auto-refreshing every 3 seconds...
+              <div className="flex items-center justify-center gap-2 font-mono text-xs text-slate-500 pt-1">
+                <span className="animate-pulse">Auto-checking live updates...</span>
+                <button
+                  type="button"
+                  onClick={() => fetchLatestDraws(false)}
+                  disabled={isRefreshing}
+                  className="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-800 font-bold underline cursor-pointer disabled:opacity-50"
+                >
+                  <span className={isRefreshing ? "inline-block animate-spin" : ""}>🔄</span>
+                  <span>{isRefreshing ? 'Checking...' : 'Check Now'}</span>
+                </button>
               </div>
             </div>
           ) : (

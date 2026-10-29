@@ -5,6 +5,9 @@ import { getYesterdayKeralaScheme, formatIndianRupees } from '../lib/kerala-util
 
 const yesterdayScheme = getYesterdayKeralaScheme();
 
+// Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
+Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
+
 // Get the latest draw or matching draw
 const allDraws = Object.values(keralaDraws);
 const yesterdayDraw = allDraws.length > 1 ? allDraws[1] : allDraws[0];

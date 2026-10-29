@@ -38,7 +38,8 @@ export const GET: APIRoute = async () => {
   return new Response(xml, {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=1800',
+      'Cache-Control': 'public, max-age=60, s-maxage=120, stale-while-revalidate=300',
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
     },
   });
 };
