@@ -11,3 +11,5 @@ export const GET: APIRoute = async () => {
     },
   });
 };
+
+export const HEAD: APIRoute = GET;
