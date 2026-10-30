@@ -1,28 +1,39 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import keralaDraws from '../data/kerala_draws.json';
-import { getYesterdayKeralaScheme, formatIndianRupees } from '../lib/kerala-utils';
+import { getISTNow, getISTDateString, getYesterdayKeralaScheme, formatIndianRupees } from '../lib/kerala-utils';
 
-const yesterdayScheme = getYesterdayKeralaScheme();
+const istNow = getISTNow();
+const yesterday = new Date(istNow);
+yesterday.setDate(yesterday.getDate() - 1);
+const yesterdayDateStr = getISTDateString(yesterday);
+
+const yesterdayScheme = getYesterdayKeralaScheme(istNow);
 
 // Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
 Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
 
-// Get the latest draw or matching draw
-const allDraws = Object.values(keralaDraws);
-const yesterdayDraw = allDraws.length > 1 ? allDraws[1] : allDraws[0];
+// Exact draw lookup for yesterday's date
+const drawsMap = keralaDraws as Record<string, any>;
+const yesterdayDraw = drawsMap[yesterdayDateStr] || Object.values(keralaDraws)[0];
 
 const firstPrizeTicket = yesterdayDraw?.first_prize
   ? `${yesterdayDraw.first_prize.series} ${yesterdayDraw.first_prize.number}`
   : 'Check table';
 
-const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}) | keralalive3pm.com`;
-const pageDescription = `Check yesterday's Kerala State Lottery 3:00 PM result for ${yesterdayScheme.name}. Complete 1st prize ${yesterdayScheme.firstPrizeFormatted}, consolation, and 2nd to 8th prize winning numbers.`;
+const drawName = yesterdayDraw?.draw_name || yesterdayScheme.name;
+const drawNumber = yesterdayDraw?.draw_number || yesterdayScheme.code;
+const firstPrizeAmount = yesterdayDraw?.first_prize?.amount
+  ? `₹${(yesterdayDraw.first_prize.amount / 100000).toFixed(0)} Lakhs`
+  : yesterdayScheme.firstPrizeFormatted;
+
+const pageTitle = `Kerala Lottery Result Yesterday 3 PM - ${drawName} (${drawNumber}) | keralalive3pm.com`;
+const pageDescription = `Check yesterday's Kerala State Lottery 3:00 PM result for ${drawName} (${drawNumber}). Complete 1st prize ${firstPrizeAmount}, consolation, and 2nd to 8th prize winning numbers.`;
 
 const faqItems = [
   {
     question: `What was yesterday's Kerala Lottery result?`,
-    answer: `Yesterday's Kerala Lottery draw was ${yesterdayScheme.name} (${yesterdayDraw?.draw_number || yesterdayScheme.code}). The 1st prize was won by ticket ${firstPrizeTicket} with a prize amount of ${yesterdayScheme.firstPrizeFormatted}.`
+    answer: `Yesterday's Kerala Lottery draw was ${drawName} (${drawNumber}). The 1st prize was won by ticket ${firstPrizeTicket} with a prize amount of ${firstPrizeAmount}.`
   },
   {
     question: "Can I claim yesterday's winning Kerala lottery ticket today?",
@@ -148,7 +159,7 @@ const faqItems = [
               </span>
             </div>
             <div class="flex flex-wrap gap-2">
-              {yesterdayDraw.second_prize.map((prize) => (
+              {yesterdayDraw.second_prize.map((prize: any) => (
                 <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-slate-200 border border-slate-800 font-medium">
                   {prize.series ? `${prize.series} ` : ''}{prize.number}
                 </span>

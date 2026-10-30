@@ -44,7 +44,17 @@ export default function LiveKeralaResults({
   const { lang, toggleLanguage } = useLanguage();
   const effectiveDraws = initialDraws || fallbackDraws;
   const latestDeclaredDate = Object.keys(effectiveDraws).find(d => Boolean(effectiveDraws[d]?.first_prize?.number)) || todayDateStr;
-  const defaultDate = effectiveDraws[todayDateStr]?.first_prize?.number ? todayDateStr : latestDeclaredDate;
+  
+  // During live draw hours (2:55 PM to 5:00 PM IST), switch to today's draw automatically
+  const isDrawWindowToday = (() => {
+    const ist = getISTNow();
+    const mins = ist.getHours() * 60 + ist.getMinutes();
+    return mins >= 895 && mins <= 1020;
+  })();
+
+  const defaultDate = (effectiveDraws[todayDateStr]?.first_prize?.number || isDrawWindowToday)
+    ? todayDateStr 
+    : latestDeclaredDate;
   const [activeDateStr, setActiveDateStr] = useState<string>(defaultDate);
   const [drawsDb, setDrawsDb] = useState<Record<string, KeralaPrizeData>>(effectiveDraws);
   const [copiedLink, setCopiedLink] = useState(false);
