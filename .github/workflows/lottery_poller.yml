@@ -2,8 +2,10 @@ name: Kerala Lottery Live 3:00 PM Auto-Poller
 
 on:
   schedule:
-    # Runs every 5 minutes between 09:00 UTC and 11:55 UTC (2:30 PM to 5:25 PM IST daily)
-    - cron: '*/5 9-11 * * *'
+    # Runs every 5 minutes from 2:30 PM to 7:55 PM IST (09:00 UTC to 14:25 UTC)
+    - cron: '*/5 9-14 * * *'
+    # Evening catch-up checks at 8:30 PM, 9:30 PM, 10:30 PM IST (15:00, 16:00, 17:00 UTC)
+    - cron: '0 15,16,17 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab anytime
 
 concurrency:
