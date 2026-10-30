@@ -219,10 +219,22 @@ export default function LiveKeralaResults({
           {isDeclared ? (
             /* 1. DECLARED STATE: Massive 1st Prize Winner Display */
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 text-xs font-black px-3 py-1 rounded-full border border-emerald-300">
-                <span>✅</span>
-                <span>{lang === 'ml' ? 'ഔദ്യോഗിക ഫലം പ്രഖ്യാപിച്ചു • VERIFIED' : 'OFFICIAL RESULT DECLARED • VERIFIED'}</span>
-              </div>
+              {activeDraw.status === 'LIVE_PRELIMINARY' ? (
+                <div className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-950 text-xs font-black px-3 py-1 rounded-full border border-amber-400 shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+                  <span>{lang === 'ml' ? '🔴 ലൈവ് സ്ട്രീം ഫലം • ഔദ്യോഗിക ഗസറ്റ് ഉടൻ വരും' : '🔴 LIVE WHEEL DRAW • OFFICIAL GAZETTE PENDING'}</span>
+                </div>
+              ) : activeDraw.status === 'ADMIN_OVERRIDE' ? (
+                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-950 text-xs font-black px-3 py-1 rounded-full border border-emerald-300 shadow-xs">
+                  <span>⚡</span>
+                  <span>{lang === 'ml' ? 'ലൈവ് ഫലം • എഡിറ്റോറിയൽ ടീം വെരിഫൈഡ്' : 'LIVE DRAW RESULT • EDITORIAL VERIFIED'}</span>
+                </div>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 text-xs font-black px-3 py-1 rounded-full border border-emerald-300 shadow-xs">
+                  <span>✅</span>
+                  <span>{lang === 'ml' ? 'ഔദ്യോഗിക ഫലം പ്രഖ്യാപിച്ചു • VERIFIED' : 'OFFICIAL RESULT DECLARED • VERIFIED'}</span>
+                </div>
+              )}
 
               {/* Huge 1st Prize Ticket Number */}
               <div className="py-2 sm:py-3 bg-amber-50/70 border-2 border-amber-300 rounded-2xl shadow-inner max-w-md mx-auto">

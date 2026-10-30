@@ -1,0 +1,354 @@
+---
+import Layout from '../layouts/Layout.astro';
+import keralaDraws from '../data/kerala_draws.json';
+import { getISTDateString, getTodayKeralaScheme } from '../lib/kerala-utils';
+
+// Never cache or index admin page
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+
+const todayDateStr = getISTDateString();
+const todayScheme = getTodayKeralaScheme();
+const allDraws = Object.values(keralaDraws).slice(0, 5);
+---
+
+<Layout
+  title="Admin Override Dashboard • KeralaLive3PM"
+  description="Secret mobile admin override for instant Kerala lottery result publishing."
+>
+  <div class="max-w-xl mx-auto space-y-6 py-2">
+    
+    <!-- Lock Screen / PIN Authorization -->
+    <div id="pin-screen" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 text-center space-y-4 shadow-xl">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl">
+        🔐
+      </div>
+      <div>
+        <h1 class="text-xl sm:text-2xl font-black text-white">Editorial Admin Access</h1>
+        <p class="text-xs text-slate-400 mt-1">Enter your 4-digit security PIN to access the 3:00 PM Live Publisher</p>
+      </div>
+
+      <div class="max-w-xs mx-auto space-y-3 pt-2">
+        <input
+          type="password"
+          id="pin-input"
+          placeholder="Enter PIN (Default: 3000)"
+          class="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-center text-lg font-mono font-bold text-white tracking-widest focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+          maxlength="8"
+        />
+        <button
+          type="button"
+          id="pin-unlock-btn"
+          class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black py-3 rounded-2xl transition-all shadow-lg shadow-emerald-900/30 active:scale-98 cursor-pointer"
+        >
+          Unlock Dashboard
+        </button>
+        <p id="pin-error" class="text-xs text-red-400 font-bold hidden">Invalid PIN. Please try again.</p>
+      </div>
+    </div>
+
+    <!-- Main Admin Dashboard (Hidden Until Unlocked) -->
+    <div id="admin-dashboard" class="hidden space-y-6">
+      
+      <!-- Top Status Header -->
+      <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-500/30 rounded-3xl p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+          <div>
+            <h2 class="text-sm font-black text-white uppercase tracking-wide">Live Override Active</h2>
+            <p class="text-[11px] text-emerald-300/80 font-mono">Today: {todayDateStr} • {todayScheme.name}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          id="lock-btn"
+          class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-xl border border-slate-700 cursor-pointer"
+        >
+          🔒 Lock
+        </button>
+      </div>
+
+      <!-- Quick Publish Form -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 space-y-5 shadow-xl">
+        <div class="border-b border-slate-800 pb-3">
+          <h3 class="text-base font-black text-white flex items-center gap-2">
+            <span>⚡</span>
+            <span>Instant 1st Prize Quick-Publish</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">
+            Publishes in seconds directly from your phone while watching the live draw on YouTube/TV.
+          </p>
+        </div>
+
+        <form id="publish-form" class="space-y-4">
+          
+          <!-- Draw Date & Scheme Details -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Draw Date</label>
+              <input
+                type="date"
+                id="draw-date"
+                value={todayDateStr}
+                required
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Draw Number</label>
+              <input
+                type="text"
+                id="draw-number"
+                placeholder="e.g. SK-75 / NR-400"
+                value={todayScheme.code}
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none uppercase"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1">Scheme Name (English & Malayalam)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                id="draw-name"
+                value={todayScheme.name}
+                placeholder="e.g. NIRMAL"
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white uppercase focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              />
+              <input
+                type="text"
+                id="draw-name-ml"
+                value={todayScheme.nameMl}
+                placeholder="e.g. നിർമ്മൽ"
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <!-- 1st Prize Big Ticket Inputs -->
+          <div class="bg-amber-950/20 border-2 border-amber-500/40 rounded-2xl p-4 space-y-2">
+            <span class="text-xs font-black text-amber-300 uppercase tracking-wider block">
+              🏆 1st Prize Winning Ticket (Main Draw)
+            </span>
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-amber-200/80 mb-1">Series (2 letters)</label>
+                <input
+                  type="text"
+                  id="first-series"
+                  placeholder="PA"
+                  maxlength="4"
+                  required
+                  class="w-full bg-slate-950 border border-amber-500/60 rounded-xl px-3 py-2.5 text-center text-xl font-mono font-black text-amber-400 uppercase tracking-widest focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-[10px] font-bold text-amber-200/80 mb-1">6-Digit Number</label>
+                <input
+                  type="text"
+                  id="first-number"
+                  placeholder="402332"
+                  maxlength="6"
+                  required
+                  class="w-full bg-slate-950 border border-amber-500/60 rounded-xl px-3 py-2.5 text-center text-xl font-mono font-black text-emerald-300 tracking-widest focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Optional 2nd Prize -->
+          <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-3.5 space-y-2">
+            <span class="text-xs font-bold text-slate-300 block">
+              🥈 2nd Prize (Optional)
+            </span>
+            <div class="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                id="second-series"
+                placeholder="PK"
+                maxlength="4"
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-center text-sm font-mono font-bold text-slate-200 uppercase"
+              />
+              <input
+                type="text"
+                id="second-number"
+                placeholder="145530"
+                maxlength="6"
+                class="col-span-2 w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-center text-sm font-mono font-bold text-slate-200 tracking-wider"
+              />
+            </div>
+          </div>
+
+          <!-- GitHub Token (Saved locally on device) -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 mb-1 flex items-center justify-between">
+              <span>GitHub Personal Access Token</span>
+              <span class="text-[10px] text-emerald-400 font-mono">Saved in phone browser</span>
+            </label>
+            <input
+              type="password"
+              id="github-token"
+              placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+              class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-slate-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+            />
+            <p class="text-[10px] text-slate-500 mt-1">
+              Required for pushing directly to your GitHub repo. Stored only in your device's private local storage.
+            </p>
+          </div>
+
+          <!-- Submit Button & Feedback -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="submit-btn"
+              class="w-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black py-3.5 px-4 rounded-2xl transition-all shadow-lg shadow-emerald-900/40 active:scale-98 flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer"
+            >
+              <span>🚀</span>
+              <span id="submit-btn-text">Publish 1st Prize Live Now</span>
+            </button>
+          </div>
+
+          <!-- Result Message Banner -->
+          <div id="status-banner" class="hidden p-3.5 rounded-2xl text-xs font-bold"></div>
+
+        </form>
+      </div>
+
+      <!-- Recent Draws Overview -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-3">
+        <h4 class="text-xs font-black text-slate-300 uppercase tracking-wider flex items-center justify-between">
+          <span>Recent Stored Draws</span>
+          <a href="/" target="_blank" class="text-emerald-400 hover:underline">View Live Site ↗</a>
+        </h4>
+
+        <div class="space-y-2">
+          {allDraws.map((d: any) => (
+            <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between text-xs">
+              <div>
+                <span class="font-bold text-white block">{d.draw_name} ({d.draw_number})</span>
+                <span class="text-[11px] text-slate-400 font-mono">{d.draw_date}</span>
+              </div>
+              <div class="text-right">
+                <span class="font-mono font-bold text-amber-400 block">
+                  {d.first_prize?.series} {d.first_prize?.number}
+                </span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full font-bold uppercase bg-slate-800 text-slate-300">
+                  {d.status || 'DECLARED'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script is:inline>
+    const DEFAULT_PIN = '3000';
+    const pinScreen = document.getElementById('pin-screen');
+    const adminDashboard = document.getElementById('admin-dashboard');
+    const pinInput = document.getElementById('pin-input');
+    const pinUnlockBtn = document.getElementById('pin-unlock-btn');
+    const pinError = document.getElementById('pin-error');
+    const lockBtn = document.getElementById('lock-btn');
+    const tokenInput = document.getElementById('github-token');
+
+    // Auto-restore saved PIN and Token from localStorage
+    const savedPin = localStorage.getItem('kerala_admin_pin');
+    const savedToken = localStorage.getItem('kerala_gh_token');
+    if (savedToken && tokenInput) {
+      tokenInput.value = savedToken;
+    }
+
+    function unlockIfValid(entered) {
+      if (entered === DEFAULT_PIN || (savedPin && entered === savedPin)) {
+        localStorage.setItem('kerala_admin_pin', entered);
+        pinScreen.classList.add('hidden');
+        adminDashboard.classList.remove('hidden');
+        pinError.classList.add('hidden');
+      } else {
+        pinError.classList.remove('hidden');
+      }
+    }
+
+    if (savedPin) {
+      unlockIfValid(savedPin);
+    }
+
+    pinUnlockBtn.addEventListener('click', () => {
+      unlockIfValid(pinInput.value.trim());
+    });
+
+    pinInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') unlockIfValid(pinInput.value.trim());
+    });
+
+    lockBtn.addEventListener('click', () => {
+      localStorage.removeItem('kerala_admin_pin');
+      adminDashboard.classList.add('hidden');
+      pinScreen.classList.remove('hidden');
+      pinInput.value = '';
+    });
+
+    // Form submission
+    const form = document.getElementById('publish-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitBtnText = document.getElementById('submit-btn-text');
+    const banner = document.getElementById('status-banner');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const pin = localStorage.getItem('kerala_admin_pin') || pinInput.value.trim() || DEFAULT_PIN;
+      const ghToken = tokenInput.value.trim();
+      if (ghToken) {
+        localStorage.setItem('kerala_gh_token', ghToken);
+      }
+
+      const payload = {
+        pin: pin,
+        github_token: ghToken,
+        date: document.getElementById('draw-date').value,
+        draw_number: document.getElementById('draw-number').value,
+        draw_name: document.getElementById('draw-name').value,
+        draw_name_ml: document.getElementById('draw-name-ml').value,
+        series: document.getElementById('first-series').value,
+        number: document.getElementById('first-number').value,
+        second_series: document.getElementById('second-series').value,
+        second_number: document.getElementById('second-number').value,
+        source: 'admin'
+      };
+
+      submitBtn.disabled = true;
+      submitBtnText.textContent = 'Committing to GitHub...';
+      banner.className = 'hidden';
+
+      try {
+        const res = await fetch('/api/admin/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          banner.className = 'p-3.5 rounded-2xl text-xs font-bold bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 block';
+          banner.innerHTML = `✅ <strong>Published Successfully!</strong><br/>1st Prize: <strong>${payload.series.toUpperCase()} ${payload.number}</strong>.<br/>Commit: <code class="font-mono">${data.commit_sha?.substring(0, 7) || 'OK'}</code>. Live within 30 seconds!`;
+        } else {
+          banner.className = 'p-3.5 rounded-2xl text-xs font-bold bg-red-950/80 border border-red-500/50 text-red-200 block';
+          banner.innerHTML = `❌ <strong>Error:</strong> ${data.error || 'Failed to publish'}`;
+        }
+      } catch (err) {
+        banner.className = 'p-3.5 rounded-2xl text-xs font-bold bg-red-950/80 border border-red-500/50 text-red-200 block';
+        banner.innerHTML = `❌ <strong>Network Error:</strong> ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtnText.textContent = 'Publish 1st Prize Live Now';
+      }
+    });
+  </script>
+</Layout>

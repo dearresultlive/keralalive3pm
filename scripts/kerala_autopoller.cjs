@@ -256,6 +256,30 @@ async function scrapeOfficialKeralaDraws() {
   return recentRows;
 }
 
+async function scrapeFastLive1stPrize() {
+  try {
+    const url = 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3';
+    const jsonBuf = await fetchUrl(url);
+    const data = JSON.parse(jsonBuf.toString('utf-8'));
+    const entries = data.feed?.entry || [];
+
+    for (const entry of entries) {
+      const content = entry.content?.['$t'] || '';
+      const match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,400}?([A-Z]{2})\s*([0-9]{6})/i);
+      if (match) {
+        const series = match[1].toUpperCase();
+        const number = match[2];
+        if (number !== '000000' && number !== '123456') {
+          return { series, number };
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore network error on fast fallback
+  }
+  return null;
+}
+
 async function main() {
   console.log('=== Kerala 3:00 PM Lottery Result Autopoller ===');
   console.log(`Execution Time: ${new Date().toISOString()}`);
@@ -267,6 +291,39 @@ async function main() {
 
   const existingData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
   let updatedCount = 0;
+
+  // Calculate IST Date (YYYY-MM-DD)
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const istNow = new Date(utc + 5.5 * 3600000);
+  const todayIso = `${istNow.getFullYear()}-${String(istNow.getMonth() + 1).padStart(2, '0')}-${String(istNow.getDate()).padStart(2, '0')}`;
+
+  // Stage 1: Check fast live feed if today is not declared and not overridden by admin
+  const todayEntry = existingData[todayIso] || {};
+  if (todayEntry.status !== 'DECLARED' && todayEntry.status !== 'ADMIN_OVERRIDE') {
+    const fastPrize = await scrapeFastLive1stPrize();
+    if (fastPrize && fastPrize.number !== todayEntry.first_prize?.number) {
+      console.log(`[Poller:FastLive] Found 1st prize flash: ${fastPrize.series} ${fastPrize.number}`);
+      existingData[todayIso] = {
+        ...todayEntry,
+        draw_date: todayIso,
+        draw_time: '3:00 PM',
+        status: 'LIVE_PRELIMINARY',
+        source: 'fast_scraper',
+        updated_at: new Date().toISOString(),
+        first_prize: {
+          series: fastPrize.series,
+          number: fastPrize.number,
+          amount: todayEntry.first_prize?.amount || 10000000
+        },
+        consolation_prize: {
+          number: fastPrize.number,
+          amount: 5000
+        }
+      };
+      updatedCount++;
+    }
+  }
 
   try {
     const officialDraws = await scrapeOfficialKeralaDraws();
