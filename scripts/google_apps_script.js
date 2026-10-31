@@ -198,3 +198,17 @@ function testTelegramPost() {
   Logger.log('[Telegram Test] Sending test message to ' + CONFIG.TELEGRAM_CHAT_ID + '...');
   sendTelegramAlert(getISTDateString(), 'KG', '501790');
 }
+
+
+/**
+ * Diagnostic function: Run this to see bot name and connected channels in the log
+ */
+function diagnoseTelegramBot() {
+  const meUrl = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/getMe';
+  const meRes = UrlFetchApp.fetch(meUrl, { muteHttpExceptions: true });
+  Logger.log('[Bot Details]: ' + meRes.getContentText());
+
+  const updatesUrl = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/getUpdates';
+  const updatesRes = UrlFetchApp.fetch(updatesUrl, { muteHttpExceptions: true });
+  Logger.log('[Bot Recent Chats/Channels]: ' + updatesRes.getContentText());
+}
