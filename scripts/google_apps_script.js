@@ -10,7 +10,7 @@
  * 1. Open https://script.google.com/ in your browser.
  * 2. Click "+ New project".
  * 3. Delete any default code and PASTE this entire file.
- * 4. Replace `YOUR_GITHUB_TOKEN` below with your GitHub Personal Access Token (from https://github.com/settings/tokens).
+ * 4. Replace `YOUR_GITHUB_TOKEN` below with your GitHub Personal Access Token.
  * 5. Run the function `setupAutoTrigger()` once from the toolbar to activate the daily 3:00 PM scheduler.
  * ==============================================================================
  */
@@ -24,18 +24,30 @@ const CONFIG = {
   FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3',
   // Optional: Auto-post directly to your Telegram Channel
   TELEGRAM_BOT_TOKEN: '', // Get from @BotFather (e.g. '123456789:AAH...')
-  TELEGRAM_CHAT_ID: '@keralallive3pm' // Your channel username (with @) or ID
+  TELEGRAM_CHAT_ID: '' // Your channel ID (e.g. '-100xxxxxxxxxx' or '@keralallive3pm')
 };
 
 /**
  * Main Scraper Function
- * Runs every minute between 3:00 PM and 3:35 PM IST.
+ * Runs every minute between 2:55 PM and 4:30 PM IST.
  */
 function runKeralaFastPoller() {
   const istDateStr = getISTDateString();
   Logger.log(`[Poller] Starting check for ${istDateStr}...`);
 
-  // Check if we already published today
+  // SAFETY 1: Check draw time window (2:55 PM to 5:00 PM IST)
+  // Prevents accidentally matching yesterday's results if run in the morning/night!
+  const ist = getISTDate();
+  const currentMinutes = ist.getHours() * 60 + ist.getMinutes();
+  const DRAW_START_MIN = 14 * 60 + 55; // 2:55 PM (895m)
+  const DRAW_END_MIN = 17 * 60;        // 5:00 PM (1020m)
+
+  if (currentMinutes < DRAW_START_MIN || currentMinutes > DRAW_END_MIN) {
+    Logger.log(`[Poller] Outside live draw window (2:55 PM - 5:00 PM IST). Current IST: ${ist.toLocaleTimeString()}. Skipping.`);
+    return;
+  }
+
+  // SAFETY 2: Check if we already published today
   const props = PropertiesService.getScriptProperties();
   const lastPublished = props.getProperty('LAST_PUBLISHED_DATE');
   if (lastPublished === istDateStr) {
@@ -58,10 +70,23 @@ function runKeralaFastPoller() {
     const data = JSON.parse(response.getContentText());
     const entries = data.feed?.entry || [];
 
+    // Date regex patterns for today (e.g. "01-11-2026", "1-11-2026", "01.11.2026", "01/11/2026")
+    const [y, m, d] = istDateStr.split('-');
+    const dInt = parseInt(d, 10);
+    const mInt = parseInt(m, 10);
+    const dateRegex = new RegExp(`(?:0?${dInt}[-./]0?${mInt}[-./]${y})`, 'i');
+
     for (const entry of entries) {
+      const title = entry.title?.['$t'] || '';
       const content = entry.content?.['$t'] || '';
 
-      // Check if this post relates to today or recent draw
+      // SAFETY 3: Post must explicitly belong to TODAY's date
+      const textToSearch = title + ' ' + content;
+      if (!dateRegex.test(textToSearch)) {
+        Logger.log(`[Poller] Post "${title}" does not match today's date ${istDateStr}. Skipping.`);
+        continue;
+      }
+
       // Regex looks for: 1st Prize followed by Series (2 uppercase letters) and 6 digits
       const match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,400}?([A-Z]{2})\s*([0-9]{6})/i);
 
@@ -100,8 +125,8 @@ function runKeralaFastPoller() {
           props.setProperty('LAST_PUBLISHED_DATE', istDateStr);
           Logger.log(`[Poller] Successfully marked ${istDateStr} as published.`);
 
-          // 3. Optional: Broadcast to Telegram Channel directly
-          if (CONFIG.TELEGRAM_BOT_TOKEN) {
+          // 3. Broadcast to Telegram Channel directly
+          if (CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
             sendTelegramAlert(istDateStr, series, number);
           }
 
@@ -118,12 +143,19 @@ function runKeralaFastPoller() {
 }
 
 /**
+ * Returns current Date in IST as Date object
+ */
+function getISTDate() {
+  const d = new Date();
+  const utc = d.getTime() + d.getTimezoneOffset() * 60000;
+  return new Date(utc + 5.5 * 3600000);
+}
+
+/**
  * Returns current Date in IST (Asia/Kolkata) as YYYY-MM-DD
  */
 function getISTDateString() {
-  const d = new Date();
-  const utc = d.getTime() + d.getTimezoneOffset() * 60000;
-  const ist = new Date(utc + 5.5 * 3600000);
+  const ist = getISTDate();
   const y = ist.getFullYear();
   const m = String(ist.getMonth() + 1).padStart(2, '0');
   const day = String(ist.getDate()).padStart(2, '0');
@@ -135,10 +167,8 @@ function getISTDateString() {
  * Sets up a recurring check every 1 minute.
  */
 function setupAutoTrigger() {
-  // Clear any existing triggers
   deleteExistingTriggers();
 
-  // Create recurring trigger every minute
   ScriptApp.newTrigger('runKeralaFastPoller')
     .timeBased()
     .everyMinutes(1)
@@ -162,17 +192,20 @@ function deleteExistingTriggers() {
  * Sends Instant Broadcast to Telegram Channel
  */
 function sendTelegramAlert(date, series, number) {
-  if (!CONFIG.TELEGRAM_BOT_TOKEN || !CONFIG.TELEGRAM_CHAT_ID) return;
+  if (!CONFIG.TELEGRAM_BOT_TOKEN || !CONFIG.TELEGRAM_CHAT_ID) {
+    Logger.log('[Telegram] Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID in CONFIG');
+    return;
+  }
   try {
-    const text = `🎯 <b>KERALA STATE LOTTERY RESULT (3:00 PM)</b>\n` +
-      `📅 Date: <b>${date.split('-').reverse().join('/')}</b> • 3:00 PM IST\n\n` +
-      `🥇 <b>1ST PRIZE WINNER:</b>\n` +
-      `👉 <code>${series} ${number}</code>\n\n` +
-      `🎁 <b>CONSOLATION:</b> <code>${number}</code> (All other series)\n\n` +
-      `⚡ <b>Check all prizes & instant ticket checker:</b>\n` +
-      `https://keralalive3pm.com/`;
+    const text = '🎯 <b>KERALA STATE LOTTERY RESULT (3:00 PM)</b>\n' +
+      '📅 Date: <b>' + date.split('-').reverse().join('/') + '</b> • 3:00 PM IST\n\n' +
+      '🥇 <b>1ST PRIZE WINNER:</b>\n' +
+      '👉 <code>' + series + ' ' + number + '</code>\n\n' +
+      '🎁 <b>CONSOLATION:</b> <code>' + number + '</code> (All other series)\n\n' +
+      '⚡ <b>Check all prizes & instant ticket checker:</b>\n' +
+      'https://keralalive3pm.com/';
 
-    const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const url = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/sendMessage';
     const res = UrlFetchApp.fetch(url, {
       method: 'post',
       contentType: 'application/json',
@@ -184,21 +217,19 @@ function sendTelegramAlert(date, series, number) {
       }),
       muteHttpExceptions: true
     });
-    Logger.log(`[Telegram] Sent broadcast alert: ${res.getResponseCode()}`);
+    Logger.log('[Telegram] Response (' + res.getResponseCode() + '): ' + res.getContentText());
   } catch (err) {
-    Logger.log(`[Telegram] Error sending alert: ${err.message}`);
+    Logger.log('[Telegram] Error: ' + err.message);
   }
 }
 
-
 /**
- * Run this function from Apps Script toolbar to test posting to your channel right now!
+ * Test function: sends a test winning ticket to your channel
  */
 function testTelegramPost() {
   Logger.log('[Telegram Test] Sending test message to ' + CONFIG.TELEGRAM_CHAT_ID + '...');
-  sendTelegramAlert(getISTDateString(), 'KG', '501790');
+  sendTelegramAlert('31-10-2026', 'KG', '501790');
 }
-
 
 /**
  * Diagnostic function: Run this to see bot name and connected channels in the log
@@ -210,5 +241,5 @@ function diagnoseTelegramBot() {
 
   const updatesUrl = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/getUpdates';
   const updatesRes = UrlFetchApp.fetch(updatesUrl, { muteHttpExceptions: true });
-  Logger.log('[Bot Recent Chats/Channels]: ' + updatesRes.getContentText());
+  Logger.log('[Bot Recent Chats]: ' + updatesRes.getContentText());
 }
