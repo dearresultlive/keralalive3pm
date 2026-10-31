@@ -54,25 +54,25 @@ const faqItems = [
 >
   <div class="space-y-6">
     <!-- Breadcrumb & Title Header -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6">
-      <nav class="flex items-center gap-2 text-xs text-slate-400 mb-2 font-mono">
-        <a href="/" class="hover:text-emerald-400 transition-colors">Home</a>
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm">
+      <nav class="flex items-center gap-2 text-xs text-slate-500 mb-2 font-mono">
+        <a href="/" class="hover:text-emerald-700 transition-colors">Home</a>
         <span>/</span>
-        <span class="text-emerald-400">Yesterday Result</span>
+        <span class="text-emerald-700 font-bold">Yesterday Result</span>
       </nav>
 
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight">
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">
             Kerala Lottery Result Yesterday (3:00 PM)
           </h1>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1">
-            Draw Scheme: <strong class="text-emerald-400">{yesterdayScheme.name}</strong> • Date: <span class="font-mono text-slate-200">{yesterdayDraw?.draw_date || 'Yesterday'}</span>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Draw Scheme: <strong class="text-emerald-800">{yesterdayScheme.name}</strong> • Date: <span class="font-mono font-bold text-slate-800">{yesterdayDraw?.draw_date || 'Yesterday'}</span>
           </p>
         </div>
         <a
           href="/"
-          class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all w-fit"
+          class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all w-fit shadow-xs active:scale-95"
         >
           <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
           View Today's Live Result
@@ -82,21 +82,21 @@ const faqItems = [
 
     <!-- 1st Prize Highlight Card -->
     {yesterdayDraw?.first_prize && (
-      <div class="bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 border-2 border-amber-500/40 rounded-2xl p-5 sm:p-8 text-center shadow-2xl relative overflow-hidden">
-        <div class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-xs font-black uppercase px-4 py-1 rounded-bl-xl tracking-wider">
-          Official 1st Prize Winner
+      <div class="bg-gradient-to-b from-amber-50 to-amber-100/60 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 text-center shadow-sm relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-amber-400 text-slate-950 text-xs font-black uppercase px-4 py-1 rounded-bl-xl tracking-wider">
+          1st Prize Winner
         </div>
 
-        <div class="inline-block bg-amber-500/10 text-amber-300 border border-amber-500/30 px-3 py-1 rounded-full text-xs font-semibold mb-3">
+        <div class="inline-block bg-amber-100 text-amber-950 border border-amber-300 px-3 py-1 rounded-full text-xs font-bold mb-3">
           1st Prize: {formatIndianRupees(yesterdayDraw.first_prize.amount || yesterdayScheme.firstPrize)}
         </div>
 
-        <div class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-widest text-amber-400 font-mono my-3 selection:bg-amber-300 selection:text-slate-950 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-          <span class="text-amber-500 mr-2">{yesterdayDraw.first_prize.series}</span>
+        <div class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-widest text-slate-950 font-mono my-3 selection:bg-amber-300 selection:text-slate-950">
+          <span class="text-amber-700 mr-2">{yesterdayDraw.first_prize.series}</span>
           <span>{yesterdayDraw.first_prize.number}</span>
         </div>
 
-        <p class="text-xs sm:text-sm text-slate-400">
+        <p class="text-xs sm:text-sm text-slate-600">
           Drawn at Gorky Bhavan, Thiruvananthapuram • Complete 6-digit ticket with series
         </p>
 
@@ -106,7 +106,7 @@ const faqItems = [
               href={yesterdayDraw.official_pdf_url}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-4 py-2 rounded-xl border border-slate-700 transition-colors"
+              class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold px-4 py-2.5 rounded-xl border border-slate-300 shadow-2xs transition-colors"
             >
               <span>📄</span>
               <span>Download Official Signed Gazette PDF</span>
@@ -118,31 +118,31 @@ const faqItems = [
 
     <!-- Full Prize Breakdown Table -->
     {yesterdayDraw && (
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+      <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-6 shadow-sm">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
             Full Prize Breakdown (1st to 8th Prize)
           </h2>
-          <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full font-mono">
+          <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-mono font-bold border border-slate-200">
             {yesterdayDraw.draw_number}
           </span>
         </div>
 
         <!-- Consolation Prize -->
         {yesterdayDraw.consolation_prize && (
-          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Consolation Prize</span>
-              <span class="text-xs font-semibold text-slate-300">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-900">Consolation Prize</span>
+              <span class="text-xs font-bold text-slate-700">
                 {formatIndianRupees(yesterdayDraw.consolation_prize.amount || 8000)} Each
               </span>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-amber-300 border border-slate-800 font-bold">
+              <span class="font-mono text-sm bg-white px-3 py-1 rounded-lg text-amber-900 border border-amber-300 font-bold shadow-2xs">
                 {yesterdayDraw.consolation_prize.number}
               </span>
-              <span class="text-xs text-slate-400 font-sans">
+              <span class="text-xs text-slate-500 font-sans">
                 (Awarded to all other series matching this 6-digit number)
               </span>
             </div>
@@ -151,16 +151,16 @@ const faqItems = [
 
         <!-- 2nd Prize -->
         {yesterdayDraw.second_prize && yesterdayDraw.second_prize.length > 0 && (
-          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">2nd Prize</span>
-              <span class="text-xs font-semibold text-slate-300">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">2nd Prize</span>
+              <span class="text-xs font-bold text-slate-700">
                 {formatIndianRupees(yesterdayDraw.second_prize[0]?.amount || 500000)} Each
               </span>
             </div>
             <div class="flex flex-wrap gap-2">
               {yesterdayDraw.second_prize.map((prize: any) => (
-                <span class="font-mono text-sm bg-slate-900 px-3 py-1 rounded-lg text-slate-200 border border-slate-800 font-medium">
+                <span class="font-mono text-sm bg-white px-3 py-1 rounded-lg text-slate-900 border border-slate-200 font-bold shadow-2xs">
                   {prize.series ? `${prize.series} ` : ''}{prize.number}
                 </span>
               ))}
@@ -171,84 +171,84 @@ const faqItems = [
         <!-- 3rd to 8th Prize Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {yesterdayDraw.third_prize && yesterdayDraw.third_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">3rd Prize (₹5,000)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">3rd Prize (₹5,000)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.third_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
           {yesterdayDraw.fourth_prize && yesterdayDraw.fourth_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">4th Prize (₹2,000)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">4th Prize (₹2,000)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.fourth_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
           {yesterdayDraw.fifth_prize && yesterdayDraw.fifth_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">5th Prize (₹1,000)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">5th Prize (₹1,000)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.fifth_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
           {yesterdayDraw.sixth_prize && yesterdayDraw.sixth_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">6th Prize (₹500)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">6th Prize (₹500)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.sixth_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
           {yesterdayDraw.seventh_prize && yesterdayDraw.seventh_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">7th Prize (₹100)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">7th Prize (₹100)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.seventh_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
           )}
 
           {yesterdayDraw.eighth_prize && yesterdayDraw.eighth_prize.length > 0 && (
-            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 uppercase">8th Prize (₹100)</span>
-                <span class="text-[11px] text-slate-400 font-mono">Last 4 digits</span>
+                <span class="text-xs font-bold text-slate-800 uppercase">8th Prize (₹100)</span>
+                <span class="text-[11px] text-slate-500 font-mono font-medium">Last 4 digits</span>
               </div>
               <div class="flex flex-wrap gap-1.5 font-mono text-xs">
                 {yesterdayDraw.eighth_prize.map((num: string) => (
-                  <span class="bg-slate-900 px-2 py-0.5 rounded text-slate-200 border border-slate-800">{num}</span>
+                  <span class="bg-white px-2 py-0.5 rounded text-slate-900 border border-slate-200 font-bold">{num}</span>
                 ))}
               </div>
             </div>
@@ -258,13 +258,13 @@ const faqItems = [
     )}
 
     <!-- FAQ Accordion -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-      <h3 class="text-base font-bold text-white">Frequently Asked Questions</h3>
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-4 shadow-sm">
+      <h3 class="text-base font-black text-slate-900">Frequently Asked Questions</h3>
       <div class="space-y-3">
         {faqItems.map((faq) => (
-          <details class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-            <summary class="font-semibold text-white text-sm cursor-pointer">{faq.question}</summary>
-            <p class="mt-2 text-xs sm:text-sm text-slate-400">{faq.answer}</p>
+          <details class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <summary class="font-bold text-slate-900 text-sm cursor-pointer">{faq.question}</summary>
+            <p class="mt-2 text-xs sm:text-sm text-slate-600">{faq.answer}</p>
           </details>
         ))}
       </div>

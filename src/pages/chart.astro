@@ -36,16 +36,16 @@ const faqItems = [
 >
   <div class="max-w-4xl mx-auto space-y-6">
     <!-- Header Card -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-2">
-      <nav class="flex items-center justify-center gap-2 text-xs text-slate-400 font-mono mb-1">
-        <a href="/" class="hover:text-emerald-400 transition-colors">Home</a>
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 text-center space-y-2 shadow-sm">
+      <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 font-mono mb-1">
+        <a href="/" class="hover:text-emerald-700 transition-colors">Home</a>
         <span>/</span>
-        <span class="text-emerald-400">3D Guessing & Chart</span>
+        <span class="text-emerald-700 font-bold">3D Guessing & Chart</span>
       </nav>
-      <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
         Kerala Lottery 3-Digit Guessing Chart
       </h1>
-      <p class="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
+      <p class="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto">
         A/B/C single board analysis, high-frequency pairs, and historical statistical probability trends for today's 3:00 PM draw.
       </p>
     </div>
@@ -54,40 +54,40 @@ const faqItems = [
     <KeralaGuessingChart client:load />
 
     <!-- Educational & Disclaimer Section -->
-    <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4 text-xs sm:text-sm text-slate-300">
-      <h2 class="text-base font-bold text-white flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-4 text-xs sm:text-sm text-slate-700 shadow-sm">
+      <h2 class="text-base font-black text-slate-900 flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
         Understanding Kerala 3D Board Analysis
       </h2>
       <p>
         Kerala lottery players study historical draw results by isolating the trailing 3 digits into three boards:
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-          <div class="font-bold text-emerald-400 text-base mb-1">Board A</div>
-          <p class="text-slate-400 text-xs">Hundreds Place (X - -)<br />Calculated from 1st digit of 3-digit sequence.</p>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+          <div class="font-black text-emerald-800 text-base mb-1">Board A</div>
+          <p class="text-slate-600 text-xs">Hundreds Place (X - -)<br />Calculated from 1st digit of 3-digit sequence.</p>
         </div>
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-          <div class="font-bold text-amber-400 text-base mb-1">Board B</div>
-          <p class="text-slate-400 text-xs">Tens Place (- X -)<br />Calculated from 2nd digit of 3-digit sequence.</p>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+          <div class="font-black text-amber-800 text-base mb-1">Board B</div>
+          <p class="text-slate-600 text-xs">Tens Place (- X -)<br />Calculated from 2nd digit of 3-digit sequence.</p>
         </div>
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-          <div class="font-bold text-sky-400 text-base mb-1">Board C</div>
-          <p class="text-slate-400 text-xs">Units Place (- - X)<br />Calculated from 3rd digit of 3-digit sequence.</p>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+          <div class="font-black text-sky-800 text-base mb-1">Board C</div>
+          <p class="text-slate-600 text-xs">Units Place (- - X)<br />Calculated from 3rd digit of 3-digit sequence.</p>
         </div>
       </div>
-      <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-800/80">
+      <p class="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
         *Disclaimer: keralalive3pm.com does not promote gambling or guarantee winning numbers. All guessing statistics are computer-generated based on past lottery results for research and entertainment purposes.
       </p>
     </div>
 
     <!-- FAQ Accordion -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-      <h3 class="text-base font-bold text-white mb-2">Frequently Asked Questions</h3>
+    <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 space-y-3 shadow-sm">
+      <h3 class="text-base font-black text-slate-900 mb-2">Frequently Asked Questions</h3>
       {faqItems.map((faq) => (
-        <details class="bg-slate-950 p-4 rounded-xl border border-slate-800">
-          <summary class="font-semibold text-white text-sm cursor-pointer">{faq.question}</summary>
-          <p class="mt-2 text-xs sm:text-sm text-slate-400">{faq.answer}</p>
+        <details class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <summary class="font-bold text-slate-900 text-sm cursor-pointer">{faq.question}</summary>
+          <p class="mt-2 text-xs sm:text-sm text-slate-600">{faq.answer}</p>
         </details>
       ))}
     </div>
