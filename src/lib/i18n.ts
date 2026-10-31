@@ -28,8 +28,7 @@ export const translations = {
     guessingTitle: 'Kerala 3-Digit Guessing Numbers (A B C Board)',
     guessingDesc: 'Mathematical frequency chart and recurring 3-digit board target numbers',
     disclaimerText: 'Disclaimer: This portal is an independent real-time informational service. Winning ticket holders must verify results with the official Kerala Government Gazette published by Directorate of Kerala State Lotteries.',
-    whatsappJoin: 'Join Kerala Lottery WhatsApp Channel',
-    telegramJoin: 'Join Official Telegram Channel',
+    telegramJoin: 'Join Kerala Lottery Telegram Channel',
     shareText: 'Share Result'
   },
   ml: {
@@ -57,8 +56,7 @@ export const translations = {
     guessingTitle: 'കേരള ലോട്ടറി ഗസ്സിംഗ് നമ്പറുകൾ (A B C ബോർഡ്)',
     guessingDesc: 'പതിവായി വരുന്ന നമ്പറുകളുടെ വിശകലനവും ടാർഗെറ്റ് ചാർട്ടും',
     disclaimerText: 'നിരാകരണം: ഈ പോർട്ടൽ വിവര ആവശ്യങ്ങൾക്ക് മാത്രമുള്ളതാണ്. സമ്മാനാർഹമായ ടിക്കറ്റുകൾ കേരള ലോട്ടറി ഡയറക്ടറേറ്റ് പ്രസിദ്ധീകരിക്കുന്ന ഔദ്യോഗിക ഗസറ്റുമായി ഒത്തുനോക്കേണ്ടതാണ്.',
-    whatsappJoin: 'കേരള ലോട്ടറി വാട്സ്ആപ്പ് ചാനലിൽ ചേരുക',
-    telegramJoin: 'ടെലിഗ്രാം ചാനലിൽ ചേരുക',
+    telegramJoin: 'കേരള ലോട്ടറി ടെലിഗ്രാം ചാനലിൽ ചേരുക',
     shareText: 'ഫലം ഷെയർ ചെയ്യുക'
   }
 };

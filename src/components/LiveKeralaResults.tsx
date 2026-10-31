@@ -151,7 +151,7 @@ export default function LiveKeralaResults({
     ? `🎯 *Kerala Lottery Result (${activeDraw?.draw_name || todayScheme.name} • 3:00 PM)*\n📅 Date: ${activeDateStr}\n🏆 *1st Prize (${formatINR(activeDraw?.first_prize?.amount || todayScheme.firstPrize)})*: *${activeDraw?.first_prize?.series || ''} ${activeDraw?.first_prize?.number || ''}*\n\n👉 View official gazette & all prize numbers:\nhttps://keralalive3pm.com/`
     : `🎯 *Kerala Lottery Result Today (${todayScheme.name} • 3:00 PM)*\n🏆 1st Prize: ${todayScheme.firstPrizeFormatted}\n\n👉 Watch 3:00 PM Live Draw result:\nhttps://keralalive3pm.com/`;
 
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+  const telegramChannelUrl = 'https://t.me/keralalottery3pm';
 
   return (
     <div className="space-y-2.5 sm:space-y-3.5">
@@ -264,16 +264,18 @@ export default function LiveKeralaResults({
                 </div>
               )}
 
-              {/* Share & Download Buttons */}
+              {/* Telegram Channel & Copy Buttons */}
               <div className="grid grid-cols-2 gap-2 max-w-md mx-auto pt-2">
                 <a
-                  href={whatsappUrl}
+                  href={telegramChannelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#25d366] hover:bg-[#20bd5a] text-slate-950 font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-transform active:scale-95"
+                  className="bg-[#0088cc] hover:bg-[#0077b5] text-white font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-transform active:scale-95"
                 >
-                  <span>💬</span>
-                  <span>WhatsApp Share</span>
+                  <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .39z"/>
+                  </svg>
+                  <span>Telegram Alerts</span>
                 </a>
                 <button
                   type="button"
@@ -282,7 +284,7 @@ export default function LiveKeralaResults({
                     setCopiedLink(true);
                     setTimeout(() => setCopiedLink(false), 2500);
                   }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-transform active:scale-95"
+                  className="bg-slate-800 hover:bg-slate-900 text-white font-black text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-transform active:scale-95 cursor-pointer"
                 >
                   <span>📋</span>
                   <span>{copiedLink ? 'Copied!' : 'Copy Numbers'}</span>
