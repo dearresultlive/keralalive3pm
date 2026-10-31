@@ -21,7 +21,10 @@ const CONFIG = {
   ADMIN_PIN: '3000',
   // Create a token at https://github.com/settings/tokens with "repo" or "contents:write" permission
   GITHUB_TOKEN: 'YOUR_GITHUB_TOKEN',
-  FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3'
+  FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3',
+  // Optional: Auto-post directly to your Telegram Channel
+  TELEGRAM_BOT_TOKEN: '', // Get from @BotFather (e.g. '123456789:AAH...')
+  TELEGRAM_CHAT_ID: '@keralalottery3pm' // Your channel username (with @) or ID
 };
 
 /**
@@ -96,6 +99,12 @@ function runKeralaFastPoller() {
         if (postRes.getResponseCode() === 200) {
           props.setProperty('LAST_PUBLISHED_DATE', istDateStr);
           Logger.log(`[Poller] Successfully marked ${istDateStr} as published.`);
+
+          // 3. Optional: Broadcast to Telegram Channel directly
+          if (CONFIG.TELEGRAM_BOT_TOKEN) {
+            sendTelegramAlert(istDateStr, series, number);
+          }
+
           return;
         }
       }
@@ -147,4 +156,36 @@ function deleteExistingTriggers() {
     ScriptApp.deleteTrigger(t);
   }
   Logger.log('Cleared existing triggers.');
+}
+
+/**
+ * Sends Instant Broadcast to Telegram Channel
+ */
+function sendTelegramAlert(date, series, number) {
+  if (!CONFIG.TELEGRAM_BOT_TOKEN || !CONFIG.TELEGRAM_CHAT_ID) return;
+  try {
+    const text = `🎯 <b>KERALA STATE LOTTERY RESULT (3:00 PM)</b>\n` +
+      `📅 Date: <b>${date.split('-').reverse().join('/')}</b> • 3:00 PM IST\n\n` +
+      `🥇 <b>1ST PRIZE WINNER:</b>\n` +
+      `👉 <code>${series} ${number}</code>\n\n` +
+      `🎁 <b>CONSOLATION:</b> <code>${number}</code> (All other series)\n\n` +
+      `⚡ <b>Check all prizes & instant ticket checker:</b>\n` +
+      `https://keralalive3pm.com/`;
+
+    const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const res = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({
+        chat_id: CONFIG.TELEGRAM_CHAT_ID,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: false
+      }),
+      muteHttpExceptions: true
+    });
+    Logger.log(`[Telegram] Sent broadcast alert: ${res.getResponseCode()}`);
+  } catch (err) {
+    Logger.log(`[Telegram] Error sending alert: ${err.message}`);
+  }
 }

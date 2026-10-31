@@ -189,10 +189,51 @@ export const POST: APIRoute = async ({ request }) => {
 
     const putResult = (await putRes.json()) as { commit?: { sha?: string } };
 
+    // 4. Auto-Broadcast to Telegram Channel (if configured)
+    let telegramSent = false;
+    const tgToken = body.telegram_bot_token || env.TELEGRAM_BOT_TOKEN;
+    const tgChatId = body.telegram_chat_id || env.TELEGRAM_CHAT_ID || '@keralalottery3pm';
+
+    if (tgToken && tgChatId) {
+      try {
+        const formattedAmount = (Number(amount) >= 10000000)
+          ? `₹${(Number(amount) / 10000000).toFixed(0)} Crore`
+          : `₹${(Number(amount) / 100000).toFixed(0)} Lakh`;
+
+        const tgText = `🎯 <b>KERALA STATE LOTTERY RESULT (3:00 PM)</b>\n` +
+          `📅 Date: <b>${date.split('-').reverse().join('/')}</b> • 3:00 PM IST\n` +
+          `🏆 Draw: <b>${updatedEntry.draw_name} (${updatedEntry.draw_number})</b>\n\n` +
+          `🥇 <b>1ST PRIZE (${formattedAmount}):</b>\n` +
+          `👉 <code>${cleanSeries} ${cleanNumber}</code>\n\n` +
+          (updatedEntry.second_prize?.[0] ? `🥈 <b>2ND PRIZE:</b>\n👉 <code>${updatedEntry.second_prize[0].series ? updatedEntry.second_prize[0].series + ' ' : ''}${updatedEntry.second_prize[0].number}</code>\n\n` : '') +
+          `🎁 <b>CONSOLATION:</b> <code>${cleanNumber}</code> (All other series)\n\n` +
+          `⚡ <b>Check all prizes & instant ticket checker:</b>\n` +
+          `https://keralalive3pm.com/`;
+
+        const tgRes = await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: tgChatId,
+            text: tgText,
+            parse_mode: 'HTML',
+            disable_web_page_preview: false
+          })
+        });
+
+        if (tgRes.ok) {
+          telegramSent = true;
+        }
+      } catch (tgError) {
+        console.error('Telegram broadcast failed:', tgError);
+      }
+    }
+
     return new Response(JSON.stringify({
       success: true,
       message: `Successfully published 1st Prize: ${cleanSeries} ${cleanNumber} for ${date}`,
       commit_sha: putResult.commit?.sha,
+      telegram_sent: telegramSent,
       draw: updatedEntry
     }), {
       status: 200,
