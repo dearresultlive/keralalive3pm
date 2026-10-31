@@ -43,8 +43,8 @@ const {
     />
   </head>
   <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col font-sans selection:bg-emerald-600 selection:text-white antialiased">
-    <!-- Announcement / Breaking Bar -->
-    <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 border-b border-amber-500/30 px-3 py-1.5 text-xs text-center text-emerald-100">
+    <!-- Announcement / Breaking Bar (Hidden on mobile to bring 1st prize result directly above the fold) -->
+    <div class="hidden sm:block bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 border-b border-amber-500/30 px-3 py-1.5 text-xs text-center text-emerald-100">
       <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 font-medium">
         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
         <span>Kerala State Lottery Draw at <strong>3:00 PM IST Daily</strong> (Gorky Bhavan)</span>
@@ -56,8 +56,8 @@ const {
     <!-- Main Navigation Header -->
     <Header />
 
-    <!-- Page Content -->
-    <main class="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+    <!-- Page Content (Tight top padding on mobile for instant result visibility) -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-2.5 sm:px-4 lg:px-6 pt-1.5 sm:pt-4 pb-16 md:pb-8">
       <slot />
     </main>
 

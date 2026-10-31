@@ -47,21 +47,21 @@ const daysOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon to Sun
   canonical="https://keralalive3pm.com"
   faqSchema={faqItems}
 >
-  <!-- Independent Informational Badge / Legal Safety Header -->
-  <div class="mb-3 px-3.5 py-2 rounded-2xl bg-white border border-slate-200 text-[11px] text-slate-600 shadow-2xs flex flex-wrap items-center justify-between gap-2">
+  <!-- Hero / Live Results Component (Placed directly at top for immediate mobile visibility) -->
+  <section class="mb-4 sm:mb-6">
+    <LiveKeralaResults client:load initialDraws={keralaDraws} todayDateStr={todayDateStr} />
+  </section>
+
+  <!-- Independent Informational Verification Notice (Prominently placed directly below results, matching official news format) -->
+  <div class="mb-6 px-3.5 py-2.5 rounded-2xl bg-white border border-slate-200 text-xs text-slate-600 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
     <div class="flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+      <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
       <span class="font-bold text-slate-800">Independent Live Result Portal • സ്വതന്ത്ര വാർത്താ പോർട്ടൽ</span>
     </div>
     <div class="text-[11px] text-slate-500 font-medium">
       Not affiliated with Govt of Kerala • Verify with <a href="https://statelottery.kerala.gov.in" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-bold">Official Gazette</a>
     </div>
   </div>
-
-  <!-- Hero / Live Results Component -->
-  <section class="mb-8">
-    <LiveKeralaResults client:load initialDraws={keralaDraws} todayDateStr={todayDateStr} />
-  </section>
 
   <!-- WhatsApp & Telegram Community CTA Banner -->
   <section class="mb-8 bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-900 border border-emerald-600/40 rounded-3xl p-5 sm:p-6 text-center relative overflow-hidden shadow-md">

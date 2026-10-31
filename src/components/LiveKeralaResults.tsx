@@ -154,12 +154,12 @@ export default function LiveKeralaResults({
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
 
   return (
-    <div className="space-y-3.5">
+    <div className="space-y-2.5 sm:space-y-3.5">
       
       {/* Language Switcher, Refresh & Live Status Top Bar */}
-      <div className="flex items-center justify-between gap-2 bg-emerald-900/60 p-2 rounded-2xl border border-emerald-700/50">
+      <div className="flex items-center justify-between gap-2 bg-emerald-900/60 p-1.5 sm:p-2 rounded-2xl border border-emerald-700/50">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
           <span className="text-xs font-black text-emerald-100 uppercase tracking-wide">
             {lang === 'ml' ? '3:00 PM ലൈവ് നറുക്കെടുപ്പ്' : '3:00 PM Live Draw'}
           </span>
@@ -169,12 +169,12 @@ export default function LiveKeralaResults({
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             onClick={() => fetchLatestDraws(false)}
             disabled={isRefreshing}
-            className="inline-flex items-center gap-1.5 bg-emerald-800/90 hover:bg-emerald-700 active:scale-95 disabled:opacity-50 text-emerald-100 font-bold text-xs px-2.5 py-1 rounded-xl transition-all border border-emerald-600/40 cursor-pointer"
+            className="inline-flex items-center gap-1 bg-emerald-800/90 hover:bg-emerald-700 active:scale-95 disabled:opacity-50 text-emerald-100 font-bold text-xs px-2 sm:px-2.5 py-1 rounded-xl transition-all border border-emerald-600/40 cursor-pointer"
             title="Check for newest lottery numbers"
           >
             <span className={isRefreshing ? "inline-block animate-spin" : ""}>🔄</span>
@@ -188,7 +188,7 @@ export default function LiveKeralaResults({
       <div className="bg-white rounded-2xl sm:rounded-3xl border-2 border-emerald-600 shadow-md overflow-hidden">
         
         {/* Card Header with Scheme Badge & Day */}
-        <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 text-white p-3.5 sm:p-4 flex items-center justify-between border-b border-amber-500/40">
+        <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 text-white p-2.5 sm:p-4 flex items-center justify-between border-b border-amber-500/40">
           <div>
             <div className="flex items-center gap-2">
               <span className={`px-2.5 py-0.5 rounded-full text-xs font-black text-white ${todayScheme.badgeBg} shadow-xs`}>
@@ -198,13 +198,13 @@ export default function LiveKeralaResults({
                 {lang === 'ml' ? (activeDraw?.draw_name_ml || todayScheme.nameMl) : (activeDraw?.draw_name || todayScheme.name)}
               </h2>
             </div>
-            <p className="text-[11px] text-emerald-200 mt-0.5">
+            <p className="text-[10px] sm:text-[11px] text-emerald-200 mt-0.5">
               Draw Date: <span className="font-bold text-white">{activeDateStr.split('-').reverse().join('/')}</span> • 3:00 PM IST
             </p>
           </div>
 
           <div className="text-right">
-            <span className="text-[10px] font-black uppercase text-amber-300 block tracking-wider">
+            <span className="text-[9px] sm:text-[10px] font-black uppercase text-amber-300 block tracking-wider">
               {lang === 'ml' ? 'ഒന്നാം സമ്മാനം' : '1st Prize Amount'}
             </span>
             <span className="text-base sm:text-xl font-black text-white font-mono">
@@ -214,23 +214,23 @@ export default function LiveKeralaResults({
         </div>
 
         {/* Card Body: Status Driven Display */}
-        <div className="p-4 sm:p-6 text-center">
+        <div className="p-3 sm:p-6 text-center">
           
           {isDeclared ? (
             /* 1. DECLARED STATE: Massive 1st Prize Winner Display */
-            <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="space-y-2.5 sm:space-y-4 animate-in fade-in duration-200">
               {activeDraw.status === 'LIVE_PRELIMINARY' ? (
-                <div className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-950 text-xs font-black px-3 py-1 rounded-full border border-amber-400 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-950 text-[11px] sm:text-xs font-black px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-amber-400 shadow-xs">
                   <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
                   <span>{lang === 'ml' ? '🔴 ലൈവ് സ്ട്രീം ഫലം • ഔദ്യോഗിക ഗസറ്റ് ഉടൻ വരും' : '🔴 LIVE WHEEL DRAW • OFFICIAL GAZETTE PENDING'}</span>
                 </div>
               ) : activeDraw.status === 'ADMIN_OVERRIDE' ? (
-                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-950 text-xs font-black px-3 py-1 rounded-full border border-emerald-300 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-950 text-[11px] sm:text-xs font-black px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-emerald-300 shadow-xs">
                   <span>⚡</span>
                   <span>{lang === 'ml' ? 'ലൈവ് ഫലം • എഡിറ്റോറിയൽ ടീം വെരിഫൈഡ്' : 'LIVE DRAW RESULT • EDITORIAL VERIFIED'}</span>
                 </div>
               ) : (
-                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 text-xs font-black px-3 py-1 rounded-full border border-emerald-300 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 text-[11px] sm:text-xs font-black px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-emerald-300 shadow-xs">
                   <span>✅</span>
                   <span>{lang === 'ml' ? 'ഫലം പ്രഖ്യാപിച്ചു • വെരിഫൈഡ്' : 'DRAW CONCLUDED • RESULT VERIFIED'}</span>
                 </div>
@@ -238,7 +238,7 @@ export default function LiveKeralaResults({
 
               {/* Huge 1st Prize Ticket Number */}
               <div className="py-2 sm:py-3 bg-amber-50/70 border-2 border-amber-300 rounded-2xl shadow-inner max-w-md mx-auto">
-                <span className="text-xs font-black text-amber-800 uppercase tracking-widest block mb-1">
+                <span className="text-[11px] sm:text-xs font-black text-amber-800 uppercase tracking-widest block mb-0.5 sm:mb-1">
                   {lang === 'ml' ? '🏆 ഒന്നാം സമ്മാന വിജയി (₹' + (activeDraw.first_prize?.amount ? (activeDraw.first_prize.amount / 100000) + ' ലക്ഷം' : '75 ലക്ഷം') + ')' : '🏆 1st Prize Winning Ticket Number'}
                 </span>
                 <div className="font-mono font-black text-4xl sm:text-6xl text-emerald-950 tracking-wider">
@@ -246,7 +246,7 @@ export default function LiveKeralaResults({
                   <span>{activeDraw.first_prize?.number}</span>
                 </div>
                 {activeDraw.consolation_prize?.amount && (
-                  <p className="text-xs text-slate-600 font-bold mt-1.5">
+                  <p className="text-[11px] sm:text-xs text-slate-600 font-bold mt-1">
                     {lang === 'ml' ? 'സമാശ്വാസ സമ്മാനം: ₹8,000 (മറ്റു എല്ലാ സീരീസുകൾക്കും)' : 'Consolation Prize: ₹8,000 for matching number in other series'}
                   </p>
                 )}
@@ -254,7 +254,7 @@ export default function LiveKeralaResults({
 
               {/* 2nd Prize Card */}
               {activeDraw.second_prize && activeDraw.second_prize.length > 0 && (
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 max-w-md mx-auto">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 sm:p-3 max-w-md mx-auto">
                   <span className="text-xs font-black text-slate-700 uppercase block mb-1">
                     {lang === 'ml' ? '🥈 രണ്ടാം സമ്മാനം (₹5,00,000)' : '🥈 2nd Prize (₹5,00,000)'}
                   </span>
