@@ -5,3 +5,4 @@ Disallow: /api/
 
 Sitemap: https://keralalive3pm.com/sitemap.xml
 Sitemap: https://keralalive3pm.com/sitemap-index.xml
+Sitemap: https://keralalive3pm.com/sitemap_index.xml
