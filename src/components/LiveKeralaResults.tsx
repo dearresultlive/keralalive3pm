@@ -232,7 +232,7 @@ export default function LiveKeralaResults({
               ) : (
                 <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-900 text-xs font-black px-3 py-1 rounded-full border border-emerald-300 shadow-xs">
                   <span>✅</span>
-                  <span>{lang === 'ml' ? 'ഔദ്യോഗിക ഫലം പ്രഖ്യാപിച്ചു • VERIFIED' : 'OFFICIAL RESULT DECLARED • VERIFIED'}</span>
+                  <span>{lang === 'ml' ? 'ഫലം പ്രഖ്യാപിച്ചു • വെരിഫൈഡ്' : 'DRAW CONCLUDED • RESULT VERIFIED'}</span>
                 </div>
               )}
 
