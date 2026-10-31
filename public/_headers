@@ -5,6 +5,10 @@
   Content-Type: application/xml; charset=utf-8
   Cache-Control: no-cache, no-store, must-revalidate
 
+/sitemap-index.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /robots.txt
   Content-Type: text/plain; charset=utf-8
   Cache-Control: no-cache, no-store, must-revalidate
