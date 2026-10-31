@@ -1,17 +1,16 @@
 /**
  * ==============================================================================
- * KERALALIVE3PM — GOOGLE APPS SCRIPT FAST LIVE AUTO-POLLER
+ * KERALALIVE3PM — GOOGLE APPS SCRIPT FAST LIVE AUTO-POLLER & TELEGRAM BROADCASTER
  * ==============================================================================
  * 
- * Runs on Google's trusted infrastructure (Google IP ranges).
+ * Runs on Google's trusted infrastructure (Google Cloud IP ranges).
  * Immune to Indian government firewalls, Cloudflare WAF, and IP rate limits.
  * 
- * HOW TO INSTALL IN 2 MINUTES:
- * 1. Open https://script.google.com/ in your browser.
- * 2. Click "+ New project".
- * 3. Delete any default code and PASTE this entire file.
- * 4. Replace `YOUR_GITHUB_TOKEN` below with your GitHub Personal Access Token.
- * 5. Run the function `setupAutoTrigger()` once from the toolbar to activate the daily 3:00 PM scheduler.
+ * HOW TO USE:
+ * 1. Open your project on https://script.google.com/
+ * 2. Select All (Ctrl+A), Delete, and Paste this entire script.
+ * 3. Save (Ctrl+S).
+ * 4. Run `setupAutoTrigger()` once from toolbar to activate the 3:00 PM scheduler.
  * ==============================================================================
  */
 
@@ -19,38 +18,34 @@
 const CONFIG = {
   WEBSITE_API: 'https://keralalive3pm.com/api/admin/publish',
   ADMIN_PIN: '3000',
-  // Create a token at https://github.com/settings/tokens with "repo" or "contents:write" permission
   GITHUB_TOKEN: 'YOUR_GITHUB_TOKEN',
   FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3',
-  // Optional: Auto-post directly to your Telegram Channel
-  TELEGRAM_BOT_TOKEN: '', // Get from @BotFather (e.g. '123456789:AAH...')
-  TELEGRAM_CHAT_ID: '' // Your channel ID (e.g. '-100xxxxxxxxxx' or '@keralallive3pm')
+  TELEGRAM_BOT_TOKEN: 'YOUR_TELEGRAM_BOT_TOKEN',
+  TELEGRAM_CHAT_ID: 'YOUR_TELEGRAM_CHAT_ID'
 };
 
 /**
- * Main Scraper Function
- * Runs every minute between 2:55 PM and 4:30 PM IST.
+ * Main Scraper & Broadcaster Function
+ * Runs every minute between 2:50 PM and 5:00 PM IST.
  */
 function runKeralaFastPoller() {
   const istDateStr = getISTDateString();
   Logger.log(`[Poller] Starting check for ${istDateStr}...`);
 
-  // SAFETY 1: Check draw time window (2:55 PM to 5:00 PM IST)
-  // Prevents accidentally matching yesterday's results if run in the morning/night!
+  // SAFETY 1: Only run during live draw window (2:50 PM to 5:00 PM IST)
   const ist = getISTDate();
   const currentMinutes = ist.getHours() * 60 + ist.getMinutes();
-  const DRAW_START_MIN = 14 * 60 + 55; // 2:55 PM (895m)
-  const DRAW_END_MIN = 17 * 60;        // 5:00 PM (1020m)
+  const DRAW_START_MIN = 14 * 60 + 50; // 2:50 PM IST
+  const DRAW_END_MIN = 17 * 60;        // 5:00 PM IST
 
   if (currentMinutes < DRAW_START_MIN || currentMinutes > DRAW_END_MIN) {
-    Logger.log(`[Poller] Outside live draw window (2:55 PM - 5:00 PM IST). Current IST: ${ist.toLocaleTimeString()}. Skipping.`);
+    Logger.log(`[Poller] Outside 3:00 PM draw window (2:50 PM - 5:00 PM IST). Current IST: ${ist.toLocaleTimeString()}. Skipping.`);
     return;
   }
 
-  // SAFETY 2: Check if we already published today
+  // SAFETY 2: Skip if today's result was already published
   const props = PropertiesService.getScriptProperties();
-  const lastPublished = props.getProperty('LAST_PUBLISHED_DATE');
-  if (lastPublished === istDateStr) {
+  if (props.getProperty('LAST_PUBLISHED_DATE') === istDateStr) {
     Logger.log(`[Poller] Result for ${istDateStr} is already published. Skipping.`);
     return;
   }
@@ -70,7 +65,7 @@ function runKeralaFastPoller() {
     const data = JSON.parse(response.getContentText());
     const entries = data.feed?.entry || [];
 
-    // Date regex patterns for today (e.g. "01-11-2026", "1-11-2026", "01.11.2026", "01/11/2026")
+    // Date regex for today (e.g. "01-11-2026", "1-11-2026", "01.11.2026", "01/11/2026")
     const [y, m, d] = istDateStr.split('-');
     const dInt = parseInt(d, 10);
     const mInt = parseInt(m, 10);
@@ -94,7 +89,7 @@ function runKeralaFastPoller() {
         const series = match[1].toUpperCase();
         const number = match[2];
 
-        // Sanity check: Ensure not dummy / placeholder number (e.g. 000000 or 123456)
+        // Sanity check: Ensure not dummy / placeholder number
         if (number === '000000' || number === '123456') {
           Logger.log(`[Poller] Detected dummy placeholder number: ${series} ${number}`);
           continue;
@@ -102,7 +97,7 @@ function runKeralaFastPoller() {
 
         Logger.log(`[Poller] 🎉 FOUND 1ST PRIZE WINNER: ${series} ${number}! Publishing...`);
 
-        // 2. Publish to Website API
+        // 2. Publish to Website API (Commits to GitHub & Cloudflare)
         const payload = {
           pin: CONFIG.ADMIN_PIN,
           github_token: CONFIG.GITHUB_TOKEN,
@@ -229,17 +224,4 @@ function sendTelegramAlert(date, series, number) {
 function testTelegramPost() {
   Logger.log('[Telegram Test] Sending test message to ' + CONFIG.TELEGRAM_CHAT_ID + '...');
   sendTelegramAlert('31-10-2026', 'KG', '501790');
-}
-
-/**
- * Diagnostic function: Run this to see bot name and connected channels in the log
- */
-function diagnoseTelegramBot() {
-  const meUrl = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/getMe';
-  const meRes = UrlFetchApp.fetch(meUrl, { muteHttpExceptions: true });
-  Logger.log('[Bot Details]: ' + meRes.getContentText());
-
-  const updatesUrl = 'https://api.telegram.org/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/getUpdates';
-  const updatesRes = UrlFetchApp.fetch(updatesUrl, { muteHttpExceptions: true });
-  Logger.log('[Bot Recent Chats]: ' + updatesRes.getContentText());
 }
