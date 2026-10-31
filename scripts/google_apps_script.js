@@ -24,7 +24,7 @@ const CONFIG = {
   FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3',
   // Optional: Auto-post directly to your Telegram Channel
   TELEGRAM_BOT_TOKEN: '', // Get from @BotFather (e.g. '123456789:AAH...')
-  TELEGRAM_CHAT_ID: '@keralalottery3pm' // Your channel username (with @) or ID
+  TELEGRAM_CHAT_ID: '@keralallive3pm' // Your channel username (with @) or ID
 };
 
 /**

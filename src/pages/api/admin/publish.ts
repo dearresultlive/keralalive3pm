@@ -192,7 +192,7 @@ export const POST: APIRoute = async ({ request }) => {
     // 4. Auto-Broadcast to Telegram Channel (if configured)
     let telegramSent = false;
     const tgToken = body.telegram_bot_token || env.TELEGRAM_BOT_TOKEN;
-    const tgChatId = body.telegram_chat_id || env.TELEGRAM_CHAT_ID || '@keralalottery3pm';
+    const tgChatId = body.telegram_chat_id || env.TELEGRAM_CHAT_ID || '@keralallive3pm';
 
     if (tgToken && tgChatId) {
       try {

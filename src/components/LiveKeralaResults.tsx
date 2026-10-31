@@ -151,7 +151,7 @@ export default function LiveKeralaResults({
     ? `🎯 *Kerala Lottery Result (${activeDraw?.draw_name || todayScheme.name} • 3:00 PM)*\n📅 Date: ${activeDateStr}\n🏆 *1st Prize (${formatINR(activeDraw?.first_prize?.amount || todayScheme.firstPrize)})*: *${activeDraw?.first_prize?.series || ''} ${activeDraw?.first_prize?.number || ''}*\n\n👉 View official gazette & all prize numbers:\nhttps://keralalive3pm.com/`
     : `🎯 *Kerala Lottery Result Today (${todayScheme.name} • 3:00 PM)*\n🏆 1st Prize: ${todayScheme.firstPrizeFormatted}\n\n👉 Watch 3:00 PM Live Draw result:\nhttps://keralalive3pm.com/`;
 
-  const telegramChannelUrl = 'https://t.me/keralalottery3pm';
+  const telegramChannelUrl = 'https://t.me/keralallive3pm';
 
   return (
     <div className="space-y-2.5 sm:space-y-3.5">
