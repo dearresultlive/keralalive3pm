@@ -49,7 +49,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   } else if (pathname === '/sitemap.xml') {
     response.headers.set(
       'Cache-Control',
-      'public, max-age=1800, s-maxage=3600, stale-while-revalidate=7200'
+      'no-cache, no-store, must-revalidate'
     );
   } else if (pathname === '/robots.txt') {
     response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
