@@ -39,7 +39,6 @@ export const GET: APIRoute = async () => {
     headers: {
       'Content-Type': 'application/rss+xml; charset=utf-8',
       'Cache-Control': 'public, max-age=60, s-maxage=120, stale-while-revalidate=300',
-      'X-Robots-Tag': 'noindex, nofollow, noarchive',
     },
   });
 };

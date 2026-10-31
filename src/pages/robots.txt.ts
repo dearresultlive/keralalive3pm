@@ -2,7 +2,11 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async () => {
   const robots = `User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://keralalive3pm.com/sitemap.xml
 `;
 
   return new Response(robots, {

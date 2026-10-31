@@ -1,5 +1,4 @@
 /*
-  X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: public, max-age=15, s-maxage=30, stale-while-revalidate=60
 
 /api/*

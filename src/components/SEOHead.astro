@@ -73,9 +73,9 @@ const activeFaq = faqSchema || faqItems;
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-{/* Search Engine Directives - NOINDEX TEMPORARY */}
-<meta name="robots" content="noindex, nofollow, noarchive" />
-<meta name="googlebot" content="noindex, nofollow, noarchive" />
+{/* Search Engine Directives - INDEX & FOLLOW */}
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
 
 {/* Asynchronous Google Web Fonts (Zero Render Blocking) */}
 <link rel="preconnect" href="https://fonts.googleapis.com" />

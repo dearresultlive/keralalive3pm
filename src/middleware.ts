@@ -4,8 +4,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const response = await next();
   const pathname = context.url.pathname;
 
-  // Strict search engine directive as mandated by project settings
-  response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  // Protect admin & API endpoints from indexing while allowing main portal indexing
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/')) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
 
   // Baseline Security & Performance Headers
   response.headers.set('X-Content-Type-Options', 'nosniff');
