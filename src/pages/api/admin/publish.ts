@@ -160,8 +160,8 @@ export const POST: APIRoute = async ({ request }) => {
     // 3. Commit back to GitHub
     const newContentBase64 = utf8ToBase64(JSON.stringify(newDb, null, 2));
     const commitMsg = source === 'admin'
-      ? `feat(live): admin override 1st prize ${cleanSeries} ${cleanNumber} for ${date} [skip ci]`
-      : `feat(live): auto-scrape 1st prize ${cleanSeries} ${cleanNumber} for ${date} [skip ci]`;
+      ? `feat(live): admin override 1st prize ${cleanSeries} ${cleanNumber} for ${date}`
+      : `feat(live): auto-scrape 1st prize ${cleanSeries} ${cleanNumber} for ${date}`;
 
     const putRes = await fetch(getUrl, {
       method: 'PUT',

@@ -39,7 +39,7 @@ jobs:
           
           if [ -n "$(git status --porcelain src/data/kerala_draws.json)" ]; then
             git add src/data/kerala_draws.json
-            git commit -m "chore(data): auto-update Kerala 3:00 PM lottery results [skip ci]"
+            git commit -m "chore(data): auto-update Kerala 3:00 PM lottery results"
             git push origin main
             echo "Successfully updated and pushed new lottery results."
           else
