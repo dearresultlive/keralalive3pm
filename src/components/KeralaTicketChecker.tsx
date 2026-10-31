@@ -151,10 +151,10 @@ export default function KeralaTicketChecker({ draws = fallbackDraws }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-3.5 sm:p-5 shadow-sm space-y-3 sm:space-y-4 overflow-hidden w-full">
       <div className="flex items-center gap-2 border-b border-slate-100 pb-2.5">
-        <span className="text-xl">🎟️</span>
-        <div>
+        <span className="text-xl shrink-0">🎟️</span>
+        <div className="min-w-0 flex-1">
           <h3 className="font-black text-sm sm:text-base text-slate-900 leading-tight">
             Kerala Lottery Ticket Checker • ടിക്കറ്റ് പരിശോധിക്കുക
           </h3>
@@ -175,7 +175,7 @@ export default function KeralaTicketChecker({ draws = fallbackDraws }: Props) {
             <select
               value={selectedDate}
               onChange={(e) => { setSelectedDate(e.target.value); setCheckResult(null); }}
-              className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-900"
+              className="w-full bg-slate-50 border border-slate-300 rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs font-bold text-slate-900"
             >
               {datesList.map(d => (
                 <option key={d} value={d}>
@@ -190,18 +190,18 @@ export default function KeralaTicketChecker({ draws = fallbackDraws }: Props) {
             <label className="text-[10px] font-black uppercase text-slate-500 block mb-1">
               Ticket Number (e.g. WN 845192 or 845192)
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 sm:gap-2 w-full">
               <input
                 type="text"
                 value={ticketInput}
                 onChange={(e) => setTicketInput(e.target.value.toUpperCase())}
                 placeholder="Enter 6-digit number..."
                 maxLength={9}
-                className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none uppercase"
+                className="min-w-0 flex-1 bg-slate-50 border border-slate-300 rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none uppercase placeholder:text-slate-400 placeholder:text-xs"
               />
               <button
                 type="submit"
-                className="bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-xs transition-transform active:scale-95 flex-shrink-0"
+                className="bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-xs transition-transform active:scale-95 shrink-0 whitespace-nowrap"
               >
                 Check
               </button>
