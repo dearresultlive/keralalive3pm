@@ -1,4 +1,24 @@
 {
+  "2026-11-01": {
+    "scheme_id": "kerala-lottery",
+    "draw_number": "3PM-LIVE",
+    "draw_name": "KERALA LOTTERY",
+    "draw_name_ml": "കേരള ലോട്ടറി",
+    "draw_date": "2026-11-01",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-10-31T19:18:11.549Z",
+    "first_prize": {
+      "series": "KG",
+      "number": "501790",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "501790",
+      "amount": 5000
+    }
+  },
   "2026-10-31": {
     "scheme_id": "karunya",
     "draw_number": "KR-774",
