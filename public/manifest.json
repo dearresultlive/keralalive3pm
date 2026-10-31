@@ -1,16 +1,21 @@
 {
-  "name": "Kerala Lottery Result Live 3:00 PM • കേരള ലോട്ടറി ഫലം",
+  "name": "Kerala Lottery Result Live 3:00 PM • കേരള ലോട്ടറി",
   "short_name": "Kerala Live 3PM",
-  "description": "Kerala State Lottery Result Today Live 3:00 PM • Official Winning Numbers, Gazette PDF & Ticket Checker",
+  "description": "Official Kerala State Lottery Result Live Today at 3:00 PM. Instant winning numbers, ticket checker, and gazette PDF.",
   "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#064e3b",
   "theme_color": "#047857",
+  "categories": ["news", "utilities"],
   "icons": [
     {
       "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "sizes": "192x192 512x512 any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

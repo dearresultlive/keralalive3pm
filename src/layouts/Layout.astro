@@ -103,22 +103,168 @@ const {
         <span class="truncate w-full">Yesterday</span>
       </a>
 
-      <a
-        href="https://whatsapp.com/channel/keralalottery3pm"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex flex-col items-center justify-center p-0.5 text-emerald-400 hover:text-emerald-300 transition-colors min-w-0"
+      <!-- 5th Tab: Install PWA App Button (Replaced WhatsApp Alerts) -->
+      <button
+        type="button"
+        id="pwa-install-nav-btn"
+        class="flex flex-col items-center justify-center p-0.5 text-amber-400 hover:text-amber-300 transition-colors min-w-0 group cursor-pointer"
+        aria-label="Install Kerala Live 3PM App"
       >
-        <svg class="w-5 h-5 shrink-0 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.97.53 1.83.82 2.796.82 3.183 0 5.768-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-1.045-.077-.24-.078-.549-.187-.946-.358-1.688-.727-2.783-2.455-2.868-2.569-.085-.113-.687-.912-.687-1.739 0-.827.433-1.233.586-1.393.153-.16.335-.202.447-.202.112 0 .224.002.321.006.103.004.241-.039.376.286.14.336.478 1.164.52 1.25.042.085.07.186.014.298-.056.112-.085.184-.169.282-.085.099-.177.221-.253.298-.085.085-.173.177-.074.347.099.17.441.728.948 1.178.653.58 1.204.76 1.374.845.17.085.27.071.371-.043.102-.114.433-.505.549-.678.115-.173.23-.144.388-.085.158.058 1.003.473 1.175.558.172.085.287.128.329.2.042.072.042.418-.102.823z" />
-        </svg>
-        <span class="text-emerald-400 font-bold truncate w-full">Alerts</span>
-      </a>
+        <div class="relative">
+          <svg class="w-5 h-5 shrink-0 text-amber-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <span class="absolute -top-1 -right-1 flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+          </span>
+        </div>
+        <span class="text-amber-400 font-bold truncate w-full">App</span>
+      </button>
+    </div>
+
+    <!-- PWA Install Modal Dialog -->
+    <div id="pwa-install-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 w-full max-w-sm text-center shadow-2xl space-y-4 animate-in fade-in slide-in-from-bottom duration-200">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 mx-auto flex items-center justify-center font-black text-slate-950 text-2xl shadow-lg border border-amber-200">
+          3PM
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-white">KeralaLive3PM App</h3>
+          <p class="text-xs text-emerald-400 font-medium">കേരള ലോട്ടറി ലൈവ് ആപ്പ്</p>
+          <p class="text-xs text-slate-400 mt-2">
+            Install on your phone for instant 1-tap live 3:00 PM results & offline ticket checking!
+          </p>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-left text-xs space-y-2 text-slate-300">
+          <div class="flex items-center gap-2">
+            <span>⚡</span>
+            <span>Fastest 3:00 PM live winning numbers</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>🎟️</span>
+            <span>Instant 6-digit ticket checker</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>📲</span>
+            <span>No App Store needed • 1-Click Install</span>
+          </div>
+        </div>
+
+        <!-- Android / Desktop Install Action -->
+        <div id="pwa-action-android" class="space-y-2">
+          <button
+            type="button"
+            id="pwa-confirm-install-btn"
+            class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black py-3 rounded-xl shadow-lg transition-all active:scale-95 text-sm cursor-pointer"
+          >
+            Install App Now (Free)
+          </button>
+        </div>
+
+        <!-- iOS Safari Instructions -->
+        <div id="pwa-action-ios" class="hidden text-xs text-slate-300 bg-emerald-950/40 p-3 rounded-2xl border border-emerald-500/30 text-left space-y-1.5">
+          <div class="font-bold text-amber-300">How to install on iPhone/iPad:</div>
+          <div>1. Tap the <strong class="text-white">Share icon (📤)</strong> at bottom of Safari.</div>
+          <div>2. Scroll down & tap <strong class="text-white">"Add to Home Screen" ➕</strong>.</div>
+          <div>3. Tap <strong class="text-white">Add</strong> in top-right.</div>
+        </div>
+
+        <button
+          type="button"
+          id="pwa-modal-close"
+          class="w-full text-slate-400 hover:text-white text-xs font-bold py-2 transition-colors cursor-pointer"
+        >
+          Not Now, Continue in Browser
+        </button>
+      </div>
     </div>
 
     <!-- Main Footer -->
-    <div class="mb-14 md:mb-0">
+    <div class="mb-16 md:mb-0 pb-4">
       <Footer />
     </div>
+
+    <!-- PWA Install & Service Worker Logic -->
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+
+      let deferredPrompt = null;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+      });
+
+      const navBtn = document.getElementById('pwa-install-nav-btn');
+      const modal = document.getElementById('pwa-install-modal');
+      const modalClose = document.getElementById('pwa-modal-close');
+      const confirmBtn = document.getElementById('pwa-confirm-install-btn');
+      const iosGuide = document.getElementById('pwa-action-ios');
+      const androidAction = document.getElementById('pwa-action-android');
+
+      function openPwaModal() {
+        if (!modal) return;
+        if (isIOS) {
+          if (iosGuide) iosGuide.classList.remove('hidden');
+          if (androidAction) androidAction.classList.add('hidden');
+        } else {
+          if (iosGuide) iosGuide.classList.add('hidden');
+          if (androidAction) androidAction.classList.remove('hidden');
+        }
+        modal.classList.remove('hidden');
+      }
+
+      function closePwaModal() {
+        if (modal) modal.classList.add('hidden');
+      }
+
+      if (navBtn) {
+        navBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+              if (choiceResult.outcome === 'accepted') {
+                deferredPrompt = null;
+              }
+            });
+          } else {
+            openPwaModal();
+          }
+        });
+      }
+
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+              deferredPrompt = null;
+              closePwaModal();
+            });
+          } else {
+            alert('To install: Tap your browser menu (⋮) and tap "Install app" or "Add to Home screen".');
+            closePwaModal();
+          }
+        });
+      }
+
+      if (modalClose) {
+        modalClose.addEventListener('click', closePwaModal);
+      }
+
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closePwaModal();
+        });
+      }
+    </script>
   </body>
 </html>

@@ -30,7 +30,7 @@ const currentPath = Astro.url.pathname;
     <nav class="flex items-center gap-1.5 sm:gap-2 text-xs font-bold">
       <a
         href="/"
-        class={`px-2.5 py-1.5 rounded-xl transition-all ${
+        class={`hidden sm:inline-block px-2.5 py-1.5 rounded-xl transition-all ${
           currentPath === '/' ? 'bg-emerald-800 text-amber-300 shadow-inner' : 'text-emerald-100 hover:text-white hover:bg-emerald-800/50'
         }`}
       >
@@ -38,7 +38,7 @@ const currentPath = Astro.url.pathname;
       </a>
       <a
         href="/yesterday"
-        class={`px-2.5 py-1.5 rounded-xl transition-all ${
+        class={`hidden sm:inline-block px-2.5 py-1.5 rounded-xl transition-all ${
           currentPath === '/yesterday' ? 'bg-emerald-800 text-amber-300 shadow-inner' : 'text-emerald-100 hover:text-white hover:bg-emerald-800/50'
         }`}
       >
@@ -46,7 +46,7 @@ const currentPath = Astro.url.pathname;
       </a>
       <a
         href="/checker"
-        class={`hidden sm:inline-block px-2.5 py-1.5 rounded-xl transition-all ${
+        class={`hidden md:inline-block px-2.5 py-1.5 rounded-xl transition-all ${
           currentPath === '/checker' ? 'bg-emerald-800 text-amber-300 shadow-inner' : 'text-emerald-100 hover:text-white hover:bg-emerald-800/50'
         }`}
       >
@@ -56,10 +56,12 @@ const currentPath = Astro.url.pathname;
         href="https://whatsapp.com/channel/keralalottery3pm" 
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-[#25d366] hover:bg-[#20bd5a] text-slate-950 font-black text-xs px-2.5 sm:px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-xs transition-all active:scale-95 flex-shrink-0"
+        class="bg-[#25d366] hover:bg-[#20bd5a] text-slate-950 font-bold text-xs px-2.5 sm:px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 shrink-0"
       >
-        <span>💬</span>
-        <span class="hidden sm:inline">WhatsApp</span>
+        <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.97.53 1.83.82 2.796.82 3.183 0 5.768-2.587 5.768-5.766.001-3.187-2.575-5.77-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-1.045-.077-.24-.078-.549-.187-.946-.358-1.688-.727-2.783-2.455-2.868-2.569-.085-.113-.687-.912-.687-1.739 0-.827.433-1.233.586-1.393.153-.16.335-.202.447-.202.112 0 .224.002.321.006.103.004.241-.039.376.286.14.336.478 1.164.52 1.25.042.085.07.186.014.298-.056.112-.085.184-.169.282-.085.099-.177.221-.253.298-.085.085-.173.177-.074.347.099.17.441.728.948 1.178.653.58 1.204.76 1.374.845.17.085.27.071.371-.043.102-.114.433-.505.549-.678.115-.173.23-.144.388-.085.158.058 1.003.473 1.175.558.172.085.287.128.329.2.042.072.042.418-.102.823z" />
+        </svg>
+        <span>WhatsApp</span>
       </a>
     </nav>
   </div>
