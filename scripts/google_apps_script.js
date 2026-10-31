@@ -189,3 +189,12 @@ function sendTelegramAlert(date, series, number) {
     Logger.log(`[Telegram] Error sending alert: ${err.message}`);
   }
 }
+
+
+/**
+ * Run this function from Apps Script toolbar to test posting to your channel right now!
+ */
+function testTelegramPost() {
+  Logger.log('[Telegram Test] Sending test message to ' + CONFIG.TELEGRAM_CHAT_ID + '...');
+  sendTelegramAlert(getISTDateString(), 'KG', '501790');
+}
