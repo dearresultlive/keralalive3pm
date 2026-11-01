@@ -129,7 +129,35 @@ export default function KeralaTicketChecker({ draws = fallbackDraws }: Props) {
       return;
     }
 
-    // 6. Check 8th Prize (₹100)
+    // 6. Check 6th Prize (₹500)
+    if (activeDraw.sixth_prize?.includes(last4)) {
+      confetti({ particleCount: 20 });
+      setCheckResult({
+        checked: true,
+        won: true,
+        prizeRank: '6th Prize (ആറാം സമ്മാനം)',
+        prizeAmount: 500,
+        matchedNumber: last4,
+        message: '🎉 Congratulations! You won the 6th Prize ₹500!'
+      });
+      return;
+    }
+
+    // 7. Check 7th Prize (₹200)
+    if (activeDraw.seventh_prize?.includes(last4)) {
+      confetti({ particleCount: 15 });
+      setCheckResult({
+        checked: true,
+        won: true,
+        prizeRank: '7th Prize (ഏഴാം സമ്മാനം)',
+        prizeAmount: 200,
+        matchedNumber: last4,
+        message: '🎉 Congratulations! You won the 7th Prize ₹200!'
+      });
+      return;
+    }
+
+    // 8. Check 8th Prize (₹100)
     if (activeDraw.eighth_prize?.includes(last4)) {
       setCheckResult({
         checked: true,
