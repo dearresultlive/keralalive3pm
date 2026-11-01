@@ -19,7 +19,7 @@ const CONFIG = {
   WEBSITE_API: 'https://keralalive3pm.com/api/admin/publish',
   ADMIN_PIN: '3000',
   GITHUB_TOKEN: 'YOUR_GITHUB_TOKEN',
-  FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=3',
+  FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=6',
   TELEGRAM_BOT_TOKEN: 'YOUR_TELEGRAM_BOT_TOKEN',
   TELEGRAM_CHAT_ID: 'YOUR_TELEGRAM_CHAT_ID'
 };
@@ -83,7 +83,12 @@ function runKeralaFastPoller() {
       }
 
       // Regex looks for: 1st Prize followed by Series (2 uppercase letters) and 6 digits
-      const match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,400}?([A-Z]{2})\s*([0-9]{6})/i);
+      let match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
+
+      // Robust fallback: Series + 6 digits followed by district in uppercase, e.g. MA 847261 (KANHANGAD)
+      if (!match) {
+        match = content.match(/([A-Z]{2})\s*([0-9]{6})\s*\([A-Z\s]{3,30}\)/i);
+      }
 
       if (match) {
         const series = match[1].toUpperCase();

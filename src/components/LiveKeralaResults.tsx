@@ -331,6 +331,39 @@ export default function LiveKeralaResults({
                 </button>
               </div>
             </div>
+          ) : (activeDateStr === todayDateStr && !isDeclared && istNow.getHours() >= 15) ? (
+            /* 2B. LATE AFTERNOON PENDING STATE (Post 3:00 PM when results are still being compiled) */
+            <div className="space-y-3 py-4">
+              <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-900 text-xs font-black px-4 py-1.5 rounded-full border border-amber-300">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+                <span>{lang === 'ml' ? '🔴 3:00 PM നറുക്കെടുപ്പ് ഫലം തയ്യാറാകുന്നു' : '🔴 3:00 PM LIVE DRAW COMPILING WINNERS'}</span>
+              </div>
+              <p className="text-sm font-bold text-slate-700 max-w-md mx-auto">
+                {lang === 'ml'
+                  ? 'ഇന്നത്തെ 3:00 PM നറുക്കെടുപ്പ് പൂർത്തിയായി. ഔദ്യോഗിക ഗസറ്റ് ഫലങ്ങൾ പരിശോധിച്ചു അപ്‌ഡേറ്റ് ചെയ്തുകൊണ്ടിരിക്കുന്നു.'
+                  : "Today's 3:00 PM draw has commenced at Gorky Bhavan. Official winning numbers are being verified and updated."}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => fetchLatestDraws(false)}
+                  disabled={isRefreshing}
+                  className="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer disabled:opacity-50"
+                >
+                  <span className={isRefreshing ? "inline-block animate-spin" : ""}>🔄</span>
+                  <span>{isRefreshing ? 'Checking Updates...' : 'Check For Live Update'}</span>
+                </button>
+                {latestDeclaredDate && latestDeclaredDate !== activeDateStr && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveDateStr(latestDeclaredDate)}
+                    className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900 font-bold text-xs px-3 py-2 underline cursor-pointer"
+                  >
+                    <span>View Latest Declared Draw ({latestDeclaredDate.split('-').reverse().join('/')})</span>
+                  </button>
+                )}
+              </div>
+            </div>
           ) : (
             /* 3. UPCOMING COUNTDOWN (Before 2:55 PM or Next Day) */
             <div className="space-y-3 py-4">

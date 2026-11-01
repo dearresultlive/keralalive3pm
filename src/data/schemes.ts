@@ -15,15 +15,15 @@ export interface KeralaSchemeInfo {
 export const KERALA_WEEKLY_SCHEMES: Record<number, KeralaSchemeInfo> = {
   // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
   0: {
-    id: 'akshaya',
-    code: 'AK',
-    name: 'Akshaya',
-    nameMl: 'അക്ഷയ',
+    id: 'samrudhi',
+    code: 'SM',
+    name: 'Samrudhi',
+    nameMl: 'സമൃദ്ധി',
     day: 'Sunday',
     dayMl: 'ഞായർ',
-    firstPrize: 7000000,
-    firstPrizeFormatted: '₹70 Lakhs',
-    ticketPrice: 40,
+    firstPrize: 10000000,
+    firstPrizeFormatted: '₹1 Crore',
+    ticketPrice: 50,
     color: '#0284c7',
     badgeBg: 'bg-sky-500'
   },

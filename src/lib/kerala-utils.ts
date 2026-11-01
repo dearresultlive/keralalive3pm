@@ -41,13 +41,14 @@ export function getKeralaDrawCountdown(istDate: Date = getISTNow()): {
   // Draw scheduled for 3:00 PM (15:00 IST = 54000 seconds)
   const drawTargetSec = 15 * 3600;
 
-  // Live drawing active window: 2:55 PM to 3:30 PM (14:55 to 15:30)
-  if (totalSecNow >= 14 * 3600 + 55 * 60 && totalSecNow <= 15 * 3600 + 30 * 60) {
+  // Live drawing active window: 2:55 PM to 5:00 PM (14:55 to 17:00 IST)
+  // Live draw starts at 3:00 PM, 1st prize drawn ~3:05-3:15 PM, and full official gazette releases ~4:00-4:45 PM
+  if (totalSecNow >= 14 * 3600 + 55 * 60 && totalSecNow <= 17 * 3600) {
     return { hours: 0, minutes: 0, seconds: 0, isLive: true, isPast: false, totalSecondsRemaining: 0 };
   }
 
-  // If past 3:30 PM, next draw is tomorrow at 3:00 PM IST
-  if (totalSecNow > 15 * 3600 + 30 * 60) {
+  // If past 5:00 PM, next draw is tomorrow at 3:00 PM IST
+  if (totalSecNow > 17 * 3600) {
     const remainingToMidnight = 24 * 3600 - totalSecNow;
     const remaining = remainingToMidnight + drawTargetSec;
     const hours = Math.floor(remaining / 3600);
