@@ -1,0 +1,93 @@
+import sharp from 'sharp';
+import fs from 'node:fs';
+
+// High-end Google News Square Logo SVG (512x512)
+// Designed specifically to comply with Google News Publisher Center visual requirements:
+// 1. Full-bleed background (no rounded corners on canvas) so Google can crop to circle without transparent corner glitches.
+// 2. Safe zone: All key text ('LIVE', '3PM', 'KERALA', 'RESULTS') is positioned inside a 400px diameter circle.
+// 3. High contrast: Golden metallic gradient and bold drop shadow for crisp readability at 32px up to 1000px.
+const svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <!-- Background Gradient (Deep Emerald) -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#065f46"/>
+      <stop offset="45%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+
+    <!-- Metallic Gold Gradient -->
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="30%" stop-color="#facc15"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+
+    <!-- Gold Accent Ring -->
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter for 3PM -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Full Bleed Square Canvas -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <!-- Concentric Emblem Rings (Inside 440px Safe Zone) -->
+  <circle cx="256" cy="256" r="226" stroke="#10b981" stroke-width="2" opacity="0.25"/>
+  <circle cx="256" cy="256" r="214" stroke="url(#ring)" stroke-width="4" stroke-dasharray="14 8" opacity="0.7"/>
+  <circle cx="256" cy="256" r="198" fill="#022c22" opacity="0.4"/>
+
+  <!-- Top LIVE Badge -->
+  <g transform="translate(256, 115)">
+    <rect x="-56" y="-18" width="112" height="36" rx="18" fill="#022c22" stroke="#10b981" stroke-width="2"/>
+    <circle cx="-32" cy="0" r="6" fill="#ef4444"/>
+    <text x="10" y="6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">LIVE</text>
+  </g>
+
+  <!-- Big Bold 3PM Centerpiece -->
+  <text x="256" y="286" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="150" font-weight="900" fill="url(#gold)" text-anchor="middle" letter-spacing="-5" filter="url(#shadow)">3PM</text>
+
+  <!-- Brand Typography -->
+  <text x="256" y="348" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">KERALA</text>
+  <text x="256" y="382" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="19" font-weight="800" fill="#86efac" text-anchor="middle" letter-spacing="6">LOTTERY</text>
+
+  <!-- Bottom Accent Sparkle -->
+  <circle cx="256" cy="414" r="3.5" fill="url(#gold)"/>
+  <circle cx="236" cy="414" r="2" fill="url(#gold)" opacity="0.6"/>
+  <circle cx="276" cy="414" r="2" fill="url(#gold)" opacity="0.6"/>
+</svg>
+`;
+
+async function main() {
+  fs.writeFileSync('public/google-news-icon.svg', svgContent.trim());
+  const svgBuf = Buffer.from(svgContent.trim());
+
+  // 1. Generate 512x512 PNG (Standard Google News Publisher Center Square Logo)
+  await sharp(svgBuf)
+    .resize(512, 512)
+    .png({ quality: 100, compressionLevel: 9 })
+    .toFile('public/google-news-logo-512.png');
+  console.log('✅ Generated public/google-news-logo-512.png (512x512)');
+
+  // 2. Generate 1000x1000 PNG (High-Res 1:1 format for Google Discover)
+  await sharp(svgBuf)
+    .resize(1000, 1000)
+    .png({ quality: 100, compressionLevel: 9 })
+    .toFile('public/google-news-logo-1000.png');
+  console.log('✅ Generated public/google-news-logo-1000.png (1000x1000)');
+
+  // Copy to brain artifact directory so it can be previewed/downloaded directly
+  const artifactDir = 'C:/Users/barun/.gemini/antigravity/brain/b5d1ba6c-10c7-44c2-bfec-95cc28e5b5dc';
+  fs.copyFileSync('public/google-news-logo-512.png', `${artifactDir}/google-news-logo-512.png`);
+  fs.copyFileSync('public/google-news-logo-1000.png', `${artifactDir}/google-news-logo-1000.png`);
+  console.log('✅ Copied logos to artifact directory');
+}
+
+main().catch(console.error);
