@@ -28,15 +28,15 @@ export const KERALA_WEEKLY_SCHEMES: Record<number, KeralaSchemeInfo> = {
     badgeBg: 'bg-sky-500'
   },
   1: {
-    id: 'win-win',
-    code: 'W',
-    name: 'Win-Win',
-    nameMl: 'വിൻ-വിൻ',
+    id: 'bhagyathara',
+    code: 'BT',
+    name: 'Bhagyathara',
+    nameMl: 'ഭാഗ്യതാര',
     day: 'Monday',
     dayMl: 'തിങ്കൾ',
-    firstPrize: 7500000,
-    firstPrizeFormatted: '₹75 Lakhs',
-    ticketPrice: 40,
+    firstPrize: 10000000,
+    firstPrizeFormatted: '₹1 Crore',
+    ticketPrice: 50,
     color: '#2563eb',
     badgeBg: 'bg-blue-600'
   },

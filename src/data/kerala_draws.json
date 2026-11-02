@@ -1,23 +1,61 @@
 {
   "2026-11-02": {
-    "scheme_id": "kerala-lottery",
-    "draw_number": "3PM-LIVE",
-    "draw_name": "KERALA LOTTERY",
-    "draw_name_ml": "കേരള ലോട്ടറി",
+    "scheme_id": "bhagyathara",
+    "draw_number": "BT-78",
+    "draw_name": "BHAGYATHARA",
+    "draw_name_ml": "ഭാഗ്യതാര",
     "draw_date": "2026-11-02",
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
-    "source": "google_apps_script",
-    "updated_at": "2026-11-02T09:20:55.284Z",
     "first_prize": {
-      "series": "MA",
-      "number": "847261",
+      "series": "BR",
+      "number": "399494",
       "amount": 10000000
     },
     "consolation_prize": {
-      "number": "847261",
+      "number": "399494",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "BT",
+        "number": "208354",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "435156"
+    ],
+    "fourth_prize": [
+      "0619",
+      "1710",
+      "1999",
+      "2590",
+      "3423",
+      "3556",
+      "3985",
+      "4800",
+      "5753",
+      "6761",
+      "7037",
+      "7174",
+      "7350",
+      "7954",
+      "8972",
+      "9130",
+      "9203",
+      "9682",
+      "9951"
+    ],
+    "fifth_prize": [
+      "4114",
+      "5029",
+      "5955",
+      "6339",
+      "6677",
+      "8045"
+    ],
+    "official_pdf_url": "https://statelottery.kerala.gov.in/"
   },
   "2026-11-01": {
     "scheme_id": "samrudhi",

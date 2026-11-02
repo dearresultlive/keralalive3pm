@@ -75,9 +75,9 @@ function runKeralaFastPoller() {
       const title = entry.title?.['$t'] || '';
       const content = entry.content?.['$t'] || '';
 
-      // SAFETY 3: Post must explicitly belong to TODAY's date
-      const textToSearch = title + ' ' + content;
-      if (!dateRegex.test(textToSearch)) {
+      // SAFETY 3: Post TITLE must explicitly match today's date.
+      // (Never test content because Blogger posts include footer links to previous and upcoming draws).
+      if (!dateRegex.test(title)) {
         Logger.log(`[Poller] Post "${title}" does not match today's date ${istDateStr}. Skipping.`);
         continue;
       }

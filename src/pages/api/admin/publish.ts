@@ -96,6 +96,22 @@ export const POST: APIRoute = async ({ request }) => {
     const currentContentStr = base64ToUtf8(fileData.content);
     const db = JSON.parse(currentContentStr) as Record<string, any>;
 
+    // Safety: If incoming source is auto-poller, prevent stale repeats of previous draw's 1st prize
+    const previousDrawDate = Object.keys(db).find(k => k !== date);
+    const previousDraw = previousDrawDate ? db[previousDrawDate] : null;
+    if (
+      source === 'google_apps_script' &&
+      previousDraw?.first_prize?.number === cleanNumber &&
+      previousDraw?.first_prize?.series === cleanSeries
+    ) {
+      return new Response(JSON.stringify({
+        error: `Stale result detected: ${cleanSeries} ${cleanNumber} is identical to previous draw (${previousDrawDate}). Skipped.`
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     // 2. Prepare or update draw entry
     const existing = db[date] || {};
 
