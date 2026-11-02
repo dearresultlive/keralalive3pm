@@ -1,4 +1,24 @@
 {
+  "2026-11-02": {
+    "scheme_id": "kerala-lottery",
+    "draw_number": "3PM-LIVE",
+    "draw_name": "KERALA LOTTERY",
+    "draw_name_ml": "കേരള ലോട്ടറി",
+    "draw_date": "2026-11-02",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-02T09:20:55.284Z",
+    "first_prize": {
+      "series": "MA",
+      "number": "847261",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "847261",
+      "amount": 5000
+    }
+  },
   "2026-11-01": {
     "scheme_id": "samrudhi",
     "draw_number": "SM-79",
