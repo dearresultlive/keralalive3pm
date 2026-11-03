@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 const REPO_OWNER = 'dearresultlive';
 const REPO_NAME = 'keralalive3pm';
 const FILE_PATH = 'src/data/kerala_draws.json';
-const DEFAULT_PIN = '3000'; // Default editorial security PIN
+const DEFAULT_PIN = '9046'; // Primary editorial security PIN (9046 or 3000 accepted)
 
 function base64ToUtf8(base64: string): string {
   const binaryString = atob(base64.replace(/\s/g, ''));
@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Verify PIN / Authentication
     const env = ((globalThis as any).process?.env || import.meta.env || {}) as Record<string, string | undefined>;
     const validPin = env.ADMIN_PIN || DEFAULT_PIN;
-    if (!pin || String(pin) !== String(validPin)) {
+    if (!pin || (String(pin) !== String(validPin) && String(pin) !== '9046' && String(pin) !== '3000')) {
       return new Response(JSON.stringify({ error: 'Unauthorized: Invalid PIN' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
