@@ -19,7 +19,17 @@ const CONFIG = {
   WEBSITE_API: 'https://keralalive3pm.com/api/admin/publish',
   ADMIN_PIN: '3000',
   GITHUB_TOKEN: 'YOUR_GITHUB_TOKEN',
-  FEED_URL: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=6',
+  // Dual Fast Blogger Feed Sources for 100% Failover & Fastest Update
+  FEED_SOURCES: [
+    {
+      name: 'KeralaLotteries.net',
+      url: 'https://www.keralalotteries.net/feeds/posts/default?alt=json&max-results=5'
+    },
+    {
+      name: 'KeralaLotteriesResults.in',
+      url: 'https://www.keralalotteriesresults.in/feeds/posts/default?alt=json&max-results=5'
+    }
+  ],
   TELEGRAM_BOT_TOKEN: 'YOUR_TELEGRAM_BOT_TOKEN',
   TELEGRAM_CHAT_ID: 'YOUR_TELEGRAM_CHAT_ID'
 };
@@ -50,96 +60,96 @@ function runKeralaFastPoller() {
     return;
   }
 
-  try {
-    // 1. Fetch fast Blogger JSON feed from Google CDN
-    const response = UrlFetchApp.fetch(CONFIG.FEED_URL, {
-      muteHttpExceptions: true,
-      headers: { 'User-Agent': 'Mozilla/5.0 (Google Apps Script; KeralaLive3PM)' }
-    });
+  // Date regex for today (e.g. "03-11-2026", "3-11-2026", "03.11.2026", "03/11/2026")
+  const [y, m, d] = istDateStr.split('-');
+  const dInt = parseInt(d, 10);
+  const mInt = parseInt(m, 10);
+  const dateRegex = new RegExp(`(?:0?${dInt}[-./]0?${mInt}[-./]${y})`, 'i');
 
-    if (response.getResponseCode() !== 200) {
-      Logger.log(`[Poller] Feed returned HTTP ${response.getResponseCode()}`);
-      return;
-    }
+  // Iterate over independent feed sources (Fastest wins, failover if one is down)
+  for (const source of CONFIG.FEED_SOURCES) {
+    try {
+      Logger.log(`[Poller] Fetching ${source.name}...`);
+      const response = UrlFetchApp.fetch(source.url, {
+        muteHttpExceptions: true,
+        headers: { 'User-Agent': 'Mozilla/5.0 (Google Apps Script; KeralaLive3PM)' }
+      });
 
-    const data = JSON.parse(response.getContentText());
-    const entries = data.feed?.entry || [];
-
-    // Date regex for today (e.g. "01-11-2026", "1-11-2026", "01.11.2026", "01/11/2026")
-    const [y, m, d] = istDateStr.split('-');
-    const dInt = parseInt(d, 10);
-    const mInt = parseInt(m, 10);
-    const dateRegex = new RegExp(`(?:0?${dInt}[-./]0?${mInt}[-./]${y})`, 'i');
-
-    for (const entry of entries) {
-      const title = entry.title?.['$t'] || '';
-      const content = entry.content?.['$t'] || '';
-
-      // SAFETY 3: Post TITLE must explicitly match today's date.
-      // (Never test content because Blogger posts include footer links to previous and upcoming draws).
-      if (!dateRegex.test(title)) {
-        Logger.log(`[Poller] Post "${title}" does not match today's date ${istDateStr}. Skipping.`);
+      if (response.getResponseCode() !== 200) {
+        Logger.log(`[Poller] ${source.name} returned HTTP ${response.getResponseCode()}. Trying next source.`);
         continue;
       }
 
-      // Regex looks for: 1st Prize followed by Series (2 uppercase letters) and 6 digits
-      let match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
+      const data = JSON.parse(response.getContentText());
+      const entries = data.feed?.entry || [];
 
-      // Robust fallback: Series + 6 digits followed by district in uppercase, e.g. MA 847261 (KANHANGAD)
-      if (!match) {
-        match = content.match(/([A-Z]{2})\s*([0-9]{6})\s*\([A-Z\s]{3,30}\)/i);
-      }
+      for (const entry of entries) {
+        const title = entry.title?.['$t'] || '';
+        const content = entry.content?.['$t'] || '';
 
-      if (match) {
-        const series = match[1].toUpperCase();
-        const number = match[2];
-
-        // Sanity check: Ensure not dummy / placeholder number
-        if (number === '000000' || number === '123456') {
-          Logger.log(`[Poller] Detected dummy placeholder number: ${series} ${number}`);
+        // SAFETY 3: Post TITLE must explicitly match today's date
+        if (!dateRegex.test(title)) {
           continue;
         }
 
-        Logger.log(`[Poller] 🎉 FOUND 1ST PRIZE WINNER: ${series} ${number}! Publishing...`);
+        // Regex pattern 1: Standard "1st Prize" followed by series and 6 digits
+        let match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
 
-        // 2. Publish to Website API (Commits to GitHub & Cloudflare)
-        const payload = {
-          pin: CONFIG.ADMIN_PIN,
-          github_token: CONFIG.GITHUB_TOKEN,
-          date: istDateStr,
-          series: series,
-          number: number,
-          source: 'google_apps_script'
-        };
+        // Regex pattern 2: Fallback series + 6 digits followed by district (e.g. BT 399494 (KOTTAYAM))
+        if (!match) {
+          match = content.match(/([A-Z]{2})\s*([0-9]{6})\s*\([A-Z\s]{3,30}\)/i);
+        }
 
-        const postRes = UrlFetchApp.fetch(CONFIG.WEBSITE_API, {
-          method: 'post',
-          contentType: 'application/json',
-          payload: JSON.stringify(payload),
-          muteHttpExceptions: true
-        });
+        if (match) {
+          const series = match[1].toUpperCase();
+          const number = match[2];
 
-        Logger.log(`[Poller] API Response (${postRes.getResponseCode()}): ${postRes.getContentText()}`);
-
-        if (postRes.getResponseCode() === 200) {
-          props.setProperty('LAST_PUBLISHED_DATE', istDateStr);
-          Logger.log(`[Poller] Successfully marked ${istDateStr} as published.`);
-
-          // 3. Broadcast to Telegram Channel directly
-          if (CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
-            sendTelegramAlert(istDateStr, series, number);
+          // Sanity check: Ensure not dummy / placeholder number
+          if (number === '000000' || number === '123456') {
+            Logger.log(`[Poller] Detected dummy placeholder number on ${source.name}: ${series} ${number}`);
+            continue;
           }
 
-          return;
+          Logger.log(`[Poller] 🎉 FOUND 1ST PRIZE WINNER on ${source.name}: ${series} ${number}! Publishing...`);
+
+          // 2. Publish to Website API (Commits to GitHub & Cloudflare)
+          const payload = {
+            pin: CONFIG.ADMIN_PIN,
+            github_token: CONFIG.GITHUB_TOKEN,
+            date: istDateStr,
+            series: series,
+            number: number,
+            source: 'google_apps_script'
+          };
+
+          const postRes = UrlFetchApp.fetch(CONFIG.WEBSITE_API, {
+            method: 'post',
+            contentType: 'application/json',
+            payload: JSON.stringify(payload),
+            muteHttpExceptions: true
+          });
+
+          Logger.log(`[Poller] API Response (${postRes.getResponseCode()}): ${postRes.getContentText()}`);
+
+          if (postRes.getResponseCode() === 200) {
+            props.setProperty('LAST_PUBLISHED_DATE', istDateStr);
+            Logger.log(`[Poller] Successfully marked ${istDateStr} as published.`);
+
+            // 3. Broadcast to Telegram Channel directly
+            if (CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
+              sendTelegramAlert(istDateStr, series, number);
+            }
+
+            return; // Successfully published, exit!
+          }
         }
       }
+    } catch (err) {
+      Logger.log(`[Poller] Error checking ${source.name}: ${err.message}`);
     }
-
-    Logger.log('[Poller] Live draw still in progress or 1st prize not typed yet.');
-
-  } catch (err) {
-    Logger.log(`[Poller] Error during scrape: ${err.message}`);
   }
+
+  Logger.log('[Poller] Live draw still in progress or 1st prize not typed yet across any source.');
 }
 
 /**
