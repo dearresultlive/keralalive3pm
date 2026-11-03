@@ -5,15 +5,26 @@ import KeralaTicketChecker from '../components/KeralaTicketChecker';
 import KeralaGuessingChart from '../components/KeralaGuessingChart';
 import { KERALA_WEEKLY_SCHEMES, BUMPER_SCHEMES } from '../data/schemes';
 import keralaDraws from '../data/kerala_draws.json';
-import { getISTDateString } from '../lib/kerala-utils';
+import { getISTDateString, getTodayKeralaScheme } from '../lib/kerala-utils';
 
 const todayDateStr = getISTDateString();
+const todayScheme = getTodayKeralaScheme();
+const [y, m, d] = todayDateStr.split('-');
+const formattedDate = `${d}-${m}-${y}`;
 
 // Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
 Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
 
-const pageTitle = "Kerala Lottery Result Today 3 PM Live (കേരള ലോട്ടറി ഫലം) | keralalive3pm.com";
-const pageDescription = "Live Kerala State Lottery Result 3:00 PM today. Check Win-Win, Sthree Sakthi, Fifty Fifty, Karunya Plus, Nirmal, Karunya & Akshaya 1st to 8th prize winning numbers and 3D guessing chart.";
+// Dynamic SEO Title & Description matching today's date and scheme (QDF Freshness)
+const pageTitle = `Kerala Lottery Result Today 3 PM Live (${formattedDate}) • ${todayScheme.name} | KeralaLive3PM`;
+const pageDescription = `Live Kerala State Lottery Result 3:00 PM today (${formattedDate}) for ${todayScheme.name} (${todayScheme.code}). Check 1st prize ${todayScheme.firstPrizeFormatted} to 8th prize winning numbers live.`;
+
+const articleSchema = {
+  headline: `Kerala Lottery Result Today 3 PM Live (${formattedDate}) - ${todayScheme.name} Winners`,
+  datePublished: `${todayDateStr}T15:00:00+05:30`,
+  dateModified: new Date().toISOString(),
+  description: pageDescription
+};
 
 const faqItems = [
   {
@@ -45,8 +56,34 @@ const daysOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon to Sun
   title={pageTitle}
   description={pageDescription}
   canonical="https://keralalive3pm.com"
+  drawDate={todayDateStr}
+  articleSchema={articleSchema}
   faqSchema={faqItems}
 >
+  <!-- Semantic H1 Header with Date & Today's Scheme (Vital for Google Rank #1) -->
+  <section class="mb-2 sm:mb-3">
+    <div class="flex flex-wrap items-center justify-between gap-1.5 mb-1">
+      <h1 class="text-base sm:text-xl font-black text-slate-900 tracking-tight flex items-center gap-1.5 flex-wrap">
+        <span>Kerala Lottery Result Today 3 PM Live</span>
+        <span class="text-emerald-700 font-mono font-bold text-sm sm:text-base">({formattedDate})</span>
+        <span class={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-black text-white ${todayScheme.badgeBg} shadow-xs`}>
+          {todayScheme.name} ({todayScheme.code})
+        </span>
+      </h1>
+      <a
+        href="/yesterday"
+        class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-xl border border-emerald-300 transition-colors shadow-2xs active:scale-95"
+        title="Check yesterday's winning numbers"
+      >
+        <span>📅 Yesterday's Result</span>
+        <span>→</span>
+      </a>
+    </div>
+    <p class="text-[11px] sm:text-xs text-slate-600 leading-snug">
+      Official Kerala State Lottery <strong>3:00 PM (3:00 PM IST)</strong> live wheel draw from Gorky Bhavan, Thiruvananthapuram.
+    </p>
+  </section>
+
   <!-- Hero / Live Results Component (Placed directly at top for immediate mobile visibility) -->
   <section class="mb-4 sm:mb-6">
     <LiveKeralaResults client:load initialDraws={keralaDraws} todayDateStr={todayDateStr} />

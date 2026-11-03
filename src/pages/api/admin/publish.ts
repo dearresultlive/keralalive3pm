@@ -205,7 +205,26 @@ export const POST: APIRoute = async ({ request }) => {
 
     const putResult = (await putRes.json()) as { commit?: { sha?: string } };
 
-    // 4. Auto-Broadcast to Telegram Channel (if configured)
+    // 4. Ping IndexNow for instant search engine re-crawl
+    try {
+      fetch('https://api.indexnow.org/indexnow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({
+          host: 'keralalive3pm.com',
+          key: 'kerala3pmliveindexnowkey',
+          keyLocation: 'https://keralalive3pm.com/kerala3pmliveindexnowkey.txt',
+          urlList: [
+            'https://keralalive3pm.com/',
+            'https://keralalive3pm.com/yesterday',
+            'https://keralalive3pm.com/sitemap.xml',
+            'https://keralalive3pm.com/rss.xml'
+          ]
+        })
+      }).catch(() => {});
+    } catch (_) {}
+
+    // 5. Auto-Broadcast to Telegram Channel (if configured)
     let telegramSent = false;
     const tgToken = body.telegram_bot_token || env.TELEGRAM_BOT_TOKEN;
     const tgChatId = body.telegram_chat_id || env.TELEGRAM_CHAT_ID || '@keralallive3pm';

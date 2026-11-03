@@ -8,6 +8,7 @@ interface Props {
   description?: string;
   canonical?: string;
   ogImage?: string;
+  drawDate?: string;
   faqSchema?: Array<{ question: string; answer: string }>;
   articleSchema?: {
     headline: string;
@@ -23,6 +24,7 @@ const {
   description,
   canonical,
   ogImage,
+  drawDate,
   faqSchema,
   articleSchema,
   breadcrumbs,
@@ -47,6 +49,7 @@ const {
       description={description}
       canonical={canonical}
       ogImage={ogImage}
+      drawDate={drawDate}
       faqSchema={faqSchema}
       articleSchema={articleSchema}
       breadcrumbs={breadcrumbs}
