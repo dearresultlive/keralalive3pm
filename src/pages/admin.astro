@@ -32,7 +32,7 @@ const allDraws = Object.values(keralaDraws).slice(0, 5);
         <input
           type="password"
           id="pin-input"
-          placeholder="Enter PIN (Default: 3000)"
+          placeholder="Enter PIN (e.g. 9046)"
           class="w-full bg-slate-950 border border-slate-700 rounded-2xl px-4 py-3 text-center text-lg font-mono font-bold text-white tracking-widest focus:ring-2 focus:ring-emerald-500 focus:outline-none"
           maxlength="8"
         />
@@ -247,7 +247,7 @@ const allDraws = Object.values(keralaDraws).slice(0, 5);
   </div>
 
   <script is:inline>
-    const DEFAULT_PIN = '3000';
+    const DEFAULT_PIN = '9046';
     const pinScreen = document.getElementById('pin-screen');
     const adminDashboard = document.getElementById('admin-dashboard');
     const pinInput = document.getElementById('pin-input');
@@ -264,7 +264,7 @@ const allDraws = Object.values(keralaDraws).slice(0, 5);
     }
 
     function unlockIfValid(entered) {
-      if (entered === DEFAULT_PIN || (savedPin && entered === savedPin)) {
+      if (entered === '9046' || entered === '3000' || (savedPin && entered === savedPin)) {
         localStorage.setItem('kerala_admin_pin', entered);
         pinScreen.classList.add('hidden');
         adminDashboard.classList.remove('hidden');
