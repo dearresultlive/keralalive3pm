@@ -38,6 +38,11 @@ export const POST: APIRoute = async ({ request }) => {
       amount = 10000000,
       second_series,
       second_number,
+      second_prize,
+      third_prize,
+      fourth_prize,
+      fifth_prize,
+      stage = 'STAGE_1_FIRST_PRIZE',
       source = 'admin',
       github_token
     } = body;
@@ -148,7 +153,9 @@ export const POST: APIRoute = async ({ request }) => {
       }
     };
 
-    if (second_number) {
+    if (second_prize && Array.isArray(second_prize) && second_prize.length > 0) {
+      updatedEntry.second_prize = second_prize;
+    } else if (second_number) {
       updatedEntry.second_prize = [
         {
           series: (second_series || '').trim().toUpperCase(),
@@ -156,12 +163,27 @@ export const POST: APIRoute = async ({ request }) => {
           amount: 3000000
         }
       ];
+    } else if (existing.second_prize) {
+      updatedEntry.second_prize = existing.second_prize;
     }
 
-    // Preserve existing lower prize tiers if they were already parsed
-    if (existing.third_prize) updatedEntry.third_prize = existing.third_prize;
-    if (existing.fourth_prize) updatedEntry.fourth_prize = existing.fourth_prize;
-    if (existing.fifth_prize) updatedEntry.fifth_prize = existing.fifth_prize;
+    if (third_prize && Array.isArray(third_prize) && third_prize.length > 0) {
+      updatedEntry.third_prize = third_prize;
+    } else if (existing.third_prize) {
+      updatedEntry.third_prize = existing.third_prize;
+    }
+
+    if (fourth_prize && Array.isArray(fourth_prize) && fourth_prize.length > 0) {
+      updatedEntry.fourth_prize = fourth_prize;
+    } else if (existing.fourth_prize) {
+      updatedEntry.fourth_prize = existing.fourth_prize;
+    }
+
+    if (fifth_prize && Array.isArray(fifth_prize) && fifth_prize.length > 0) {
+      updatedEntry.fifth_prize = fifth_prize;
+    } else if (existing.fifth_prize) {
+      updatedEntry.fifth_prize = existing.fifth_prize;
+    }
     if (existing.sixth_prize) updatedEntry.sixth_prize = existing.sixth_prize;
     if (existing.seventh_prize) updatedEntry.seventh_prize = existing.seventh_prize;
     if (existing.eighth_prize) updatedEntry.eighth_prize = existing.eighth_prize;
@@ -177,7 +199,9 @@ export const POST: APIRoute = async ({ request }) => {
     const newContentBase64 = utf8ToBase64(JSON.stringify(newDb, null, 2));
     const commitMsg = source === 'admin'
       ? `feat(live): admin override 1st prize ${cleanSeries} ${cleanNumber} for ${date}`
-      : `feat(live): auto-scrape 1st prize ${cleanSeries} ${cleanNumber} for ${date}`;
+      : stage === 'STAGE_2_FULL_RESULTS'
+        ? `feat(live): auto-scrape full 1st to 5th prize tiers for ${date} (${draw_number || cleanSeries})`
+        : `feat(live): auto-scrape 1st prize ${cleanSeries} ${cleanNumber} for ${date}`;
 
     const putRes = await fetch(getUrl, {
       method: 'PUT',
@@ -229,7 +253,7 @@ export const POST: APIRoute = async ({ request }) => {
     const tgToken = body.telegram_bot_token || env.TELEGRAM_BOT_TOKEN;
     const tgChatId = body.telegram_chat_id || env.TELEGRAM_CHAT_ID || '@keralallive3pm';
 
-    if (tgToken && tgChatId) {
+    if (tgToken && tgChatId && stage !== 'STAGE_2_FULL_RESULTS') {
       try {
         const formattedAmount = (Number(amount) >= 10000000)
           ? `₹${(Number(amount) / 10000000).toFixed(0)} Crore`
