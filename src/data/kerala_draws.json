@@ -1,14 +1,12 @@
 {
   "2026-11-03": {
-    "scheme_id": "kerala-lottery",
-    "draw_number": "3PM-LIVE",
-    "draw_name": "KERALA LOTTERY",
-    "draw_name_ml": "കേരള ലോട്ടറി",
+    "scheme_id": "sthree-sakthi",
+    "draw_number": "SS-544",
+    "draw_name": "STHREE SAKTHI",
+    "draw_name_ml": "സ്ത്രീ ശക്തി",
     "draw_date": "2026-11-03",
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
-    "source": "google_apps_script",
-    "updated_at": "2026-11-03T09:37:55.174Z",
     "first_prize": {
       "series": "SE",
       "number": "578935",
@@ -17,7 +15,47 @@
     "consolation_prize": {
       "number": "578935",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "SL",
+        "number": "132274",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "347971"
+    ],
+    "fourth_prize": [
+      "0318",
+      "0509",
+      "0602",
+      "1313",
+      "2051",
+      "2299",
+      "2421",
+      "2901",
+      "3211",
+      "3855",
+      "4097",
+      "4208",
+      "5608",
+      "5640",
+      "6354",
+      "6417",
+      "6725",
+      "7663",
+      "9644"
+    ],
+    "fifth_prize": [
+      "0370",
+      "2465",
+      "4418",
+      "7241",
+      "8960",
+      "9894"
+    ],
+    "official_pdf_url": "https://statelottery.kerala.gov.in/"
   },
   "2026-11-02": {
     "scheme_id": "bhagyathara",
