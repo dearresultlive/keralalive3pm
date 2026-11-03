@@ -54,10 +54,10 @@ export const KERALA_WEEKLY_SCHEMES: Record<number, KeralaSchemeInfo> = {
     badgeBg: 'bg-pink-600'
   },
   3: {
-    id: 'fifty-fifty',
-    code: 'FF',
-    name: 'Fifty-Fifty',
-    nameMl: 'ഫിഫ്റ്റി-ഫിഫ്റ്റി',
+    id: 'dhanalekshmi',
+    code: 'DL',
+    name: 'Dhanalekshmi',
+    nameMl: 'ധനലക്ഷ്മി',
     day: 'Wednesday',
     dayMl: 'ബുധൻ',
     firstPrize: 10000000,
@@ -80,15 +80,15 @@ export const KERALA_WEEKLY_SCHEMES: Record<number, KeralaSchemeInfo> = {
     badgeBg: 'bg-violet-600'
   },
   5: {
-    id: 'nirmal',
-    code: 'NR',
-    name: 'Nirmal',
-    nameMl: 'നിർമ്മൽ',
+    id: 'suvarna-keralam',
+    code: 'SK',
+    name: 'Suvarna Keralam',
+    nameMl: 'സുവർണ്ണ കേരളം',
     day: 'Friday',
     dayMl: 'വെള്ളി',
-    firstPrize: 7000000,
-    firstPrizeFormatted: '₹70 Lakhs',
-    ticketPrice: 40,
+    firstPrize: 10000000,
+    firstPrizeFormatted: '₹1 Crore',
+    ticketPrice: 50,
     color: '#059669',
     badgeBg: 'bg-emerald-600'
   },
