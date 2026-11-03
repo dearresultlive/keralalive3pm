@@ -1,23 +1,27 @@
 /**
  * ==============================================================================
- * KERALALIVE3PM — GOOGLE APPS SCRIPT FAST LIVE AUTO-POLLER & TELEGRAM BROADCASTER
+ * KERALALIVE3PM — 2-STAGE DUAL-SOURCE AUTO-POLLER & TELEGRAM BROADCASTER
  * ==============================================================================
  * 
  * Runs on Google's trusted infrastructure (Google Cloud IP ranges).
  * Immune to Indian government firewalls, Cloudflare WAF, and IP rate limits.
  * 
+ * 2-STAGE LIFECYCLE:
+ * - STAGE 1 (Speed Race, ~3:05 PM): Publishes 1st Prize instantly so you rank #1 on Google.
+ * - STAGE 2 (Full Prize Auto-Capture, ~3:15-3:30 PM): Detects 2nd, 3rd, 4th, 5th prizes 
+ *   and automatically updates kerala_draws.json with the complete prize table!
+ * 
  * HOW TO USE:
  * 1. Open your project on https://script.google.com/
  * 2. Select All (Ctrl+A), Delete, and Paste this entire script.
  * 3. Save (Ctrl+S).
- * 4. Run `setupAutoTrigger()` once from toolbar to activate the 3:00 PM scheduler.
  * ==============================================================================
  */
 
 // Configuration
 const CONFIG = {
   WEBSITE_API: 'https://keralalive3pm.com/api/admin/publish',
-  ADMIN_PIN: '3000',
+  ADMIN_PIN: '9046',
   GITHUB_TOKEN: 'YOUR_GITHUB_TOKEN',
   // Dual Fast Blogger Feed Sources for 100% Failover & Fastest Update
   FEED_SOURCES: [
@@ -53,10 +57,12 @@ function runKeralaFastPoller() {
     return;
   }
 
-  // SAFETY 2: Skip if today's result was already published
+  // SAFETY 2: Check current progress stage for today
   const props = PropertiesService.getScriptProperties();
-  if (props.getProperty('LAST_PUBLISHED_DATE') === istDateStr) {
-    Logger.log(`[Poller] Result for ${istDateStr} is already published. Skipping.`);
+  const currentStage = props.getProperty('STAGE_' + istDateStr) || 'NONE';
+
+  if (currentStage === 'STAGE_2_FULL_RESULTS') {
+    Logger.log(`[Poller] Full 1st to 5th prize results for ${istDateStr} are already completed. Skipping.`);
     return;
   }
 
@@ -66,10 +72,9 @@ function runKeralaFastPoller() {
   const mInt = parseInt(m, 10);
   const dateRegex = new RegExp(`(?:0?${dInt}[-./]0?${mInt}[-./]${y})`, 'i');
 
-  // Iterate over independent feed sources (Fastest wins, failover if one is down)
   for (const source of CONFIG.FEED_SOURCES) {
     try {
-      Logger.log(`[Poller] Fetching ${source.name}...`);
+      Logger.log(`[Poller] Checking ${source.name}... (Current Stage: ${currentStage})`);
       const response = UrlFetchApp.fetch(source.url, {
         muteHttpExceptions: true,
         headers: { 'User-Agent': 'Mozilla/5.0 (Google Apps Script; KeralaLive3PM)' }
@@ -92,33 +97,76 @@ function runKeralaFastPoller() {
           continue;
         }
 
-        // Regex pattern 1: Standard "1st Prize" followed by series and 6 digits
-        let match = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
-
-        // Regex pattern 2: Fallback series + 6 digits followed by district (e.g. BT 399494 (KOTTAYAM))
-        if (!match) {
-          match = content.match(/([A-Z]{2})\s*([0-9]{6})\s*\([A-Z\s]{3,30}\)/i);
+        // 1st Prize Extraction
+        let match1 = content.match(/(?:1st\s*Prize|First\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
+        if (!match1) {
+          match1 = content.match(/([A-Z]{2})\s*([0-9]{6})\s*\([A-Z\s]{3,30}\)/i);
         }
 
-        if (match) {
-          const series = match[1].toUpperCase();
-          const number = match[2];
+        if (!match1) continue;
 
-          // Sanity check: Ensure not dummy / placeholder number
-          if (number === '000000' || number === '123456') {
-            Logger.log(`[Poller] Detected dummy placeholder number on ${source.name}: ${series} ${number}`);
-            continue;
-          }
+        const series1 = match1[1].toUpperCase();
+        const number1 = match1[2];
 
-          Logger.log(`[Poller] 🎉 FOUND 1ST PRIZE WINNER on ${source.name}: ${series} ${number}! Publishing...`);
+        // Sanity & anti-dummy check
+        if (number1 === '000000' || number1 === '123456') {
+          continue;
+        }
 
-          // 2. Publish to Website API (Commits to GitHub & Cloudflare)
+        // Draw Code Extraction (e.g. SS-544, BT-78)
+        const dm = title.match(/\b(SS|BT|SM|KR|SK|KN|NR|W|AK|FF|DL|BR)[-.\s]*([0-9]{2,4})\b/i);
+        const drawNumber = dm ? `${dm[1].toUpperCase()}-${dm[2]}` : null;
+
+        // 2nd Prize Extraction
+        let secondPrize = null;
+        const match2 = content.match(/(?:2nd\s*Prize|Second\s*Prize)[\s\S]{1,800}?([A-Z]{2})\s*([0-9]{6})/i);
+        if (match2) {
+          secondPrize = [{ series: match2[1].toUpperCase(), number: match2[2], amount: 3000000 }];
+        }
+
+        // 3rd Prize Extraction
+        let thirdPrize = null;
+        const match3 = content.match(/(?:3rd\s*Prize|Third\s*Prize)[\s\S]{1,800}?([A-Z]{2}\s*)?([0-9]{6})/i);
+        if (match3) {
+          thirdPrize = [match3[2]];
+        }
+
+        // 4th Prize Extraction (19 four-digit numbers)
+        let fourthPrize = null;
+        const m4Section = content.match(/(?:4th\s*Prize|Fourth\s*Prize)[\s\S]{1,1500}?(?:5th\s*Prize|Fifth\s*Prize)/i);
+        if (m4Section) {
+          const rawNums4 = m4Section[0].match(/\b([0-9]{4})\b/g) || [];
+          const clean4 = rawNums4.filter(n => n !== '2026' && n !== '5000');
+          if (clean4.length >= 8) fourthPrize = clean4;
+        }
+
+        // 5th Prize Extraction (6 four-digit numbers)
+        let fifthPrize = null;
+        const m5Section = content.match(/(?:5th\s*Prize|Fifth\s*Prize)[\s\S]{1,1500}?(?:6th\s*Prize|Sixth\s*Prize)/i);
+        if (m5Section) {
+          const rawNums5 = m5Section[0].match(/\b([0-9]{4})\b/g) || [];
+          const clean5 = rawNums5.filter(n => n !== '2026' && n !== '2000');
+          if (clean5.length >= 3) fifthPrize = clean5;
+        }
+
+        const isFullReady = (secondPrize !== null && fourthPrize !== null);
+
+        // CASE A: Full Results Ready -> Publish Stage 2!
+        if (isFullReady) {
+          Logger.log(`[Poller] 🎯 FULL RESULTS (1st to 5th) detected on ${source.name}! Publishing Stage 2...`);
+
           const payload = {
             pin: CONFIG.ADMIN_PIN,
             github_token: CONFIG.GITHUB_TOKEN,
             date: istDateStr,
-            series: series,
-            number: number,
+            stage: 'STAGE_2_FULL_RESULTS',
+            series: series1,
+            number: number1,
+            draw_number: drawNumber,
+            second_prize: secondPrize,
+            third_prize: thirdPrize,
+            fourth_prize: fourthPrize,
+            fifth_prize: fifthPrize,
             source: 'google_apps_script'
           };
 
@@ -129,18 +177,52 @@ function runKeralaFastPoller() {
             muteHttpExceptions: true
           });
 
-          Logger.log(`[Poller] API Response (${postRes.getResponseCode()}): ${postRes.getContentText()}`);
+          Logger.log(`[Poller] Stage 2 API Response: ${postRes.getContentText()}`);
 
           if (postRes.getResponseCode() === 200) {
-            props.setProperty('LAST_PUBLISHED_DATE', istDateStr);
-            Logger.log(`[Poller] Successfully marked ${istDateStr} as published.`);
+            props.setProperty('STAGE_' + istDateStr, 'STAGE_2_FULL_RESULTS');
+            Logger.log(`[Poller] ✅ Successfully completed Stage 2 for ${istDateStr}!`);
 
-            // 3. Broadcast to Telegram Channel directly
-            if (CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
-              sendTelegramAlert(istDateStr, series, number);
+            // Send Telegram alert if it wasn't sent yet during Stage 1
+            if (currentStage !== 'STAGE_1_FIRST_PRIZE' && CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
+              sendTelegramAlert(istDateStr, series1, number1);
             }
+            return;
+          }
+        }
 
-            return; // Successfully published, exit!
+        // CASE B: Only 1st Prize Ready -> Publish Stage 1 (Speed Race)!
+        else if (currentStage !== 'STAGE_1_FIRST_PRIZE') {
+          Logger.log(`[Poller] ⚡ 1ST PRIZE WINNER detected on ${source.name}: ${series1} ${number1}! Publishing Stage 1...`);
+
+          const payload = {
+            pin: CONFIG.ADMIN_PIN,
+            github_token: CONFIG.GITHUB_TOKEN,
+            date: istDateStr,
+            stage: 'STAGE_1_FIRST_PRIZE',
+            series: series1,
+            number: number1,
+            draw_number: drawNumber,
+            source: 'google_apps_script'
+          };
+
+          const postRes = UrlFetchApp.fetch(CONFIG.WEBSITE_API, {
+            method: 'post',
+            contentType: 'application/json',
+            payload: JSON.stringify(payload),
+            muteHttpExceptions: true
+          });
+
+          Logger.log(`[Poller] Stage 1 API Response: ${postRes.getContentText()}`);
+
+          if (postRes.getResponseCode() === 200) {
+            props.setProperty('STAGE_' + istDateStr, 'STAGE_1_FIRST_PRIZE');
+            Logger.log(`[Poller] ✅ Stage 1 published. Continuing to poll for 2nd-5th prizes...`);
+
+            if (CONFIG.TELEGRAM_BOT_TOKEN && CONFIG.TELEGRAM_CHAT_ID) {
+              sendTelegramAlert(istDateStr, series1, number1);
+            }
+            return; // Will check next minute for full prizes!
           }
         }
       }
@@ -149,7 +231,7 @@ function runKeralaFastPoller() {
     }
   }
 
-  Logger.log('[Poller] Live draw still in progress or 1st prize not typed yet across any source.');
+  Logger.log('[Poller] Live draw still in progress or waiting for next prize tiers.');
 }
 
 /**
@@ -238,5 +320,5 @@ function sendTelegramAlert(date, series, number) {
  */
 function testTelegramPost() {
   Logger.log('[Telegram Test] Sending test message to ' + CONFIG.TELEGRAM_CHAT_ID + '...');
-  sendTelegramAlert('31-10-2026', 'KG', '501790');
+  sendTelegramAlert('03-11-2026', 'SS', '544123');
 }
