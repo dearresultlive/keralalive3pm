@@ -149,7 +149,7 @@ function runKeralaFastPoller() {
           if (clean5.length >= 3) fifthPrize = clean5;
         }
 
-        const isFullReady = (secondPrize !== null && fourthPrize !== null);
+        const isFullReady = (secondPrize !== null && fourthPrize !== null && fifthPrize !== null);
 
         // CASE A: Full Results Ready -> Publish Stage 2!
         if (isFullReady) {

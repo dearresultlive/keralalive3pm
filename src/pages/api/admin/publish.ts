@@ -1,4 +1,16 @@
 import type { APIRoute } from 'astro';
+import { KERALA_WEEKLY_SCHEMES } from '../../../data/schemes';
+
+function getSchemeForDateStr(dateStr: string) {
+  try {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    const day = dt.getUTCDay();
+    return KERALA_WEEKLY_SCHEMES[day] || null;
+  } catch {
+    return null;
+  }
+}
 
 const REPO_OWNER = 'dearresultlive';
 const REPO_NAME = 'keralalive3pm';
@@ -131,12 +143,17 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    const dayScheme = getSchemeForDateStr(date);
+    const resolvedSchemeId = (scheme_id && scheme_id !== 'kerala-lottery') ? scheme_id : (dayScheme ? dayScheme.id : (existing.scheme_id || 'kerala-lottery'));
+    const resolvedDrawName = (draw_name && draw_name !== 'KERALA LOTTERY') ? draw_name : (dayScheme ? dayScheme.name.toUpperCase() : (existing.draw_name || 'KERALA LOTTERY'));
+    const resolvedDrawNameMl = (draw_name_ml && draw_name_ml !== 'കേരള ലോട്ടറി') ? draw_name_ml : (dayScheme ? dayScheme.nameMl : (existing.draw_name_ml || 'കേരള ലോട്ടറി'));
+
     const updatedEntry = {
       ...existing,
-      scheme_id: scheme_id || existing.scheme_id || 'kerala-lottery',
-      draw_number: draw_number || existing.draw_number || '3PM-LIVE',
-      draw_name: draw_name || existing.draw_name || 'KERALA LOTTERY',
-      draw_name_ml: draw_name_ml || existing.draw_name_ml || 'കേരള ലോട്ടറി',
+      scheme_id: resolvedSchemeId,
+      draw_number: draw_number || existing.draw_number || (dayScheme ? `${dayScheme.code}-LIVE` : '3PM-LIVE'),
+      draw_name: resolvedDrawName,
+      draw_name_ml: resolvedDrawNameMl,
       draw_date: date,
       draw_time: '3:00 PM',
       status: source === 'admin' ? 'ADMIN_OVERRIDE' : 'LIVE_PRELIMINARY',
