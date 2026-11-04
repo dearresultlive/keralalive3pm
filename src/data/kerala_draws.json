@@ -1,4 +1,24 @@
 {
+  "2026-11-04": {
+    "scheme_id": "kerala-lottery",
+    "draw_number": "DL-76",
+    "draw_name": "KERALA LOTTERY",
+    "draw_name_ml": "കേരള ലോട്ടറി",
+    "draw_date": "2026-11-04",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-04T09:39:06.528Z",
+    "first_prize": {
+      "series": "DN",
+      "number": "862528",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "862528",
+      "amount": 5000
+    }
+  },
   "2026-11-03": {
     "scheme_id": "sthree-sakthi",
     "draw_number": "SS-544",
