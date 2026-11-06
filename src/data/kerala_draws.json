@@ -1,4 +1,24 @@
 {
+  "2026-11-06": {
+    "scheme_id": "suvarna-keralam",
+    "draw_number": "SK-76",
+    "draw_name": "SUVARNA KERALAM",
+    "draw_name_ml": "സുവർണ്ണ കേരളം",
+    "draw_date": "2026-11-06",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-06T09:38:54.859Z",
+    "first_prize": {
+      "series": "RN",
+      "number": "802143",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "802143",
+      "amount": 5000
+    }
+  },
   "2026-11-05": {
     "scheme_id": "karunya-plus",
     "draw_number": "KN-648",
