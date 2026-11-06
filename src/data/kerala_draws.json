@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-06T09:38:54.859Z",
+    "updated_at": "2026-11-06T09:41:55.156Z",
     "first_prize": {
       "series": "RN",
       "number": "802143",
@@ -17,7 +17,37 @@
     "consolation_prize": {
       "number": "802143",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "RR",
+        "number": "226249",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "314956"
+    ],
+    "fourth_prize": [
+      "4073",
+      "5391",
+      "6120",
+      "1543",
+      "3625",
+      "8891",
+      "2355",
+      "1039",
+      "0710",
+      "1642",
+      "0618",
+      "8627",
+      "4309",
+      "1714",
+      "5058",
+      "6939",
+      "7338",
+      "0299"
+    ]
   },
   "2026-11-05": {
     "scheme_id": "karunya-plus",
