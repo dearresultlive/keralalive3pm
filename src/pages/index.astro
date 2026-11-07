@@ -16,8 +16,8 @@ const formattedDate = `${d}-${m}-${y}`;
 Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
 
 // Dynamic SEO Title & Description matching today's date and scheme (QDF Freshness)
-const pageTitle = `Kerala Lottery Result Today 3 PM Live (${formattedDate}) • ${todayScheme.name} | KeralaLive3PM`;
-const pageDescription = `Live Kerala State Lottery Result 3:00 PM today (${formattedDate}) for ${todayScheme.name} (${todayScheme.code}). Check 1st prize ${todayScheme.firstPrizeFormatted} to 8th prize winning numbers live.`;
+const pageTitle = `Kerala Lottery Result Today 3 PM Live (${formattedDate}) • ${todayScheme.name}`;
+const pageDescription = `Live Kerala State Lottery Result 3:00 PM today (${formattedDate}) for ${todayScheme.name} (${todayScheme.code}). Instant 1st prize ${todayScheme.firstPrizeFormatted} to 8th prize winning numbers & ticket checker.`;
 
 const articleSchema = {
   headline: `Kerala Lottery Result Today 3 PM Live (${formattedDate}) - ${todayScheme.name} Winners`,
@@ -32,12 +32,16 @@ const faqItems = [
     answer: "The official Kerala State Lottery live draw starts at 3:00 PM IST daily at Gorky Bhavan, Near Bakery Junction, Thiruvananthapuram. The 1st prize is declared around 3:05 PM to 3:15 PM, and the complete official PDF with 1st to 8th prize tiers is released by 4:00 PM."
   },
   {
+    question: "Where can I check today 3:00 PM Kerala Lottery seettu result? (ഇന്നത്തെ 3 മണി ഫലം)",
+    answer: "Official Kerala State Lottery 3:00 PM (3:00 Mani / മൂന്ന് മണി) live draw result is published live on keralalive3pm.com right at 3:05 PM. Check 1st prize ₹1 Crore winning ticket, consolation prize, and 2nd to 8th prize numbers immediately with our free 6-digit ticket checker."
+  },
+  {
     question: "Where can I verify my Kerala lottery ticket?",
-    answer: "You can use the instant 6-digit ticket checker on keralalive3pm.com to test your ticket against all prize tiers. You should also verify with the Kerala State Lottery Gazette or official portal (statelottery.kerala.gov.in)."
+    answer: "You can use the instant 6-digit ticket checker on keralalive3pm.com/checker to test your ticket against all prize tiers and consolation prizes. You should also verify with the Kerala State Lottery Gazette or official portal (statelottery.kerala.gov.in)."
   },
   {
     question: "What are the 7 weekly Kerala State Lotteries?",
-    answer: "Sunday: Akshaya (AK), Monday: Win-Win (W), Tuesday: Sthree Sakthi (SS), Wednesday: Fifty-Fifty (FF), Thursday: Karunya Plus (KN), Friday: Nirmal (NR), Saturday: Karunya (KR)."
+    answer: "Sunday: Samrudhi (SM), Monday: Bhagyathara (BT), Tuesday: Sthree Sakthi (SS), Wednesday: Dhanalekshmi (DL), Thursday: Karunya Plus (KN), Friday: Suvarna Keralam (SK), Saturday: Karunya (KR)."
   },
   {
     question: "What is the tax deduction (TDS) on Kerala Lottery winnings?",
@@ -70,14 +74,29 @@ const daysOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon to Sun
           {todayScheme.name} ({todayScheme.code})
         </span>
       </h1>
-      <a
-        href="/yesterday"
-        class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-xl border border-emerald-300 transition-colors shadow-2xs active:scale-95"
-        title="Check yesterday's winning numbers"
-      >
-        <span>📅 Yesterday's Result</span>
-        <span>→</span>
-      </a>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <a
+          href="/yesterday"
+          class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-xl border border-emerald-300 transition-colors shadow-2xs active:scale-95"
+          title="Check yesterday's winning numbers"
+        >
+          <span>📅 Yesterday</span>
+        </a>
+        <a
+          href="/checker"
+          class="inline-flex items-center gap-1 text-[11px] font-bold text-sky-800 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-xl border border-sky-300 transition-colors shadow-2xs active:scale-95"
+          title="Check your 6-digit ticket number"
+        >
+          <span>🔍 Checker</span>
+        </a>
+        <a
+          href="/chart"
+          class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 px-2 py-0.5 rounded-xl border border-amber-300 transition-colors shadow-2xs active:scale-95"
+          title="3D Guessing & A B C Board Chart"
+        >
+          <span>📊 3D Chart</span>
+        </a>
+      </div>
     </div>
     <p class="text-[11px] sm:text-xs text-slate-600 leading-snug">
       Official Kerala State Lottery <strong>3:00 PM (3:00 PM IST)</strong> live wheel draw from Gorky Bhavan, Thiruvananthapuram.

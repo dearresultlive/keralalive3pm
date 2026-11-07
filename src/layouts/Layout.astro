@@ -16,6 +16,10 @@ interface Props {
     dateModified: string;
     description: string;
   };
+  webAppSchema?: {
+    name: string;
+    category?: string;
+  };
   breadcrumbs?: Array<{ name: string; url: string }>;
 }
 
@@ -27,6 +31,7 @@ const {
   drawDate,
   faqSchema,
   articleSchema,
+  webAppSchema,
   breadcrumbs,
 } = Astro.props;
 ---
@@ -52,6 +57,7 @@ const {
       drawDate={drawDate}
       faqSchema={faqSchema}
       articleSchema={articleSchema}
+      webAppSchema={webAppSchema}
       breadcrumbs={breadcrumbs}
     />
   </head>

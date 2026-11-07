@@ -6,8 +6,8 @@ import keralaDraws from '../data/kerala_draws.json';
 // Cloudflare Edge micro-caching (30s edge cache, 15s browser cache) for peak 3:00 PM rush
 Astro.response.headers.set('Cache-Control', 'public, max-age=15, s-maxage=30, stale-while-revalidate=60');
 
-const pageTitle = "Kerala Lottery Ticket Number Checker Online (1st to 8th Prize) | keralalive3pm.com";
-const pageDescription = "Instant Kerala State Lottery Ticket Checker. Enter your 6-digit ticket number with series code (e.g. WN 234567) to instantly check against all 8 prize tiers and consolation prize.";
+const pageTitle = "Check Kerala Lottery Ticket Online (1st–8th Prize) • 6-Digit Checker";
+const pageDescription = "Verify your Kerala State Lottery ticket number online in 2 seconds. Free instant 6-digit checker for 1st prize ₹1 Crore to 8th prize and ₹5,000 consolation tickets.";
 
 const faqItems = [
   {
@@ -16,7 +16,7 @@ const faqItems = [
   },
   {
     question: "Do I win a consolation prize if my series is different?",
-    answer: "Yes! If your 6-digit ticket number matches the 1st prize winning number but has a different series code, you win a ₹8,000 consolation prize."
+    answer: "Yes! If your 6-digit ticket number matches the 1st prize winning number but has a different series code, you win a ₹5,000 or ₹8,000 consolation prize."
   },
   {
     question: "What prizes are determined by the last 4 digits?",
@@ -30,6 +30,10 @@ const faqItems = [
   description={pageDescription}
   canonical="https://keralalive3pm.com/checker"
   faqSchema={faqItems}
+  webAppSchema={{
+    name: "Kerala Lottery Ticket Number Checker Online",
+    category: "UtilityApplication"
+  }}
   breadcrumbs={[
     { name: "Home", url: "https://keralalive3pm.com" },
     { name: "Ticket Checker", url: "https://keralalive3pm.com/checker" }

@@ -14,6 +14,10 @@ export interface Props {
     dateModified: string;
     description: string;
   };
+  webAppSchema?: {
+    name: string;
+    category?: string;
+  };
   breadcrumbs?: Array<{ name: string; url: string }>;
   preloadImage?: { url: string; type?: string };
 }
@@ -27,6 +31,7 @@ const {
   faqSchema,
   faqItems = [],
   articleSchema,
+  webAppSchema,
   breadcrumbs,
   preloadImage
 } = Astro.props;
@@ -54,7 +59,7 @@ const activeFaq = faqSchema || faqItems;
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="keywords" content="kerala lottery result, kerala lottery result today, kerala lottery result 3pm, kerala lottery live, sthree sakthi lottery result, fifty fifty lottery result, karunya lottery result, nirmal lottery result, win win lottery result, akshaya lottery result, കേരള ലോട്ടറി ഫലം, keralalive3pm" />
+<meta name="keywords" content="kerala lottery result today 3pm, kerala lottery result today live, kerala result 3:00, 3:00 mani kerala lottery result, today kerala live, kerala 3:00 p.m., kerala lottery seettu 3:00 mani result, 3 digit guessing number today, kerala lottery guessing number today 3 00 pm, കേരള ലോട്ടറി ലൈവ്, കേരള ലോട്ടറി റിസൾട്ട് 3 മണി, kerala lottery ticket checker, sthree sakthi lottery result, fifty fifty lottery result, karunya lottery result, nirmal lottery result, win win lottery result, akshaya lottery result, dhanalekshmi lottery result, suvarna keralam lottery result, keralalive3pm" />
 
 {/* Canonical URL */}
 <link rel="canonical" href={canonicalUrl} />
@@ -117,6 +122,25 @@ const activeFaq = faqSchema || faqItems;
       "name": bc.name,
       "item": bc.url
     }))
+  })} />
+)}
+
+{/* WebApplication Schema for Interactive Tools */}
+{webAppSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": webAppSchema.name || "Kerala Lottery Ticket Number Checker",
+    "url": canonicalUrl,
+    "applicationCategory": webAppSchema.category || "UtilityApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    },
+    "description": description
   })} />
 )}
 
