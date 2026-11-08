@@ -1,4 +1,24 @@
 {
+  "2026-11-08": {
+    "scheme_id": "samrudhi",
+    "draw_number": "SM-80",
+    "draw_name": "SAMRUDHI",
+    "draw_name_ml": "സമൃദ്ധി",
+    "draw_date": "2026-11-08",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-08T09:38:55.328Z",
+    "first_prize": {
+      "series": "MX",
+      "number": "703439",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "703439",
+      "amount": 5000
+    }
+  },
   "2026-11-07": {
     "scheme_id": "karunya",
     "draw_number": "KR-775",
