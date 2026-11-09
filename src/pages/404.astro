@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 // Set proper HTTP 404 status
-Astro.response.status = 404;
+export const prerender = true;
 Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=300');
 
 const pageTitle = "404 - Page Not Found • Kerala Lottery Live 3 PM";
