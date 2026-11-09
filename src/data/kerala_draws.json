@@ -1,4 +1,24 @@
 {
+  "2026-11-09": {
+    "scheme_id": "bhagyathara",
+    "draw_number": "BT-79",
+    "draw_name": "BHAGYATHARA",
+    "draw_name_ml": "ഭാഗ്യതാര",
+    "draw_date": "2026-11-09",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-09T09:38:57.149Z",
+    "first_prize": {
+      "series": "BG",
+      "number": "475629",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "475629",
+      "amount": 5000
+    }
+  },
   "2026-11-08": {
     "scheme_id": "samrudhi",
     "draw_number": "SM-80",
