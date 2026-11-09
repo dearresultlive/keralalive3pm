@@ -7,6 +7,7 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://keralalive3pm.com',
   output: 'server',
+  trailingSlash: 'never',
   adapter: cloudflare({
     imageService: 'cloudflare'
   }),

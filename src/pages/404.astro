@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Set proper HTTP 404 status
+Astro.response.status = 404;
+Astro.response.headers.set('Cache-Control', 'public, max-age=60, s-maxage=300');
+
+const pageTitle = "404 - Page Not Found • Kerala Lottery Live 3 PM";
+const pageDescription = "The page you are looking for does not exist or has been moved. Check today's 3:00 PM live Kerala lottery results or use our 6-digit ticket checker.";
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://keralalive3pm.com/404"
+>
+  <div class="max-w-2xl mx-auto py-12 px-4 text-center space-y-6">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-3xl font-black shadow-xs">
+      404
+    </div>
+
+    <div class="space-y-2">
+      <h1 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+        Page Not Found / പേജ് കണ്ടെത്താനായില്ല
+      </h1>
+      <p class="text-sm text-slate-600 max-w-md mx-auto">
+        The link you followed may be broken or the page may have been moved. Return to the live draw dashboard or use our verification tools below.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 max-w-lg mx-auto">
+      <a
+        href="/"
+        class="flex flex-col items-center p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all group"
+      >
+        <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🎯</span>
+        <span class="text-xs font-bold text-slate-900">Today's 3 PM Result</span>
+        <span class="text-[10px] text-slate-500">Live draw winner</span>
+      </a>
+
+      <a
+        href="/checker"
+        class="flex flex-col items-center p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all group"
+      >
+        <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🔍</span>
+        <span class="text-xs font-bold text-slate-900">Ticket Checker</span>
+        <span class="text-[10px] text-slate-500">Verify 6 digits</span>
+      </a>
+
+      <a
+        href="/yesterday"
+        class="flex flex-col items-center p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all group"
+      >
+        <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">📅</span>
+        <span class="text-xs font-bold text-slate-900">Yesterday's Result</span>
+        <span class="text-[10px] text-slate-500">Previous winners</span>
+      </a>
+    </div>
+
+    <div class="pt-4">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-xl shadow-xs transition-colors text-sm"
+      >
+        ← Back to Homepage
+      </a>
+    </div>
+  </div>
+</Layout>
