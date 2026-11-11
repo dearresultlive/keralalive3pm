@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-11T09:37:55.185Z",
+    "updated_at": "2026-11-11T09:40:55.621Z",
     "first_prize": {
       "series": "DJ",
       "number": "943076",
@@ -17,7 +17,37 @@
     "consolation_prize": {
       "number": "943076",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "DK",
+        "number": "856959",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "534927"
+    ],
+    "fourth_prize": [
+      "8939",
+      "7631",
+      "1982",
+      "5138",
+      "1576",
+      "2944",
+      "7376",
+      "3808",
+      "7532",
+      "5209",
+      "3904",
+      "3166",
+      "1444",
+      "9062",
+      "1063",
+      "8671",
+      "2076",
+      "3850"
+    ]
   },
   "2026-11-10": {
     "scheme_id": "sthree-sakthi",
