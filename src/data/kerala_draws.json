@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-16T09:37:55.121Z",
+    "updated_at": "2026-11-16T09:40:54.830Z",
     "first_prize": {
       "series": "BV",
       "number": "543398",
@@ -17,7 +17,37 @@
     "consolation_prize": {
       "number": "543398",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "BV",
+        "number": "362422",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "882812"
+    ],
+    "fourth_prize": [
+      "6977",
+      "5337",
+      "8519",
+      "4879",
+      "8228",
+      "8475",
+      "3969",
+      "6148",
+      "5376",
+      "7226",
+      "9432",
+      "7488",
+      "4328",
+      "9812",
+      "1504",
+      "7394",
+      "9223",
+      "2832"
+    ]
   },
   "2026-11-15": {
     "scheme_id": "samrudhi",
