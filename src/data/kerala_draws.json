@@ -1,4 +1,24 @@
 {
+  "2026-11-18": {
+    "scheme_id": "dhanalekshmi",
+    "draw_number": "DL-78",
+    "draw_name": "DHANALEKSHMI",
+    "draw_name_ml": "ധനലക്ഷ്മി",
+    "draw_date": "2026-11-18",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-18T09:38:56.369Z",
+    "first_prize": {
+      "series": "DO",
+      "number": "359523",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "359523",
+      "amount": 5000
+    }
+  },
   "2026-11-17": {
     "scheme_id": "sthree-sakthi",
     "draw_number": "SS-546",
