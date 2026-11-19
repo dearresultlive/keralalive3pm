@@ -1,4 +1,24 @@
 {
+  "2026-11-19": {
+    "scheme_id": "karunya-plus",
+    "draw_number": "KN-650",
+    "draw_name": "KARUNYA PLUS",
+    "draw_name_ml": "കാരുണ്യ പ്ലസ്",
+    "draw_date": "2026-11-19",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-19T09:42:55.570Z",
+    "first_prize": {
+      "series": "PS",
+      "number": "554896",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "554896",
+      "amount": 5000
+    }
+  },
   "2026-11-18": {
     "scheme_id": "dhanalekshmi",
     "draw_number": "DL-78",
