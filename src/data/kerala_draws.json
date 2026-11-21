@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-21T09:39:54.405Z",
+    "updated_at": "2026-11-21T09:42:54.646Z",
     "first_prize": {
       "series": "KU",
       "number": "400365",
@@ -17,7 +17,37 @@
     "consolation_prize": {
       "number": "400365",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "KS",
+        "number": "182163",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "404441"
+    ],
+    "fourth_prize": [
+      "0907",
+      "7598",
+      "7425",
+      "0236",
+      "2581",
+      "3206",
+      "4252",
+      "7659",
+      "7680",
+      "5052",
+      "2854",
+      "1127",
+      "2668",
+      "9086",
+      "1151",
+      "9963",
+      "2048",
+      "1020"
+    ]
   },
   "2026-11-20": {
     "scheme_id": "suvarna-keralam",
