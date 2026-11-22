@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-22T09:37:54.776Z",
+    "updated_at": "2026-11-22T09:40:57.213Z",
     "first_prize": {
       "series": "MO",
       "number": "747323",
@@ -17,7 +17,36 @@
     "consolation_prize": {
       "number": "747323",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "MN",
+        "number": "147266",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "766542"
+    ],
+    "fourth_prize": [
+      "1547",
+      "2958",
+      "3412",
+      "3746",
+      "8304",
+      "4373",
+      "5581",
+      "9840",
+      "7020",
+      "1813",
+      "9686",
+      "2987",
+      "2626",
+      "3483",
+      "8994",
+      "4156",
+      "6852"
+    ]
   },
   "2026-11-21": {
     "scheme_id": "karunya",
