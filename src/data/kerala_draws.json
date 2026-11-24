@@ -1,4 +1,24 @@
 {
+  "2026-11-24": {
+    "scheme_id": "sthree-sakthi",
+    "draw_number": "SS-547",
+    "draw_name": "STHREE SAKTHI",
+    "draw_name_ml": "സ്ത്രീ ശക്തി",
+    "draw_date": "2026-11-24",
+    "draw_time": "3:00 PM",
+    "status": "LIVE_PRELIMINARY",
+    "source": "google_apps_script",
+    "updated_at": "2026-11-24T09:37:55.244Z",
+    "first_prize": {
+      "series": "SW",
+      "number": "890947",
+      "amount": 10000000
+    },
+    "consolation_prize": {
+      "number": "890947",
+      "amount": 5000
+    }
+  },
   "2026-11-23": {
     "scheme_id": "bhagyathara",
     "draw_number": "BT-81",
