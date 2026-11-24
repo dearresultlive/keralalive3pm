@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-24T09:37:55.244Z",
+    "updated_at": "2026-11-24T09:40:54.894Z",
     "first_prize": {
       "series": "SW",
       "number": "890947",
@@ -17,7 +17,35 @@
     "consolation_prize": {
       "number": "890947",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "SO",
+        "number": "882442",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "136427"
+    ],
+    "fourth_prize": [
+      "4225",
+      "0370",
+      "4916",
+      "3194",
+      "3593",
+      "6878",
+      "5929",
+      "3721",
+      "3967",
+      "9722",
+      "0652",
+      "5049",
+      "4111",
+      "4964",
+      "3279",
+      "1862"
+    ]
   },
   "2026-11-23": {
     "scheme_id": "bhagyathara",
