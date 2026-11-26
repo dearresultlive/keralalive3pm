@@ -8,7 +8,7 @@
     "draw_time": "3:00 PM",
     "status": "LIVE_PRELIMINARY",
     "source": "google_apps_script",
-    "updated_at": "2026-11-26T09:37:55.042Z",
+    "updated_at": "2026-11-26T09:40:54.948Z",
     "first_prize": {
       "series": "PG",
       "number": "989670",
@@ -17,7 +17,36 @@
     "consolation_prize": {
       "number": "989670",
       "amount": 5000
-    }
+    },
+    "second_prize": [
+      {
+        "series": "PF",
+        "number": "614515",
+        "amount": 3000000
+      }
+    ],
+    "third_prize": [
+      "469387"
+    ],
+    "fourth_prize": [
+      "3716",
+      "0698",
+      "1448",
+      "6004",
+      "9347",
+      "3114",
+      "3703",
+      "5707",
+      "8850",
+      "5117",
+      "3417",
+      "2160",
+      "4538",
+      "6697",
+      "6488",
+      "2147",
+      "5822"
+    ]
   },
   "2026-11-25": {
     "scheme_id": "dhanalekshmi",
